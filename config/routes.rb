@@ -7,8 +7,19 @@ Ebydict::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
   get 'login/login'
   get 'login/do_login'
+  get 'login/logout'
   post 'login/do_login'
   get 'user/index'
+  get 'admin/adduser'
+  post 'admin/doadduser'
+  get 'admin/changes'
+  get 'scan/partition'
+  get 'scan/part_col'
+  get 'scan/part_def'
+  get 'type/get_def'
+  get 'type/get_fixup'
+  get 'type/get_proof'
+  get 'publish/list'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

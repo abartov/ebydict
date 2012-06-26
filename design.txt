@@ -1,0 +1,163 @@
+EbyDict Design
+**************
+
+Given a basic one-or-two-page scanned image of the EBY dict, and 
+given that each PAGE contains exactly TWO COLUMNS, and 
+given that each COLUMN contains DEFINITIONS-TEXT and MAY also contain FOOTNOTES, and
+given that FOOTNOTES MAY rarely have their own footnotes under them, and
+given that a block of DEFINITIONS-TEXT MAY contain more than one DEFINITION, and
+given that a DEFINITION MAY span more than one column, and
+given that a FOOTNOTE MAY span more than one column, and
+given that we want to type each DEFINITION with its correct FOOTNOTES,
+these are the possible cases:
+
+IMAGE:
+  - one page
+  - two pages
+PAGE:
+  - two columns
+COLUMN:
+  - no footnotes
+    - end-of-some-def
+    - any number of complete defs
+    - beginning-of-some-def
+  - has footnotes
+    - end-of-some-footnote
+    - any number of complete footnotes
+    - beginning-of-some-footnote
+    - defs as in 'no footnotes'
+
+Sketch of Partitioning Flow:
+----------------------------
++ partitioning is done by partitioners, who are identified humans with the partitioner role bit
++ human is shown scaled-down (33%? 25%?) images to identify columns, with a human just clicking 1 or 3 times to draw vertical separators
++ separators are multiplied (x3?, x4?) to match coordinates in full-size image
+  + on human command, image is accordingly cut into constituent column-images
+  - check for dupe objects!
++ human is shown a column-image; human clicks to place horizontal separator above footnotes, if any
+  + on human command, column-image is split into column-def-image and optional column-foot-image
++ human is shown a column-def-image; human places horizontal separators between defs; human specifies whether (y/n) first chunk is end-of-some-prev-def
+  + on command, column-def-image is split into def-part-images
+    + ALL def-part-images of this column reference this column's column-foot-image if any.  The interface will allow browsing FORWARD in column-foot-images to complete any footnote necessary.
+    + if the first chunk was marked end-of-prev-def, it is added to the prev column-def-image's last chunk's def-image-set, IN SEQUENCE
+
+Data Entities
+-------------
+
+a SCAN-IMAGE:
+  - knows the original JPEG filename it represents
+  - knows the scaled-down JPEG filename for itself
+  - knows the volume and page number(s) it contained (input by user)
+  - has a status (NeedPartition, Partitioned)
+  - may be assigned-to a partitioner
+  - knows who partitioned it (last)
+
+a COLUMN-IMAGE:
+  - knows the SCAN-IMAGE it belongs to
+  - knows its own filename (default would be col-img-NNNNN.jpg where NNNNN is the column-image 'id' field value)
+  - knows its order in the scan-image, from right to left (i.e. 1..4)
+  - knows its original (hardcopy) page-number (auto-calculated and fixable by user)
+  - knows the filenames of its column-def-img (default col-img-def-NNNNN.jpg) and column-foot-img (col-img-foot-NNNNN.jpg)
+  - has a status (NeedPartition, Partitioned)
+  - may be assigned-to a partitioner
+  - knows who partitioned it (last)
+
+a DEF-PART-IMAGE:
+  - knows the DEF it belongs to
+  - knows its sequence number in the set of def-part-images of the def
+  - knows the column-def-image it was part of
+  (redundantly, for optimization:
+    - knows the column-foot-image matching the column)
+
+a DEF:
+  - has Assigned_user_id -- non-null if assigned to user, NULL for unassigned
+  - has Status enum: EMPTY, NEED_TYPING, NEED_FIXUP, NEED_PROOF, NEED_PROOF, NEED_PROOF, NEED_PUBLISH, PUBLISHED
+  - has proof_round_passed field (1, 2, 3, ...)
+  - may be promoted/demoted between statuses as needed.
+  - may be assigned/unassigned back and forth between users.  Any def may only be assigned to one user at a time (but a user may have multiple defs assigned to them)
+  - is related to N def-part-images, each def-part-image knowing its place in the sequence of the def's images
+
+a USER:
+  - has boolean ROLE_* fields: ROLE_PARTITIONER, ROLE_TYPIST, ROLE_FIXER, ROLE_PROOFER, ROLE_PUBLISHER, all defaulting to FALSE
+  - has a max_proof_level attribute: 1 == may handle first proofing, 2 == second proofing, etc.
+  - has a login name, a full name, a password, ...?
+
+a DEF-EVENT:
+  - knows which USER did it
+  - knows what DEF was affected
+  - knows what the DEF's OLD STATUS was
+  - knows what the DEF's NEW STATUS is
+  - has timestamps
+
+
+Typing Flow:
+------------
++ typists are identified users with 'typist' bit
+  - (expand)
++ typist can resume work on a def currently ASSIGNED to them
++ typist specifies a def size they want (small, medium, large)
++ typist is allocated an appropriate def-image-set for a def among the UNASSIGNED defs; def is marked ASSIGNED.  
++ typist is shown first def-part-image, and (below that) the first column-foot-image for that def's first column.  
+- typist types.  
+  - footnotes are typed in separate box (some notation format to be converted on dict. rendering? TBD!)
+  - special symbols are easy to insert via toolbar, including arbitrary character (by Unicode number)
+  - special meta-markers are easy to insert, e.g. <russian-here>, <illegible-text-here>, <sic>, etc.
+
+- typist can switch to next column's column-foot-image as many times as they like, without losing their typing (AJAX)
+- typist submits the def, specifying:
+  + completed typing and ready for proofing
+    - def is saved, becomes UNASSIGNED, status changes to NEED_PROOF, proof_round_passed = 0
+  - completed typing but needs foreign-language inserts or unclear-words inserts  (typist is prompted to MARK the needed inserts somehow)
+    + def is saved, changes status to NEED_FIXUP, and is UNASSIGNED
+  + typing in progress
+    + def is saved, remains ASSIGNED
+  + abandon typing
+    + abandoned def is marked UNASSIGNED
+
+Fixups Flow:
+------------
++ fixer-uppers are identified users with 'fixer-upper' bit
++ fixer-upper can resume work on a def currently ASSIGNED to them
++ fixer-upper initiates fixup -- a def from the set of defs with NEED_FIXUP status is ASSIGNED to them
+- fixer-upper gets same interface typist gets (in terms of images displayed, scrolling for next footnotes image, etc.), possibly with more instructions
++ fixer-upper fixes up
++ fixer-upper submits the def, specifying:
+  + fixed and ready for proofing
+    + def is saved, becomes unassigned, and gets status NEED_PROOF, with proof_round_passed = 0
+  + fixup in progress
+    + def is saved, remains ASSIGNED to them
+  + abandon fixup
+    + def becomes unassigned, keeping NEED_FIXUP status
+
+Proofing Flow:
+--------------
++ proofers allowed to work on proof #N are identified users with ROLE_PROOFER bit and the user's max_proof_level >= N
++ proofers can resume work on a def currently ASSIGNED to them
++ proofers can initiate proofing at level N:
+  + an UNASSIGNED def currently at status NEED_PROOF and proof_round_passed == (N-1) is ASSIGNED to them
+  - proofer is shown the typing/fixing/proofing interface as with typists; instructions may differ
+  + proofer proofs
+  + proofer submits the def, specifying:
+    + proofed at level N, ready for N+1
+      + def is saved, becomes UNASSIGNED
+      + if N < LAST_PROOF_ROUND (3?), def remains at status NEED_PROOF, but proof_round_passed is incremented
+      + if N == LAST_PROOF_ROUND, status becomes NEED_PUBLISH
+    + proofing in progress
+      + def is saved, remains ASSIGNED, same status
+    + proofing abandoned
+      + def becomes UNASSIGNED, keeping status
+
+Publishing Flow:
+----------------
++ publishers are identified users with the 'publisher' role bit
+- publishers can PREVIEW a def (i.e. get it rendered by THE SAME mechanism that would ultimately render it in the published dictionary)
+- publishers can batch-publish all defs with NEED_PUBLISH status; all such defs get status PUBLISHED
+- publishers can view a def with NEED_PUBLISH status, and:
+  - demote it to any other status (NEED_FIXUP, NEED_PROOF) with any proof_round_passed value they choose
+  - publish the def, changing its status to PUBLISHED
+- publishers can view any def with PUBLISHED status and DEMOTE it as above.
+
+The Dictionary:
+---------------
+- The (publicly-accessible-at-some-point) partial dictionary is a dynamic page (or set of pages) displaying a sorted[see below] list of all defs with PUBLISHE status
+

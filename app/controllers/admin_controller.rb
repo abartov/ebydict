@@ -22,7 +22,7 @@ class AdminController < ApplicationController
         clear_pwd = u.password
         u.password = EbyUser.hashfunc(clear_pwd)
         u.save!
-        Notifications.deliver_signup (u, clear_pwd)
+        Notifications.signup(u, clear_pwd).deliver
 
         flash[:notice] = "User #{u.login} successfully added!"
       rescue

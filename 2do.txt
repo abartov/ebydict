@@ -1,0 +1,53 @@
+To-Do
+-----
+
+- run 'rake notes' and handle code annotated issues
+- add user management
+
+BUG: chfoot() function in the JavaScript code in the typing view has a bug in paging back and forth
+===================================================================================================
+
+- Improve partitioning views
+- keyboard-based scrolling?
+- auto-assign a scan instead of list (done?)
+- IE 7/8 support for typing interface
+- auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
+- one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
+- user preferences page (change password, what else?)
+- Forgot-my-password handling
+
+Typing Flow:
+------------
++ typist types.  
+  + footnotes are typed in separate box 
+  - (some notation format to be converted on dict. rendering? TBD!)
+  - special symbols are easy to insert via toolbar, including arbitrary character (by Unicode number)
+  * special meta-markers are easy to insert, e.g. <russian-here>, <illegible-text-here>, <sic>, etc.
+
++ typist can switch to next column's column-foot-image as many times as they like, without losing their typing (AJAX)
++ typist submits the def, specifying:
+  - completed typing but needs foreign-language inserts or unclear-words inserts  (typist is prompted to MARK the needed inserts somehow)
+    - def is saved, changes status to NEED_FIXUP, and is UNASSIGNED
+
+Fixups Flow:
+------------
+- fixer-upper gets same interface typist gets (in terms of images displayed, scrolling for next footnotes image, etc.), possibly with more instructions
+
+Proofing Flow:
+--------------
+- proofers can initiate proofing at level N:
+  - proofer is shown the typing/fixing/proofing interface as with typists; instructions may differ
+
+Publishing Flow:
+----------------
+- publishers can batch-publish all defs with NEED_PUBLISH status; all such defs get status PUBLISHED
+- publishers can PREVIEW a def (i.e. get it rendered by THE SAME mechanism that would ultimately render it in the published dictionary)
+- publishers can view a def with NEED_PUBLISH status, and:
+  - demote it to any other status (NEED_FIXUP, NEED_PROOF) with any proof_round_passed value they choose
+  - publish the def, changing its status to PUBLISHED
+- publishers can view any def with PUBLISHED status and DEMOTE it as above.
+
+The Dictionary:
+---------------
+- The (publicly-accessible-at-some-point) partial dictionary is a dynamic page (or set of pages) displaying a sorted[see below] list of all defs with PUBLISHE status
+

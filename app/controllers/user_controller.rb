@@ -30,11 +30,11 @@ class UserController < ApplicationController
       @inprog_proofs = EbyDef.find(:all, :conditions => "status = 'NeedProof' and assignedto = #{@user.id}")
     end
     if @user.role_fixer == true
-      cond_string = 'false '
+      cond_string = "? "
       ['does_arabic', 'does_greek', 'does_russian', 'does_extra'].each { |which|
         cond_string += 'or '+which.sub('does_','')+"='todo' " if(@user.read_attribute(which) == true)
       }
-      @avail_fixups = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedFixup' and ( "+cond_string+" )")
+      @avail_fixups = EbyDef.count(:conditions => ["assignedto IS NULL AND status = 'NeedFixup' and ( #{cond_string} )", 0])
       @inprog_fixups = EbyDef.find(:all, :conditions => "status = 'NeedFixup' and assignedto = #{@user.id}")
     end
     if @user.role_publisher == true
