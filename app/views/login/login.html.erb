@@ -1,0 +1,14 @@
+
+<h1><%= t(:login_must_login)%></h1>
+
+<p><%= t(:login_help_bring_html) %></p>
+
+<%= form_tag :action => 'do_login' %>
+<%= t(:login_username) %>: <input name="username" /> <br/>
+<%= t(:login_password) %>: <input type="password" name="password" /><br/>
+<%= submit_tag t(:login_submit) %>
+<p/>
+<%= t(:login_apply_html) %><br/>
+
+</form>
+</body>

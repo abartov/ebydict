@@ -1,0 +1,137 @@
+# Hebrew strings for EbyDict
+# Using Rails's standard I18n module
+
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+he:
+## common
+  or: או
+
+## application controller
+  app_flash_notice: 'הצג/הסתר תוצאות פעולה אחרונה'
+
+## user model
+  user_login_bad_length: 'tmp: login bad length'
+  user_password_bad_length: 'tmp: pwd bad length'
+  user_login_cant_be_blank: 'tmp: login blank!'
+  user_password_cant_be_blank: 'tmp: pwd blank!'
+  user_login_not_unique: 'tmp: login exists!'
+
+##  scan controller
+  scan_maintitle: 'העלאת מילון בן-יהודה לרשת: מערכת הפרדת סריקות'
+  scan_import_skipexist: 'דילגתי על קובץ קיים במאגר הנתונים: {thefile}<br/>'
+  scan_import_created: קלטתי תמונה עם מס' זיהוי {newid} עבור הקובץ {fname} <br/>
+  scan_import_skip: 'דילגתי על ספריה או קובץ שאינו תמונה: {fname} <br/>'
+  scan_abandoned: החזרתי את הסריקה למאגר הבלתי-מוקצה
+  scan_notfound: לא מצאתי סריקה כזו, או שאינה מוקצה לך
+  scan_notyours: סריקה זו כבר מוקצה למתנדב/ת אחר/ת.  נא לבחור סריקה אחרת.
+  scan_partedcol: ביצעתי הפרדה של סריקת-טור<br/>
+  scan_nomorecols: אין עוד טורים להפריד!  הידד!  אפשר לעבוד על משהו אחר!
+  scan_no_pagenums: נא להקליד את מספר/י העמוד/ים, או להחזיר את הסריקה אם אין אפשרות לקרוא את מספר העמוד.  להזכירך, אפשר לראות את התמונה בגודל מלא בקישורית המיועדת לכך.
+  scan_no_cols: נא לסמן הפרדה אחת (לעמוד בודד) או שלוש הפרדות (לשני עמודים, כלומר ארבעה טורים).
+  scan_got_seps: קיבלתי {seps} סימוני הפרדה...<br/>
+  scan_col_created: יצרתי טור מס' {colno} ושמרתיו כקובץ {fname}
+  scan_parted_scan: סיימתי להפריד את הסריקה המלאה {fname} מתוך כרך {vol}, עמוד/ים {pages}<br/>
+  scan_nomorescans: אין עוד סריקות מלאות להפריד לטורים! הידד! אפשר לעבוד על משהו אחר!
+
+## typing controller
+  type_arabic: ערבית
+  type_greek: יוונית
+  type_russian: רוסית
+  type_extra: אחר
+  type_headword: 'שם הערך הנוכחי:'
+  type_clicktoenlarge: לחץ/י כאן לפתוח חלון נפרד עם התמונה בגודל מלא
+  type_nextfoots: לחץ/י לצפיה בהערות השוליים של הטור הבא
+  type_prevfoots: לחץ/י לצפיה בהערות השוליים של הטור הקודם
+  type_next: החלק הבא
+  type_prev: החלק הקודם
+  type_abandon: זנח את ההגדרה
+  type_abandoned: השינויים נזנחו וההגדרה הוחזרה למאגר ואינה מוקצה לך עוד.
+  type_save: שמור וצא
+  type_saveanddone: שמור וסמן סוף {action}
+  type_problem: שמור וסמן בעיה
+  type_text: טקסט
+  type_footnotes: הערות שוליים
+  type_notproofer: אינך מוגדר/ת כמגיה/ה.  פנה/י לרכז המתנדבים אם ברצונך להגיה הגדרות.
+  type_notfixer: אינך מוגדר/ת כמשלים/ת הגדרות.  פנה/י לרכז המתנדבים אם ברצונך להשלים הגדרות.
+  type_nottypist: אינך מוגדר/ת כמקליד/ה.  פנה/י לרכז המתנדבים אם ברצונך להקליד הגדרות.
+  type_proofround_toohigh: אינך מורשה/ית להגיה הגדרות בסבב {round}.  פנה/י לרכז המתנדבים אם ברצונך להגיה בסבב זה.
+  type_defnotfound: תקלה -- ההגדרה לא נמצאה!
+  type_defnotyours: תקלה -- ההגדרה אינה מוקצה לך!
+  type_unknown_status: מצב ההגדרה -- {status} -- לא ברור.
+  type_none: אין
+  type_todo: לטיפול
+  type_done: טופל
+  type_saved_kept: ההגדרה נשמרה באותו סטטוס
+  type_await_proof_round: ממתין לסבב הגהה מספר {round}
+  type_await_fixups: ממתין להשלמות
+  type_proofing_done: תמו כל סבבי ההגהה!  ההגדרה מוכנה לראות אור!
+  type_saved_with_status: ההגדרה נשמרה בסטטוס חדש של {status}
+  type_problematic: ההגדרה נשמרה, וסומנה כבעייתית.
+  type_no_appropriate_def: אין הגדרה זמינה בגודל המבוקש.
+  type_typing: הקלדה
+  type_proofing: הגהה
+  type_fixups: השלמוֹת
+  type_source: מקור
+  type_comment: הערה
+  type_source_markup: '[[מקור: '
+  type_problem_markup: '[[בעיה: '
+  type_comment_markup: '[[הערה: '
+  type_unknown: (טרם הוקלד)
+
+## user controller
+  user_hello: <p>שלום, {user}!</p><b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
+  user_logout: יציאה מהמערכת
+  user_wantmore: רוצה עוד סוגי משימות?  פנה/י אל <a href="mailto:asaf@benyehuda.org">asaf@benyehuda.org</a> 
+  user_partscans: הפרדת עמודות בסריקת עמוד יחיד או כפול
+  user_abandon: ויתור על המטלה והחזרתה למאגר המטלות הבלתי-מוקצות
+  user_partcols: הפרדת אזור ההגדרות מאזור הערות השוליים בעמודה בודדת
+  user_partdefs: הפרדת הגדרות זו מזו בתוך חלק מעמודה
+  user_typedef: הקצאת הגדרה והערות השוליים שלה להקלדה
+  user_deflarge: הקצאת הגדרה <b>ארוכה</b>
+  user_defmedium: הקצאת הגדרה <b>בינונית</b>
+  user_defsmall: הקצאת הגדרה <b>קצרה</b>
+  user_workon: המשך עבודה על <b>{pic}</b>, שמוקצה לך
+  user_workon_def: המשך עבודה על <b>{pic}</b>, שמוקצה לך (הגדרה בת {numparts} חלקים)
+  user_scans: סריקות מלאות
+  user_cols: עמודות
+  user_defblocks: גושי הגדרות
+  user_defs: הגדרות להקלדה
+  user_fixups: הגדרות להשלמה
+  user_proofs: הגדרות להגהה
+  user_topublish: הגדרות מוכנות
+  user_todo: (יש עוד <b>{count}</b> {things} שלא הוקצו)
+  user_fixup: השלמת הגדרה מוקלדת (שפות זרות, קריאת מלים קשות, וכו') 
+  user_proof: הגהת הגדרה מוקלדת (עד הגהה מספר {maxproof})
+  user_publish: שחרר הגדרות מוגהות לדף המילון המצטבר
+  user_maintitle: 'העלאת מילון בן-יהודה לרשת: מרכז הפעילות'
+  user_back: חזרה אל מרכז הפעילות
+  user_chgpwd_here: אם ברצונך להחליף את סיסמתך, הקלד סיסמה חדשה בשתי התיבות להלן, ולחץ על הלחצן שמתחתן.
+  user_chgpwd_do: החלף סיסמה
+  user_empty_pwd: אין לקבוע סיסמה ריקה.  היות שלא הזנת סיסמה, לא שונתה הסיסמה הקיימת.
+  user_pwd_changed: הסיסמה שונתה בהצלחה.
+
+## mail notifications
+  mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
+  mail_signup_hello: שלום, {name}!
+  mail_signup_body: '<p/>זה עתה נוצר עבורך חשבון מתנדב במיזם הקלדת מילון אליעזר בן-יהודה, מייסודו של פרויקט בן-יהודה.<p/>שם המשתמש שלך הוא: {login}<br/>סיסמתך הנוכחית היא: {password}<p/>תוכל לשנות את הסיסמה בדף ההעדפות לאחר שתתחבר לאתר.<p/>תודה על הנכונות לעזור לנו להעניק לציבור מילון עברי-עברי חופשי באינטרנט!<p/>'
+  mail_signature: בברכה,<p/><a href="http://ebydict.benyehuda.org/">מיזם הקלדת מילון העברית הישנה והחדשה של אליעזר בן-יהודה</a><br/><a href="http://benyehuda.org">באתר פרויקט בן-יהודה</a><p/>בכל שאלה, ניתן לפנות אל <a href="mailto:asaf@benyehuda.org">אסף ברטוב</a>.
+
+## login controller
+  login_must_login: עליך להתחבר למערכת כדי להתחיל לעבוד
+  login_help_bring_html: <b>עזרו להביא את <u>מילון העברית הישנה והחדשה</u> של אליעזר בן-יהודה לרשת!</b>
+  login_username: שם משתמש
+  login_password: סיסמה
+  login_submit: התחבר
+  login_apply_html: 'אם אין לך שם משתמש וסיסמה למערכת זו, וברצונך לעזור, פנה אל עורך הפרויקט בכתובת <a href="mailto:editor@benyehuda.org">editor@benyehuda.org</a>'
+
+## publishing controller
+  publish_publish: 'חשוף את ההגדרה "<b>{defhead}></b>" למעיינים'
+  publish_list: חשיפת הגדרות מוכנות לציבור המעיינים
+  publish_published: ההגדרה צורפה למאגר, והיא נגישה למעיינים.
+  publish_failed: 'אירעה שגיאה; ההגדרה נותרה בהמתנה.'
+
+## definition controller
+  definition_notavail: הגדרה זו אינה זמינה לעיון עדיין.
+  definition_title: 'שם הערך: {defhead}'

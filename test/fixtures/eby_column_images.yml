@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  eby_scan_image_id: 1
+  colnum: 1
+  coljpeg: MyString
+  coldefjpeg: MyString
+  colfootjpeg: MyString
+  volume: 1
+  pagenum: 1
+  status: MyString
+  assignedto: 1
+  partitioned_by: 1
+  smalljpeg: MyString
+  defpartitioner_id: 1
+
+two:
+  eby_scan_image_id: 1
+  colnum: 1
+  coljpeg: MyString
+  coldefjpeg: MyString
+  colfootjpeg: MyString
+  volume: 1
+  pagenum: 1
+  status: MyString
+  assignedto: 1
+  partitioned_by: 1
+  smalljpeg: MyString
+  defpartitioner_id: 1

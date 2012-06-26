@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  origjpeg: MyString
+  smalljpeg: MyString
+  volume: 1
+  firstpagenum: 1
+  secondpagenum: 1
+  status: MyString
+  assignedto: 1
+  partitioned_by: 1
+
+two:
+  origjpeg: MyString
+  smalljpeg: MyString
+  volume: 1
+  firstpagenum: 1
+  secondpagenum: 1
+  status: MyString
+  assignedto: 1
+  partitioned_by: 1

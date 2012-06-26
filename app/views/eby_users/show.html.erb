@@ -1,0 +1,33 @@
+<p>
+  <b>Login:</b>
+  <%=h @eby_user.login %>
+</p>
+
+<p>
+  <b>Fullname:</b>
+  <%=h @eby_user.fullname %>
+</p>
+
+<p>
+  <b>Max proof level:</b>
+  <%=h @eby_user.max_proof_level %>
+</p>
+
+  <b>partitioner:</b>
+  <%=h @eby_user.role_partitioner %>
+<br/>
+  <b>typist:</b>
+  <%=h @eby_user.role_typist %>
+<br/>
+<b>fixer:</b>
+  <%=h @eby_user.role_fixer %>
+<br/>
+<b>proofer:</b>
+  <%=h @eby_user.role_proofer %>
+<br/>
+<b>publisher:</b>
+  <%=h @eby_user.role_publisher %>
+<p/>
+
+<%= link_to 'Edit', edit_eby_user_path(@eby_user) %> |
+<%= link_to 'Back', eby_users_path %>

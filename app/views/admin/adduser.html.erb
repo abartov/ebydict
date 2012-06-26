@@ -1,0 +1,37 @@
+
+<div dir="ltr" align="left">
+<h1>Add a User to EbyDict</h1>
+
+<% form_for(:eby_user, :url => { :action => "doadduser" } ) do |f| %>
+  <p>
+    <b>Username</b><br />
+    <%= f.text_field :login %>
+  </p>
+
+  <p>
+    <b>Password</b><br />
+    <%= f.text_field :password %>
+  </p>
+  <p><b>Full Name:</b> <%= f.text_field :fullname %></p>
+  <b>E-mail:</b> <%= f.text_field :email %><br/>
+  <p/>
+
+  <%= f.check_box(  :role_partitioner )%> Partitioner? <br/>
+  <%= f.check_box(  :role_typist )%> Typist? <br/>
+  <%= f.check_box(  :role_proofer )%> Proofer?  &nbsp;&nbsp;&nbsp; Proofer Level (1-5):  <%= f.text_field :max_proof_level %><br/>
+  <%= f.check_box( :role_fixer )%> Fixer? <br/>
+  <%= f.check_box( :role_publisher )%> Publisher? <br/>
+
+  <p/>
+
+  <%= f.check_box( :does_arabic )%> Does Arabic? <br/>
+  <%= f.check_box( :does_greek )%> Does Greek? <br/>
+  <%= f.check_box( :does_extra )%> Does Misc? (French, German, difficult words) <br/>
+  <%= f.check_box( :does_russian )%> Does Russian? <br/>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+</div>
+

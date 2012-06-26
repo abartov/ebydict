@@ -1,0 +1,20 @@
+<script type="text/javascript">
+ <!-- // Begin
+ function toggle(id) { element = document.getElementById(id); element.style.display = (element.style.display == "none" ) ? "" : "none";}
+ --> </script>
+
+<div dir="rtl" align="right">
+<%= :user_hello.l_with_args(:user => @user.fullname) %>
+<p/>
+
+<form action="/user/chpwd">
+<%= :user_chgpwd_here.l %><br/>
+<input name="password"/><br/>
+<input type="submit" name="<%= :user_chgpwd_do.l %>"/>
+</form>
+
+...TBD...
+
+<p/>
+<%= link_to :user_back.l, :action => 'index' %>
+</div>

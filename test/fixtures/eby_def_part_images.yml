@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  thedef: 1
+  partnum: 1
+  coldefimg_id: 1
+  filename: MyString
+  defno: 1
+  is_last: false
+
+two:
+  thedef: 1
+  partnum: 1
+  coldefimg_id: 1
+  filename: MyString
+  defno: 1
+  is_last: false

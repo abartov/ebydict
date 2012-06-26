@@ -1,0 +1,36 @@
+<h1>Listing eby_users</h1>
+
+<table>
+  <tr>
+    <th>Login</th>
+    <th>Password</th>
+    <th>Fullname</th>
+    <th>Max proof level</th>
+    <th>Role partitioner</th>
+    <th>Role typist</th>
+    <th>Role fixer</th>
+    <th>Role proofer</th>
+    <th>Role publisher</th>
+  </tr>
+
+<% for eby_user in @eby_users %>
+  <tr>
+    <td><%=h eby_user.login %></td>
+    <td><%=h eby_user.password %></td>
+    <td><%=h eby_user.fullname %></td>
+    <td><%=h eby_user.max_proof_level %></td>
+    <td><%=h eby_user.role_partitioner %></td>
+    <td><%=h eby_user.role_typist %></td>
+    <td><%=h eby_user.role_fixer %></td>
+    <td><%=h eby_user.role_proofer %></td>
+    <td><%=h eby_user.role_publisher %></td>
+    <td><%= link_to 'Show', eby_user %></td>
+    <td><%= link_to 'Edit', edit_eby_user_path(eby_user) %></td>
+    <td><%= link_to 'Destroy', eby_user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New eby_user', new_eby_user_path %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  who: 1
+  thedef: 1
+  old_status: MyString
+  new_status: MyString
+
+two:
+  who: 1
+  thedef: 1
+  old_status: MyString
+  new_status: MyString

@@ -1,0 +1,58 @@
+<head>
+<title>EbyDict: Separate Definitions</title><%= javascript_include_tag :defaults %> 
+<SCRIPT language="JavaScript" src="/javascripts/wz_jsgraphics.js"></SCRIPT>
+<style type="text/css">
+ #colimg_container { position:absolute }
+</style>
+</head>
+<body>
+<h2>Partitioning column: <%= @img %></h2>
+<script>
+var seqno = 0;
+var thesep = '';
+function cancel_sep()
+{
+  $('col_seps').innerHTML = "";
+  thesep = '';
+  $('final_seps').writeAttribute('value','');
+  seqno = 0;
+  jg.clear();
+  jg.drawImage("<%= @img %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
+  jg.paint();
+}
+
+function markSep(e) {
+  seqno++;
+  $('col_seps').innerHTML += seqno+": "+e.layerY+"; ";
+  if(thesep !== '')
+    thesep += '|';
+  thesep += e.layerY;
+  $('final_seps').writeAttribute('value', thesep);
+  jg.drawLine(0, e.layerY, $('colimg').getWidth(), e.layerY);
+  jg.paint();
+}
+</script>
+
+<%= form_tag '/scan/dopartdef/'+@coldef.id.to_s %>
+
+<div id="part_tools"><%= submit_tag "Save Partitions and Get Another Column", :name => 'save_and_next' %> || <%= submit_tag "Save Partition", :name => 'commit' %> || <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
+<font size="+2"><b>Is the first line a <u>continuation</u> of an entry?</b></font><label>No<%= radio_button_tag "first_cont", "no", :id => 'iscont' %></label><label>Yes<%= radio_button_tag "first_cont", "yes", :checked => 'true', :id => 'iscont' %></label>
+Separations between definitions: <span id="col_seps"></span>
+<input type="hidden" name="seps" id="final_seps"/>
+</form> <br/></div>
+<div align="center"><div style="border: solid #000000; position:relative" id="colimg_container"></div>
+<img id="colimg" style="display:none" src="<%= @img %>"></div>
+<p/>
+</body>
+<script>
+
+var jg = new jsGraphics("colimg_container"); 
+// Bog bless Prototype!  phew!
+$('colimg_container').observe('click', markSep)
+function onload() {
+  $('colimg_container').style.width = $('colimg').getWidth();
+  $('colimg_container').style.height =  $('colimg').getHeight();
+  jg.drawImage("<%= @img %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
+  jg.paint();
+}
+</script>

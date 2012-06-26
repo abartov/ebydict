@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  defhead: MyString
+  deftext: MyText
+  assignedto: 1
+  status: MyString
+  proof_round_passed: 1
+  arabic: MyString
+  greek: MyString
+  russian: MyString
+  extra: MyString
+  footnotes: MyText
+
+two:
+  defhead: MyString
+  deftext: MyText
+  assignedto: 1
+  status: MyString
+  proof_round_passed: 1
+  arabic: MyString
+  greek: MyString
+  russian: MyString
+  extra: MyString
+  footnotes: MyText

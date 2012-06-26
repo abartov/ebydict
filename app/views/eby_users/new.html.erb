@@ -1,0 +1,56 @@
+<h1>New eby_user</h1>
+
+<%= error_messages_for :eby_user %>
+
+<% form_for(@eby_user) do |f| %>
+  <p>
+    <b>Login</b><br />
+    <%= f.text_field :login %>
+  </p>
+
+  <p>
+    <b>Password</b><br />
+    <%= f.text_field :password %>
+  </p>
+
+  <p>
+    <b>Fullname</b><br />
+    <%= f.text_field :fullname %>
+  </p>
+
+  <p>
+    <b>Max proof level</b><br />
+    <%= f.text_field :max_proof_level %>
+  </p>
+
+  <p>
+    <b>Role partitioner</b><br />
+    <%= f.check_box :role_partitioner %>
+  </p>
+
+  <p>
+    <b>Role typist</b><br />
+    <%= f.check_box :role_typist %>
+  </p>
+
+  <p>
+    <b>Role fixer</b><br />
+    <%= f.check_box :role_fixer %>
+  </p>
+
+  <p>
+    <b>Role proofer</b><br />
+    <%= f.check_box :role_proofer %>
+  </p>
+
+  <p>
+    <b>Role publisher</b><br />
+    <%= f.check_box :role_publisher %>
+  </p>
+
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', eby_users_path %>
