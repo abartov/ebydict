@@ -4,33 +4,33 @@
  --> </script>
 
 <div dir="rtl" align="right">
-<%= t :user_hello, :user => @user.fullname %>
+<%= t :user_hello_html, :user => @user.fullname %>
 
 <!-- TODO: make items links to action controllers; list number of available unassigned work items in each category -->
 <ul>
 <% if @user.role_partitioner %>
-  <li> <%= link_to t(:user_partscans), :controller => 'scan', :action => 'partition' %> <%= t :user_todo, :count => @avail_scanimgs, :things => t(:user_scans) %><br/>
+  <li> <%= link_to t(:user_partscans), :controller => 'scan', :action => 'partition' %> <%= t :user_todo_html, :count => @avail_scanimgs, :things => t(:user_scans) %><br/>
   <div width="80%">
   <% if not (@inprog_scanimgs.nil? or @inprog_scanimgs.empty?) %>
     <% @inprog_scanimgs.each { |inp| %>
-      <%= t(:or) %> <%= link_to t(:user_workon, :pic => filepart_from_path(inp.origjpeg)), :controller => 'scan', :action => 'partition', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %> <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.origjpeg)), :controller => 'scan', :action => 'partition', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
-  <li><%= link_to t(:user_partcols), :controller => 'scan', :action => 'part_col' %> <%= t(:user_todo, :count => @avail_colimgs, :things => t(:user_cols)) %><br/>
+  <li><%= link_to t(:user_partcols), :controller => 'scan', :action => 'part_col' %> <%= t(:user_todo_html, :count => @avail_colimgs, :things => t(:user_cols)) %><br/>
   <div width="80%">
   <% if not (@inprog_colimgs.nil? or @inprog_colimgs.empty?) %>
     <% @inprog_colimgs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon, :pic => filepart_from_path(inp.coljpeg)), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coljpeg)), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
 
-  <li><%= link_to t(:user_partdefs), :controller => 'scan', :action => 'part_def' %> <%= t(:user_todo, :count => @avail_coldefimgs, :things => t(:user_defblocks)) %><br/>
+  <li><%= link_to t(:user_partdefs), :controller => 'scan', :action => 'part_def' %> <%= t(:user_todo_html, :count => @avail_coldefimgs, :things => t(:user_defblocks)) %><br/>
   <div width="80%">
   <% if not (@inprog_coldefimgs.nil? or @inprog_coldefimgs.empty?) %>
     <% @inprog_coldefimgs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon, :pic => filepart_from_path(inp.coldefjpeg)), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coldefjpeg)), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
@@ -38,16 +38,16 @@
 <% end 
    if @user.role_typist %>
   <br/>
-  <li><a href="javascript:toggle('typewhich')"><%= t(:user_typedef) %></a> <%= t(:user_todo, :count => @avail_defs, :things => t(:user_defs)) %>
+  <li><a href="javascript:toggle('typewhich')"><%= t(:user_typedef) %></a> <%= t(:user_todo_html, :count => @avail_defs, :things => t(:user_defs)) %>
   <div width="80%">
   <div id="typewhich" style="display: none;  "><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
-    <%= link_to t(:user_defsmall), :controller => 'type', :action => 'get_def', :defsize => 'small' %> <br/>
-    <%= link_to t(:user_defmedium), :controller => 'type', :action => 'get_def', :defsize => 'medium' %> <br/>
-    <%= link_to t(:user_deflarge), :controller => 'type', :action => 'get_def', :defsize => 'large' %> <br/></p>
+    <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_def', :defsize => 'small' %> <br/>
+    <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_def', :defsize => 'medium' %> <br/>
+    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_def', :defsize => 'large' %> <br/></p>
   </div>
   <% if not (@inprog_defs.nil? or @inprog_defs.empty?) %>
     <% @inprog_defs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
     end  %>
   </div>
@@ -55,7 +55,7 @@
  end
    if @user.role_fixer %>
   <br/>
-  <li><a href="javascript:toggle('fixupwhich')"><%= t(:user_fixup) %></a> <%= t(:user_todo, :count => @avail_fixups, :things => t(:user_fixups)) %><br/>
+  <li><a href="javascript:toggle('fixupwhich')"><%= t(:user_fixup) %></a> <%= t(:user_todo_html, :count => @avail_fixups, :things => t(:user_fixups)) %><br/>
   <div width="80%">
   <div id="fixupwhich" style="display: none;  "><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
     <%= link_to t(:user_defsmall), :controller => 'type', :action => 'get_fixup', :defsize => 'small' %> <br/>
@@ -65,14 +65,14 @@
   <!-- show fixups in progress -->
   <% if not (@inprog_fixups.nil? or @inprog_fixups.empty?) %>
     <% @inprog_fixups.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'fixup', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'fixup', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
     end %>
   </div>
 <% end
      if @user.role_proofer %>
   <br/>
-  <li><a href="javascript:toggle('proofwhich')"><%= t(:user_proof, :maxproof => @user.max_proof_level) %></a> <%= t(:user_todo, :count => @avail_proofs, :things => t(:user_proofs)) %>
+  <li><a href="javascript:toggle('proofwhich')"><%= t(:user_proof, :maxproof => @user.max_proof_level) %></a> <%= t(:user_todo_html, :count => @avail_proofs, :things => t(:user_proofs)) %>
   <div width="80%">
   <div id="proofwhich" style="display: none;"><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
     <%= link_to t(:user_defsmall), :controller => 'type', :action => 'get_proof', :defsize => 'small' %><br/>
@@ -82,7 +82,7 @@
   <!-- show proofs in progress -->
   <% if not (@inprog_proofs.nil? or @inprog_proofs.empty?) %>
     <% @inprog_proofs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
      end  %>
   
@@ -91,9 +91,9 @@
   end
    if @user.role_publisher %>
   <br/>
-  <li><%= link_to t(:user_publish), :controller => 'publish', :action => 'list' %> <%= t(:user_todo, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
+  <li><%= link_to t(:user_publish), :controller => 'publish', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
 <% end %>
-  <li><%= t(:user_wantmore) %>
+  <li><%= t(:user_wantmore_html) %>
 </ul>
 
 <%= link_to t(:user_logout), :controller => 'login', :action => 'logout' %>
