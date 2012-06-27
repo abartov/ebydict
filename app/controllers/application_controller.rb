@@ -59,7 +59,6 @@ protect_from_forgery
     end
     return retcol
   end
-
   before_filter :login_required
   #before_filter [:set_locale, :login_required]
 

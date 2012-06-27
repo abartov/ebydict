@@ -153,6 +153,7 @@ class ScanController < ApplicationController
     end
     # now display the image for partitioning
     @smallimg = url_from_file(@sc.smalljpeg) || "error!"
+    @height, @width = get_dimensions_from_img(@sc.smalljpeg)
     @origimg = url_from_file(@sc.origjpeg) || "error!"
     @sc.save
     unless params[:prefill].nil?
@@ -343,6 +344,10 @@ class ScanController < ApplicationController
   end
 
   protected
+  def get_dimensions_from_img(img)
+    i = ImageList.new(img)
+    return [i.rows, i.columns]
+  end
 
   def check_the_roles
     return check_role('partitioner')

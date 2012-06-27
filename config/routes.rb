@@ -23,6 +23,7 @@ Ebydict::Application.routes.draw do
   get 'scan/import'
   get 'scan/doimport'
   get 'scan/list'
+  get 'scan/abandon'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
