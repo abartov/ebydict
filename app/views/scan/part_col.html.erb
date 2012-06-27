@@ -1,50 +1,48 @@
 <head>
-<title>EbyDict: Partitioner</title><%= javascript_include_tag :defaults %> 
-<SCRIPT language="JavaScript" src="/assets/wz_jsgraphics.js"></SCRIPT>
-<style type="text/css">
- #colimg_container { position:absolute }
-</style>
+<title>EbyDict: Partitioner</title>
 <script>
-var thesep = '';
+var context;
+var canvas;
 function cancel_sep()
 {
-  $('col_seps').innerHTML = "";
-  thesep = '';
-  $('final_seps').writeAttribute('value','');
-  jg.clear();
-  jg.drawImage("<%= @colsmallimg %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
-  jg.paint();
+  $('#col_seps').html("");
+  $('#final_seps').attr('value','');
+  context.drawImage(imageObj, 0,0); 
 }
 
 function markSep(e) {
-  $('col_seps').innerHTML = "separated at Y="+e.layerY;
-  thesep = e.layerY;
-  $('final_seps').writeAttribute('value', thesep);
-  jg.drawLine(0, e.layerY, $('colimg').getWidth(), e.layerY);
-  jg.paint();
+  var offset = $(this).offset();
+  var rely = e.pageY - offset.top;
+  //var rely = e.clientY - offset.top;
+
+  $('#col_seps').html("separated at Y="+rely);
+  $('#final_seps').attr('value', rely);
+  context.beginPath();
+  context.moveTo(0, rely);
+  context.lineTo($('#myCanvas').width(),rely);
+  context.stroke();
 }
+
+// Bog bless jQuery!
+$(document).ready(function() {
+  canvas = document.getElementById("myCanvas");
+  context = canvas.getContext("2d");
+  imageObj = new Image();
+
+  imageObj.onload = function() { 
+    context.drawImage(imageObj, 0,0);  
+  }
+  imageObj.src = "<%= @colsmallimg %>";
+  $('#myCanvas').click(markSep);
+});
 </script>
 </head>
-<body> <b>Partitioning column: <%= @colimg %></b>
+<body><table><tr><td>
+<b>Partitioning column: <%= @colimg %></b>
 <%= form_tag '/scan/docolpart/'+@col.id.to_s %>
-<table><tr><td>
 <div align="center" id="part_tools"><%= submit_tag "Save Partition and Get Another Column", :name => 'save_and_next' %><br/><%= submit_tag "Save Partition", :name => 'commit' %><br/><%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %><br/><br/> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
 The separator between definitions and footnotes: <span id="col_seps"></span>
 <input type="hidden" name="seps" id="final_seps"/>
 </form> <a href="<%= @colimg %>" target="_new">Click to see original (large) image in new window</a><br/></div>
-<td><div align="center"><div style="border: solid #000000; position:relative" id="colimg_container"></div>
-<img id="colimg" style="display:none" src="<%= @colsmallimg %>"></div></td></tr></table>
-<p/>
+<td><canvas id="myCanvas" align="center" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></td></tr></table>
 </body>
-<script>
-
-var jg = new jsGraphics("colimg_container"); 
-// Bog bless Prototype!  phew!
-$('colimg_container').observe('click', markSep)
-function onload() {
-  $('colimg_container').style.width = $('colimg').getWidth();
-  $('colimg_container').style.height =  $('colimg').getHeight();
-  jg.drawImage("<%= @colsmallimg %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
-  jg.paint();
-}
-</script>

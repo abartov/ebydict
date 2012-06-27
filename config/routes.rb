@@ -15,6 +15,7 @@ Ebydict::Application.routes.draw do
   get 'admin/changes'
   get 'scan/partition'
   match 'scan/dopartition/:id' => 'scan#dopartition'
+  match 'scan/docolpart/:id' => 'scan#docolpart'
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'
@@ -25,6 +26,7 @@ Ebydict::Application.routes.draw do
   get 'scan/doimport'
   get 'scan/list'
   get 'scan/abandon'
+  get 'scan/abandon_col'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

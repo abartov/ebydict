@@ -122,6 +122,7 @@ class ScanController < ApplicationController
       small.write(@col.smalljpeg)
     end
     @colsmallimg = url_from_file(@col.smalljpeg)
+    @height, @width = get_dimensions_from_img(@col.smalljpeg)
     @col.save
   end
 

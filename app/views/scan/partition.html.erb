@@ -16,7 +16,7 @@ function cancel_seps()
   theseps = '';
   $('#final_seps').attr('value','');
   colnum = 0;
-  context.drawImage("<%= @smallimg %>",0,0); 
+  context.drawImage(imageObj,0,0); 
 }
 
 function markColumn(e) {
@@ -38,10 +38,6 @@ function markColumn(e) {
 $(document).ready(function() {
   canvas = document.getElementById("myCanvas");
   context = canvas.getContext("2d");
-  context.beginPath();
-  context.moveTo(0,0);
-  context.lineTo(100,100);
-  context.stroke();
   imageObj = new Image();
 
   imageObj.onload = function() { 
