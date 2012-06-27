@@ -1,4 +1,6 @@
 My quick notes:
 
 - there is currently, on purpose, no way to create the first admin user from the Web application.  You must create a user using the rails console or direct DB writes.  I'll bother with a proper way of bootstrapping the system Some Day<tm>.
-
+- for the RMagick gem:
+    sudo apt-get install libmagickwand-dev
+- it is assume the Web server serves /_ebydict/* correctly.

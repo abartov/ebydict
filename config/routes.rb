@@ -20,6 +20,9 @@ Ebydict::Application.routes.draw do
   get 'type/get_fixup'
   get 'type/get_proof'
   get 'publish/list'
+  get 'scan/import'
+  get 'scan/doimport'
+  get 'scan/list'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

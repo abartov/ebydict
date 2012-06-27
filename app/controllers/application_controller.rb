@@ -24,7 +24,7 @@ protect_from_forgery
   end
 
   # global consts
-  URLBASE = ''
+  URLBASE = 'http://localhost:80'
   #FILEBASE = '/BenYehuda/scans'
   FILEBASE = '/var/www'
   NEXT = 1
@@ -95,12 +95,10 @@ protect_from_forgery
     I18n.locale = params[:locale] || I18n.default_locale
   end 
   def login_required
-    print "DEBUG: moose?\n"
     if secure? && session["user"].nil?
       session["return_to"] = request.original_url # save intended uri for after successful login
       #session["return_to"] = request.request_uri # save intended uri for after successful login # rails 2.1.2
       redirect_to :controller => 'login', :action => 'login'
-      print "DEBUG: redirected!\n"
       return false
     end
   end

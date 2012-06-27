@@ -39,3 +39,5 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'app_constants'
+gem 'rmagick'
+gem 'will_paginate'

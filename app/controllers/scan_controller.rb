@@ -15,7 +15,7 @@ class ScanController < ApplicationController
     render :action => 'list'
   end
   def list
-    @scans = EbyScanImage.paginate_by_status 'NeedPartition', :conditions => 'assignedto is null', :page => params[:page]  
+    @scans = EbyScanImage.where(:status => 'NeedPartition', :assignedto => nil).page(params[:page])
   end
   def import
     if check_role('publisher')
@@ -23,7 +23,7 @@ class ScanController < ApplicationController
     end
   end
   def doimport
-    @page_title = :scan_maintitle.l
+    @page_title = t(:scan_maintitle)
     # do the actual import
     if check_role('publisher')
       thedir = '/var/www/_ebydict/'+params[:path]
@@ -33,15 +33,15 @@ class ScanController < ApplicationController
         if !(File.directory?(thefile)) and fname =~ /\.jpg$/
           # check for existing image
           if(EbyScanImage.find_by_origjpeg(thefile))
-            @dio += :scan_import_skipexist.l_with_args( :thefile => thefile)
+            @dio += t(:scan_import_skipexist, :thefile => thefile)
           else
             # create scanimage object
             newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => thefile, :status => 'NeedPartition')
             newimg.save # save scanimage object
-            @dio += :scan_import_created.l_with_args(:newid => newimg.id.to_s, :fname => fname)
+            @dio += t(:scan_import_created, :newid => newimg.id.to_s, :fname => fname)
           end
         else
-          @dio += :scan_import_skip.l_with_args(:fname => fname) 
+          @dio += t(:scan_import_skip, :fname => fname) 
         end
       }
       render :action => 'importdone'
@@ -50,22 +50,22 @@ class ScanController < ApplicationController
   def abandon
     @sc = EbyScanImage.find_by_id(params[:id])
     if (not @sc.assignee.nil?) && @sc.assignee == session['user']
-      flash[:notice] = :scan_abandoned.l
+      flash[:notice] = t(:scan_abandoned)
       @sc.assignee = nil
       @sc.save
     else
-      flash[:error] = :scan_notfound.l
+      flash[:error] = t(:scan_notfound)
     end
     redirect_to :controller => 'user'
   end
   def abandon_col
     @col = EbyColumnImage.find_by_id(params[:id])
     if (not @col.assignee.nil?) && @col.assignee == session['user']
-      flash[:notice] = :scan_abandoned.l
+      flash[:notice] = t(:scan_abandoned)
       @col.assignee = nil
       @col.save
     else
-      flash[:error] = :scan_notfound.l
+      flash[:error] = t(:scan_notfound)
     end
     redirect_to :controller => 'user'
   end
@@ -76,18 +76,18 @@ class ScanController < ApplicationController
     @coldefs = EbyColumnImage.paginate_by_status 'NeedDefPartition', :conditions => 'assignedto is null', :page => params[:page]
   end
   def part_def
-    @page_title = "EbyDict: Separate Definitions"
+    @page_title = "EbyDict: Separate Definitions" # TODO: localize
     unless params[:id].nil? # if id specified, get that
       @coldef = EbyColumnImage.find_by_id(params[:id])
       if (not @coldef.assignee.nil?) && (@coldef.assignee != session['user'])
-        flash[:error] = :scan_notyours.l
+        flash[:error] = t(:scan_notyours)
         redirect_to :action => 'list_coldefs'
         return
       end
     else # just grab an available one -- no point in letting the user pick one
       @coldef = EbyColumnImage.find_by_status('NeedDefPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
       if @coldef.nil?
-        flash[:notice] = :scan_nomorecols.l
+        flash[:notice] = t(:scan_nomorecols)
         redirect_to :controller => 'user'
         return
       end
@@ -97,18 +97,18 @@ class ScanController < ApplicationController
     @coldef.save
   end
   def part_col
-    @page_title = "EbyDict: Partitioner"
+    @page_title = "EbyDict: Partitioner" # TODO: localize
     unless params[:id].nil? # if id specified, get that
       @col = EbyColumnImage.find_by_id(params[:id])
       if (not @col.assignee.nil?) && (@col.assignee != session['user'])
-        flash[:error] = :scan_notyours.l
+        flash[:error] = t(:scan_notyours)
         redirect_to :action => 'list_cols'
         return
       end
     else # just grab an available one -- no point in letting the user pick one
       @col = EbyColumnImage.find_by_status('NeedPartition', :first, :conditions  => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
       if @col.nil?
-        flash[:notice] = :scan_nomorecols.l
+        flash[:notice] = t(:scan_nomorecols)
         redirect_to :controller => 'user'
         return
       end
@@ -131,14 +131,14 @@ class ScanController < ApplicationController
       @sc = EbyScanImage.find_by_id(params[:id])
       # check for assignment
       if (not @sc.assignee.nil?) && (@sc.assignee != session['user'])
-        flash[:error] = :scan_notyours.l
+        flash[:error] = t(:scan_notyours)
         redirect_to :action => 'list'
         return
       end
     else # just grab an available one -- no point in letting the user pick one
       @sc = EbyScanImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
       if @sc.nil?
-        flash[:notice] = :scan_nomorescans.l
+        flash[:notice] = t(:scan_nomorescans)
         redirect_to :controller => 'user'
         return
       end
@@ -165,7 +165,7 @@ class ScanController < ApplicationController
       if params[:abandon]
         @col.assignee = nil
         @col.save
-        flash[:notice] = :scan_abandoned.l
+        flash[:notice] = t(:scan_abandoned)
         redirect_to :controller => 'user'
       else
         @msg = ''
@@ -186,13 +186,13 @@ class ScanController < ApplicationController
         @col.partitioner = session['user']
         @col.assignee = nil
         @col.save
-        @msg += :scan_partedcol.l
+        @msg += t(:scan_partedcol)
         flash[:notice] = @msg
         if params[:save_and_next]
           # find a new available scanimg, and redirect back to partition
           @col = EbyColumnImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
           if @col.nil? # nothing available
-            flash[:notice] = :scan_nomorecols.l
+            flash[:notice] = t(:scan_nomorecols)
             redirect_to :controller => 'user'
           else
             redirect_to :action => 'part_col', :id => @col.id
@@ -209,7 +209,7 @@ class ScanController < ApplicationController
       if params[:abandon]
         @col.assignee = nil
         @col.save
-        flash[:notice] = :scan_abandoned.l
+        flash[:notice] = t(:scan_abandoned)
         redirect_to :controller => 'user'
       else
         last_def = nil
@@ -255,7 +255,7 @@ class ScanController < ApplicationController
           # find a new available colimg, and redirect back to partition
           @col = EbyColumnImage.find_by_status('NeedDefPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
           if @col.nil?
-            flash[:notice] = :scan_nomorecols.l
+            flash[:notice] = t(:scan_nomorecols)
             redirect_to :controller => 'user'
           else
             redirect_to :action => 'part_def', :id => @col.id
@@ -280,7 +280,7 @@ class ScanController < ApplicationController
         @smallimg = url_from_file(@sc.smalljpeg) || "error!"
         @origimg = url_from_file(@sc.origjpeg) || "error!"
 
-        flash[:error] = :scan_no_pagenums.l
+        flash[:error] = t(:scan_no_pagenums)
         render :action => 'partition'
       else
         # handle submitted partitioning
@@ -292,12 +292,12 @@ class ScanController < ApplicationController
         origimg = ImageList.new(@sc.origjpeg)
         seps = parse_seps(params[:seps])
         if seps.nil?
-          flash[:error] = :scan_no_cols.l
+          flash[:error] = t(:scan_no_cols)
           @smallimg = url_from_file(@sc.smalljpeg) || "error!"
           @origimg = url_from_file(@sc.origjpeg) || "error!"
           render :action => 'partition'
         else
-          @msg += :scan_got_seps.l_with_args(:seps => (seps.length-1).to_s) + "<br/>"
+          @msg += t(:scan_got_seps, :seps => (seps.length-1).to_s) + "<br/>"
           @seps = seps
           cur_right = origimg.columns - 1 # first partition begins at X=width-1 
           seps.each_index { |colno|
@@ -312,7 +312,7 @@ class ScanController < ApplicationController
               :assignee => nil)
 #              :assignee => session['user']) # by default, assign the column partitioning to the same user
             # save the objects
-            @msg += :scan_col_created.l_with_args(:colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
+            @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
             newcol.save
             # calculate next x coordinate
             cur_right = realsep
@@ -322,14 +322,14 @@ class ScanController < ApplicationController
           @sc.partitioner = session['user']
           @sc.assignee = nil
           @sc.save
-          @msg += :scan_parted_scan.l_with_args(:fname => @sc.origjpeg, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
+          @msg += t(:scan_parted_scan, :fname => @sc.origjpeg, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
           flash[:notice] = @msg
           if params[:save_and_next]
             # find a new available scanimg, and redirect back to partition
             newpagenum = @sc.firstpagenum.to_i+2
             @sc = EbyScanImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
             if @sc.nil?
-              flash[:notice] = :scan_nomorescans.l
+              flash[:notice] = t(:scan_nomorescans)
               redirect_to :controller => 'user'
             else
               redirect_to :action => 'partition', :id => @sc.id, :prefill => "#{newpagenum}-#{newpagenum+1}"
