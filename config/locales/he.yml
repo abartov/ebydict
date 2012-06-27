@@ -20,19 +20,19 @@ he:
 
 ##  scan controller
   scan_maintitle: 'העלאת מילון בן-יהודה לרשת: מערכת הפרדת סריקות'
-  scan_import_skipexist: 'דילגתי על קובץ קיים במאגר הנתונים: %{thefile}<br/>'
-  scan_import_created: קלטתי תמונה עם מס' זיהוי %{newid} עבור הקובץ %{fname} <br/>
-  scan_import_skip: 'דילגתי על ספריה או קובץ שאינו תמונה: %{fname} <br/>'
+  scan_import_skipexist_html: 'דילגתי על קובץ קיים במאגר הנתונים: %{thefile}<br/>'
+  scan_import_created_html: קלטתי תמונה עם מס' זיהוי %{newid} עבור הקובץ %{fname} <br/>
+  scan_import_skip_html: 'דילגתי על ספריה או קובץ שאינו תמונה: %{fname} <br/>'
   scan_abandoned: החזרתי את הסריקה למאגר הבלתי-מוקצה
   scan_notfound: לא מצאתי סריקה כזו, או שאינה מוקצה לך
   scan_notyours: סריקה זו כבר מוקצה למתנדב/ת אחר/ת.  נא לבחור סריקה אחרת.
-  scan_partedcol: ביצעתי הפרדה של סריקת-טור<br/>
+  scan_partedcol_html: ביצעתי הפרדה של סריקת-טור<br/>
   scan_nomorecols: אין עוד טורים להפריד!  הידד!  אפשר לעבוד על משהו אחר!
   scan_no_pagenums: נא להקליד את מספר/י העמוד/ים, או להחזיר את הסריקה אם אין אפשרות לקרוא את מספר העמוד.  להזכירך, אפשר לראות את התמונה בגודל מלא בקישורית המיועדת לכך.
   scan_no_cols: נא לסמן הפרדה אחת (לעמוד בודד) או שלוש הפרדות (לשני עמודים, כלומר ארבעה טורים).
-  scan_got_seps: קיבלתי %{seps} סימוני הפרדה...<br/>
+  scan_got_seps_html: קיבלתי %{seps} סימוני הפרדה...<br/>
   scan_col_created: יצרתי טור מס' %{colno} ושמרתיו כקובץ %{fname}
-  scan_parted_scan: סיימתי להפריד את הסריקה המלאה %{fname} מתוך כרך %{vol}, עמוד/ים %{pages}<br/>
+  scan_parted_scan_html: סיימתי להפריד את הסריקה המלאה %{fname} מתוך כרך %{vol}, עמוד/ים %{pages}<br/>
   scan_nomorescans: אין עוד סריקות מלאות להפריד לטורים! הידד! אפשר לעבוד על משהו אחר!
 
 ## typing controller

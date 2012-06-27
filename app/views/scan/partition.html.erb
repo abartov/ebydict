@@ -45,17 +45,10 @@ $(document).ready(function() {
   imageObj = new Image();
 
   imageObj.onload = function() { 
-    //$('myCanvas').height(imageObj.height());
-    //$('myCanvas').width((imageObj.width());
     context.drawImage(imageObj, 0,0);  
   }
   imageObj.src = "<%= @smallimg %>";
- /* $('smallimg_container').width($('smallimg').width());
-  $('smallimg_container').height($('smallimg').height());
-  jg.drawImage("<%= @smallimg %>", 0,0, $('smallimg').width(), $('smallimg').height(), null);
-  jg.paint(); */
   $('#myCanvas').click(markColumn);
-  //var saved_inner = $('smallimg_container').html();
 });
 </script>
 
@@ -70,7 +63,5 @@ Column separators marked so far: <span id="col_seps"></span>
 </form> 
 </div>
 Small Image: <div id="smallimg_container" style="position:relative"><canvas id="myCanvas" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></div>
-<!-- <img id="smallimg" src="<%= @smallimg %>"> -->
-<img id="smallimg" style="display:none" src="<%= @smallimg %>"> 
 <p/>
 </body>

@@ -33,15 +33,15 @@ class ScanController < ApplicationController
         if !(File.directory?(thefile)) and fname =~ /\.jpg$/
           # check for existing image
           if(EbyScanImage.find_by_origjpeg(thefile))
-            @dio += t(:scan_import_skipexist, :thefile => thefile)
+            @dio += t(:scan_import_skipexist_html, :thefile => thefile)
           else
             # create scanimage object
             newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => thefile, :status => 'NeedPartition')
             newimg.save # save scanimage object
-            @dio += t(:scan_import_created, :newid => newimg.id.to_s, :fname => fname)
+            @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
           end
         else
-          @dio += t(:scan_import_skip, :fname => fname) 
+          @dio += t(:scan_import_skip_html, :fname => fname) 
         end
       }
       render :action => 'importdone'
@@ -187,8 +187,8 @@ class ScanController < ApplicationController
         @col.partitioner = session['user']
         @col.assignee = nil
         @col.save
-        @msg += t(:scan_partedcol)
-        flash[:notice] = @msg
+        @msg += t(:scan_partedcol_html)
+        flash[:notice] = @msg.html_safe
         if params[:save_and_next]
           # find a new available scanimg, and redirect back to partition
           @col = EbyColumnImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
@@ -298,7 +298,7 @@ class ScanController < ApplicationController
           @origimg = url_from_file(@sc.origjpeg) || "error!"
           render :action => 'partition'
         else
-          @msg += t(:scan_got_seps, :seps => (seps.length-1).to_s) + "<br/>"
+          @msg += t(:scan_got_seps_html, :seps => (seps.length-1).to_s) + "<br/>"
           @seps = seps
           cur_right = origimg.columns - 1 # first partition begins at X=width-1 
           seps.each_index { |colno|
@@ -309,8 +309,7 @@ class ScanController < ApplicationController
             colimg.write(colimgname)
             # create appropriate number of column-image objects initialized to the new column jpegs
             newcol = EbyColumnImage.new(:eby_scan_image_id => @sc.id, :colnum => colno + 1, :coljpeg => colimgname,
-              :volume => @sc.volume, :pagenum => (colno < 2) ? @sc.firstpagenum : @sc.secondpagenum, :status => 'NeedPartition',
-              :assignee => nil)
+              :volume => @sc.volume, :pagenum => (colno < 2) ? @sc.firstpagenum : @sc.secondpagenum, :status => 'NeedPartition')
 #              :assignee => session['user']) # by default, assign the column partitioning to the same user
             # save the objects
             @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
@@ -323,8 +322,8 @@ class ScanController < ApplicationController
           @sc.partitioner = session['user']
           @sc.assignee = nil
           @sc.save
-          @msg += t(:scan_parted_scan, :fname => @sc.origjpeg, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
-          flash[:notice] = @msg
+          @msg += t(:scan_parted_scan_html, :fname => @sc.origjpeg, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
+          flash[:notice] = @msg.html_safe
           if params[:save_and_next]
             # find a new available scanimg, and redirect back to partition
             newpagenum = @sc.firstpagenum.to_i+2
