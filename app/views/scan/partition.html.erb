@@ -7,40 +7,42 @@
 <script>
 var colnum = 0;
 var theseps = '';
+var canvas;
+var context;
+var imageObj;
 function cancel_seps()
 {
-  $('col_seps').html("");
+  $('#col_seps').html("");
   theseps = '';
-  $('final_seps').attr('value','');
+  $('#final_seps').attr('value','');
   colnum = 0;
-  jg.clear();
-  jg.drawImage("<%= @smallimg %>", 0,0, $('smallimg').width(), $('smallimg').height(), null);
-  jg.paint();
+  context.drawImage("<%= @smallimg %>",0,0); 
 }
 
 function markColumn(e) {
+  var offset = $(this).offset();
   colnum++;
-  $('col_seps').html($('col_seps').html()+"col #"+colnum+": "+e.layerX+" | ");
+  var relx = e.clientX - offset.left;
+  $('#col_seps').html($('#col_seps').html()+"col #"+colnum+": "+relx+" | ");
   if(theseps !== '')
     theseps += '|';
-  theseps += e.layerX;
-  $('final_seps').attr('value', theseps);
-  jg.drawLine(e.layerX, 0, e.layerX, $('smallimg').height());
-  jg.paint();
+  theseps += relx;
+  $('#final_seps').attr('value', theseps);
+  context.beginPath();
+  context.moveTo(relx, 0);
+  context.lineTo(relx, $('#myCanvas').height());
+  context.stroke();
 }
 
-var saved_inner = $('smallimg_container').html();
-var jg = new jsGraphics("smallimg_container"); 
 // Bog bless jQuery!
-$('smallimg_container').click(markColumn);
 $(document).ready(function() {
-  var canvas = document.getElementById("myCanvas");
-  var context = canvas.getContext("2d");
+  canvas = document.getElementById("myCanvas");
+  context = canvas.getContext("2d");
   context.beginPath();
   context.moveTo(0,0);
   context.lineTo(100,100);
   context.stroke();
-  var imageObj = new Image();
+  imageObj = new Image();
 
   imageObj.onload = function() { 
     //$('myCanvas').height(imageObj.height());
@@ -52,6 +54,8 @@ $(document).ready(function() {
   $('smallimg_container').height($('smallimg').height());
   jg.drawImage("<%= @smallimg %>", 0,0, $('smallimg').width(), $('smallimg').height(), null);
   jg.paint(); */
+  $('#myCanvas').click(markColumn);
+  //var saved_inner = $('smallimg_container').html();
 });
 </script>
 

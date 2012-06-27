@@ -14,6 +14,7 @@ Ebydict::Application.routes.draw do
   post 'admin/doadduser'
   get 'admin/changes'
   get 'scan/partition'
+  match 'scan/dopartition/:id' => 'scan#dopartition'
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'
