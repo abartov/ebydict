@@ -1,58 +1,58 @@
 <head>
-<title>EbyDict: Separate Definitions</title><%= javascript_include_tag :defaults %> 
-<SCRIPT language="JavaScript" src="/assets/wz_jsgraphics.js"></SCRIPT>
+<title>EbyDict: Separate Definitions</title>
 <style type="text/css">
  #colimg_container { position:absolute }
 </style>
 </head>
 <body>
-<h2>Partitioning column: <%= @img %></h2>
+<h4>Partitioning column: <%= @img %></h4>
 <script>
 var seqno = 0;
 var thesep = '';
 function cancel_sep()
 {
-  $('col_seps').innerHTML = "";
+  $('#col_seps').htlm("");
   thesep = '';
-  $('final_seps').writeAttribute('value','');
+  $('#final_seps').attr('value','');
   seqno = 0;
-  jg.clear();
-  jg.drawImage("<%= @img %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
-  jg.paint();
+  context.drawImage(imageObj, 0,0);
 }
 
 function markSep(e) {
   seqno++;
-  $('col_seps').innerHTML += seqno+": "+e.layerY+"; ";
+  var offset = $(this).offset();
+  var rely = e.pageY - offset.top;
+  $('#col_seps').html($('#col_seps').html()+ seqno+": "+rely+"; ");
   if(thesep !== '')
     thesep += '|';
-  thesep += e.layerY;
-  $('final_seps').writeAttribute('value', thesep);
-  jg.drawLine(0, e.layerY, $('colimg').getWidth(), e.layerY);
-  jg.paint();
+  thesep += rely;
+  $('#final_seps').attr('value', thesep);
+  context.beginPath();
+  context.moveTo(0, rely);
+  context.lineTo($('#myCanvas').width(),rely);
+  context.stroke();
 }
+
+// Bog bless jQuery!
+$(document).ready(function() {
+  canvas = document.getElementById("myCanvas");
+  context = canvas.getContext("2d");
+  imageObj = new Image();
+
+  imageObj.onload = function() { 
+    context.drawImage(imageObj, 0,0);  
+  }
+  imageObj.src = "<%= @img %>";
+  $('#myCanvas').click(markSep);
+});
+
 </script>
 
+<table><tr><td valign="top">
 <%= form_tag '/scan/dopartdef/'+@coldef.id.to_s %>
-
 <div id="part_tools"><%= submit_tag "Save Partitions and Get Another Column", :name => 'save_and_next' %> || <%= submit_tag "Save Partition", :name => 'commit' %> || <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
 <font size="+2"><b>Is the first line a <u>continuation</u> of an entry?</b></font><label>No<%= radio_button_tag "first_cont", "no", :id => 'iscont' %></label><label>Yes<%= radio_button_tag "first_cont", "yes", :checked => 'true', :id => 'iscont' %></label>
 Separations between definitions: <span id="col_seps"></span>
 <input type="hidden" name="seps" id="final_seps"/>
-</form> <br/></div>
-<div align="center"><div style="border: solid #000000; position:relative" id="colimg_container"></div>
-<img id="colimg" style="display:none" src="<%= @img %>"></div>
-<p/>
+</form> <br/></div></td><td><canvas id="myCanvas" align="center" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></td></tr></table>
 </body>
-<script>
-
-var jg = new jsGraphics("colimg_container"); 
-// Bog bless Prototype!  phew!
-$('colimg_container').observe('click', markSep)
-function onload() {
-  $('colimg_container').style.width = $('colimg').getWidth();
-  $('colimg_container').style.height =  $('colimg').getHeight();
-  jg.drawImage("<%= @img %>", 0,0, $('colimg').getWidth(), $('colimg').getHeight(), null);
-  jg.paint();
-}
-</script>

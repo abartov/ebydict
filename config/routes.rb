@@ -16,6 +16,7 @@ Ebydict::Application.routes.draw do
   get 'scan/partition'
   match 'scan/dopartition/:id' => 'scan#dopartition'
   match 'scan/docolpart/:id' => 'scan#docolpart'
+  match 'scan/dopartdef/:id' => 'scan#dopartdef'
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'

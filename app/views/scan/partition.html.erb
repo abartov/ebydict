@@ -22,7 +22,7 @@ function cancel_seps()
 function markColumn(e) {
   var offset = $(this).offset();
   colnum++;
-  var relx = e.clientX - offset.left;
+  var relx = e.pageX- offset.left;
   $('#col_seps').html($('#col_seps').html()+"col #"+colnum+": "+relx+" | ");
   if(theseps !== '')
     theseps += '|';

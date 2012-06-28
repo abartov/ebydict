@@ -94,6 +94,7 @@ class ScanController < ApplicationController
     end
     @coldef.assignee = session['user']
     @img = url_from_file(@coldef.coldefjpeg)
+    @height, @width = get_dimensions_from_img(@coldef.coldefjpeg)
     @coldef.save
   end
   def part_col
@@ -365,7 +366,7 @@ class ScanController < ApplicationController
     newdef.save
     defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'])
     defev.save
-    newdefpart = EbyDefPartImage.new(:colimg => col, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
+    newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
     newdefpart.save
     return newdef
   end 
@@ -397,10 +398,10 @@ class ScanController < ApplicationController
   end
   def add_to_prev_def(col, imgname,defno, is_complete)
     # find prev column (possibly in prev scanimg!
-    prevcol = col_from_col(col, PREV) or raise Exception.new
-    if prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.find(:first, :conditions => 'coldefimg_id = '+prevcol.id.to_s, :order => 'defno desc')).nil? or last_defpart.thedef.nil?) # find LAST def of column
+    prevcol = col_from_col(col, PREV) #or raise Exception.new
+    if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.find(:first, :conditions => 'coldefimg_id = '+prevcol.id.to_s, :order => 'defno desc')).nil? or last_defpart.thedef.nil?)) # find LAST def of column
         # oh boy... this is the HARD case: we've got to stash this defpart as an orphan for now, and resolve it later!
-        defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :colimg => col, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
+        defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :coldefimg_id => col.id, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
         defpart.save
         col.status = 'GotOrphans'
         col.save
@@ -414,7 +415,7 @@ class ScanController < ApplicationController
       thedef = last_defpart.thedef
       # create a new defpart with appropriate def seqno
       seqno = last_defpart.partnum+1
-      defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :colimg => col, :partnum => seqno, :defno => 0)
+      defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :coldefimg_id => col.id, :partnum => seqno, :defno => 0)
       defpart.save
       # save
       if (is_complete or is_newdef_at_nextcol(col)) 
