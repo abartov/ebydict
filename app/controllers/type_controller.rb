@@ -11,38 +11,38 @@ class TypeController < ApplicationController
   end
   def get_fixup
     unless(check_role('fixer'))
-      flash[:error] = :type_notfixer.l
+      flash[:error] = t(:type_notfixer)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], EbyDef::FIXUP)
+      call_assign_def_by_size(params[:defsize], AppConstants.fixup)
     end
   end
   def get_proof
     unless(check_role('proofer'))
-      flash[:error] = :type_notproofer.l
+      flash[:error] = t(:type_notproofer)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], EbyDef::PROOF)
+      call_assign_def_by_size(params[:defsize], AppConstants.proof)
     end
   end
   def get_def
     unless(check_role('typist'))
-      flash[:error] = :type_nottypist.l
+      flash[:error] = t(:type_nottypist)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], EbyDef::TYPE)
+      call_assign_def_by_size(params[:defsize], AppConstants.type)
     end
   end
   def proof
     unless(check_role('proofer'))
-      flash[:error] = :type_notproofer.l
+      flash[:error] = t(:type_notproofer)
       redirect_to :controller => 'user'
     else
       if @thedef.nil?
         @thedef = EbyDef.find_by_id(params[:id])
       end
       if @thedef.nil? or @thedef.proof_round_passed >= session['user'].max_proof_level
-        flash[:error] = :type_proofround_toohigh.l_with_args(:round => (@thedef.proof_round_passed+1).to_s)
+        flash[:error] = t(:type_proofround_toohigh, :round => (@thedef.proof_round_passed+1).to_s)
         redirect_to :controller => 'user'
       else
         edit
@@ -54,10 +54,10 @@ class TypeController < ApplicationController
       @thedef = EbyDef.find_by_id(params[:id])
     end
     if @thedef.nil?
-      flash[:error] = :type_defnotfound.l
+      flash[:error] = t(:type_defnotfound)
       redirect_to :controller => 'user'
     elsif not is_assignee(@thedef)
-      flash[:error] = :type_defnotyours.l
+      flash[:error] = t(:type_defnotyours)
       redirect_to :controller => 'user'
     else
       # prepare defpart images for client-side JS to handle
@@ -88,16 +88,16 @@ class TypeController < ApplicationController
       # set up convenience vars
       case @thedef.status
         when 'NeedTyping'
-          @action = :type_typing.l
-          @actno = EbyDef::TYPE
+          @action = t(:type_typing)
+          @actno = AppConstants.type
         when 'NeedProof'
-          @action = :type_proofing.l
-          @actno = EbyDef::PROOF
+          @action = t(:type_proofing)
+          @actno = AppConstants.proof
         when 'NeedFixup'
-          @action = :type_fixups.l
-          @actno = EbyDef::FIXUP
+          @action = t(:type_fixups)
+          @actno = AppConstants.fixup
         else
-          flash[:error] = :type_unknown_status.l_with_args(:status => @thedef.status)
+          flash[:error] = t(:type_unknown_status, :status => @thedef.status)
           redirect_to :controller => 'user'
           return
       end
@@ -107,7 +107,7 @@ class TypeController < ApplicationController
         # @selects += "<td><select id=\"#{which}\" name=\"#{('type_'+which).intern.l}\">"
         ['none', 'todo', 'done'].each { |status|
           sel = (@thedef.read_attribute(which) == status) ? ' selected="selected">' : '>'
-          @selects += '<option value="'+status+'"'+sel+('type_'+status).intern.l+'</option>'
+          @selects += '<option value="'+status+'"'+sel+t(('type_'+status).intern)+'</option>'
         }
         @selects += '</select></td>'
       }
@@ -122,7 +122,7 @@ class TypeController < ApplicationController
   def processtype
     @d = EbyDef.find_by_id(params[:id])
     unless @d 
-      flash[:error] = :type_defnotfound.l
+      flash[:error] = t(:type_defnotfound)
       redirect_to :controller => 'user'
       return
     end
@@ -131,31 +131,31 @@ class TypeController < ApplicationController
     elsif params[:commit]
       populate(@d)
       @d.save
-      flash[:notice] = :type_saved_kept.l
+      flash[:notice] = t(:type_saved_kept)
     elsif params[:save_and_done]
       populate(@d)
       newstat = ''
       defev = EbyDefEvent.new(:old_status => (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status), :thedef => @d, :who => session['user'].id)
       act = params[:act].to_i
-      if act == EbyDef::TYPE
+      if act == AppConstants.type
         @d.status = 'NeedProof' # but override to fixup below if needed
-        newstat = :type_await_proof_round.l_with_args(:round => '1')
+        newstat = t(:type_await_proof_round, :round => '1')
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
           if(@d.read_attribute(which) == 'todo')
             @d.status = 'NeedFixup'
-            newstat = :type_await_fixups.l
+            newstat = t(:type_await_fixups)
           end
         }
         @d.proof_round_passed = 0
-      elsif act == EbyDef::PROOF
+      elsif act == AppConstants.proof
         @d.proof_round_passed += 1
         if @d.proof_round_passed == LAST_PROOF_ROUND
-          newstat = :type_proofing_done.l
+          newstat = t(:type_proofing_done)
           @d.status = 'NeedPublish'
         else
-          newstat = :type_await_proof_round.l_with_args(:round => (@d.proof_round_passed+1).to_s)
+          newstat = t(:type_await_proof_round, :round => (@d.proof_round_passed+1).to_s)
         end
-      elsif act == EbyDef::FIXUP
+      elsif act == AppConstants.fixup
         still_todo = false
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
           if(@d.read_attribute(which) == 'todo')
@@ -163,11 +163,11 @@ class TypeController < ApplicationController
           end
         }
 	if(still_todo)
-          newstat = :type_await_fixups.l
+          newstat = t(:type_await_fixups)
         else
           @d.status = 'NeedProof'
           @d.proof_round_passed = 0 # start over in any case
-          newstat = :type_await_proof_round.l_with_args(:round => '1')
+          newstat = t(:type_await_proof_round, :round => '1')
 	end
       else
         throw Exception.new
@@ -176,7 +176,7 @@ class TypeController < ApplicationController
       defev.new_status = (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status)
       defev.save
       @d.save
-      flash[:notice] = :type_saved_with_status.l_with_args(:status => newstat)
+      flash[:notice] = t(:type_saved_with_status, :status => newstat)
     elsif params[:problem]
       populate(@d)
       defev = EbyDefEvent.new(:old_status => @d.status, :new_status => 'Problem', :thedef => @d, :who => session['user'].id)
@@ -184,7 +184,7 @@ class TypeController < ApplicationController
       @d.status = 'Problem'
       @d.assignee = nil
       @d.save
-      flash[:notice] = :type_problematic.l 
+      flash[:notice] = t(:type_problematic)
     else
       flash[:error] = "not sure what I'm supposed to do with this submission.  Notify Asaf."
     end
@@ -198,7 +198,7 @@ class TypeController < ApplicationController
   end
   def is_assignee(thedef)
     if(thedef.assignee != session['user'])
-      flash[:error] = :type_defnotyours.l
+      flash[:error] = t(:type_defnotyours)
       redirect_to :controller => 'user'
       return false
     else
@@ -216,7 +216,7 @@ class TypeController < ApplicationController
   def call_assign_def_by_size(size, action)
     @thedef = EbyDef.assign_def_by_size(session['user'], size, action)
     if @thedef.nil?
-      flash[:error] = :type_no_appropriate_def.l # TODO: offer just ANY def instead!
+      flash[:error] = t(:type_no_appropriate_def) # TODO: offer just ANY def instead!
       redirect_to :controller => 'user'
     else
       # edit
@@ -226,7 +226,7 @@ class TypeController < ApplicationController
   def do_abandon(d)
     d.assignee = nil
     d.save
-    flash[:notice] = :type_abandoned.l
+    flash[:notice] = t(:type_abandoned)
   end
 end
 

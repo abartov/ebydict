@@ -1,48 +1,9 @@
 <html>
 <head>
 <title>Entry: <%= h(@thedef.defhead) %></title>
-<script language="javascript" type="text/javascript" src="/javascripts/tiny_mce/tiny_mce.js"></script>
+<!-- <script language="javascript" type="text/javascript" src="/javascripts/tiny_mce/tiny_mce.js"></script> -->
 <!-- <script language="javascript" type="text/javascript" src="javascripts/fckeditor/fckeditor.js"></script> -->
 <script language="javascript" type="text/javascript">
-// TinyMCE stuff
-tinyMCE.init({
-        mode : "textareas",
-        theme : "advanced",
-	theme_advanced_buttons1 : "bold,removeformat,separator,undo,redo,separator,charmap,styleselect",
-	theme_advanced_buttons2 : "makor,problem,comment",
-	theme_advanced_buttons3 : "",
-        directionality : "rtl",
-        language : 'he_il',
-        content_css : "/stylesheets/typing.css",
-	setup : function(ed) {
-	  // Add our custom buttons
-	  ed.addButton('makor', {
-		title : '<%= :type_source.l %>',
-                image : '/images/source.png',
-		onclick : function() {
-			ed.focus();
-			ed.selection.setContent('<%= :type_source_markup.l %>'+ed.selection.getContent()+'&#93;&#93; ');
-		}
-	  });
-	  ed.addButton('problem', {
-		title : '<%= :type_problem.l %>',
-                image : '/images/problem.png',
-		onclick : function() {
-			ed.focus();
-			ed.selection.setContent('<%= :type_problem_markup.l %>'+ed.selection.getContent()+'&#93;&#93; ');
-		}
-	  });
-	  ed.addButton('comment', {
-		title : '<%= :type_comment.l %>',
-                image : '/images/comment.png',
-		onclick : function() {
-			ed.focus();
-			ed.selection.setContent('<%= :type_comment_markup.l %>'+ed.selection.getContent()+'&#93;&#93; ');
-			}
-		});
-	  }
-});
-
 // EBYDict stuff
 
 // the following is a bit of generated JS prepared by the typing controller
@@ -58,6 +19,48 @@ var maxpart = humanmaxpart - 1;
 var humanfoot;
 var extra_foots = <%= @extra_foots %>;
 
+$(document).ready(function() {
+// TinyMCE stuff
+tinyMCE.init({
+        mode : "textareas",
+        theme : "advanced",
+  theme_advanced_buttons1 : "bold,removeformat,separator,undo,redo,separator,charmap,styleselect",
+  theme_advanced_buttons2 : "makor,problem,comment",
+  theme_advanced_buttons3 : "",
+        directionality : "rtl",
+        language : 'he',
+        content_css : "/stylesheets/typing.css",
+  setup : function(ed) {
+    // Add our custom buttons
+    ed.addButton('makor', {
+    title : '<%= t(:type_source) %>',
+                image : '/images/source.png',
+    onclick : function() {
+      ed.focus();
+      ed.selection.setContent('<%= t(:type_source_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+    }
+    });
+    ed.addButton('problem', {
+    title : '<%= t(:type_problem) %>',
+                image : '/images/problem.png',
+    onclick : function() {
+      ed.focus();
+      ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+    }
+    });
+    ed.addButton('comment', {
+    title : '<%= t(:type_comment) %>',
+                image : '/images/comment.png',
+    onclick : function() {
+      ed.focus();
+      ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+      }
+    });
+    }
+});
+
+  chimg(0);
+})
 </script>
 </head>
 <body>
@@ -67,29 +70,29 @@ var extra_foots = <%= @extra_foots %>;
 <table>
 <tr>
   <td>
-    <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= :type_next.l %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= :type_prev.l %></a></div><br/>
+    <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a></div><br/>
     <img id="defpartimg" border="1" src=""/><p/>
-    <div align="center"><a href="" id="foot_next" onclick="footnext()"><%= :type_nextfoots.l %></a><a href="#" id="but_next2" onclick="gonext()"><%= :type_next.l %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= :type_prev.l %></a> <a href="" id="foot_prev" onclick="footprev()"><%= :type_prevfoots.l %></a></div><br/>
-    <a id="defpartlink" href="" target="_new"><%= :type_clicktoenlarge.l %></a>
+    <div align="center"><a href="" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
+    <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
     <img id="footimg" border="1" src=""/><p/>
 
   </td>
   <td><!-- TinyMCE goes here -->
     <div style="position: fixed; top:25px">
-<span style="color:green"><%= :type_headword.l %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
+<span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
     
-      <table><tr><td><textarea id="deftext" name="deftext" rows="10" cols="30"><%= h(@thedef.deftext) %></textarea></td><td> &nbsp;&nbsp; <%= :type_text.l %></td></tr></table>
+      <table><tr><td><textarea id="deftext" name="deftext" rows="10" cols="30"><%= h(@thedef.deftext) %></textarea></td><td> &nbsp;&nbsp; <%= t(:type_text) %></td></tr></table>
       <hr/>
       <hr id="helper_hr" style="display: none"/>
-      <table><tr><td><textarea id="footnotes" name="footnotes" rows="8" cols="30"><%= h(@thedef.footnotes) %></textarea></td><td> &nbsp;&nbsp; <%= :type_footnotes.l %></td></tr></table>
+      <table><tr><td><textarea id="footnotes" name="footnotes" rows="8" cols="30"><%= h(@thedef.footnotes) %></textarea></td><td> &nbsp;&nbsp; <%= t(:type_footnotes) %></td></tr></table>
       <table>
-	<tr><th><%= :type_arabic.l %></th><th><%= :type_greek.l %></th><th><%= :type_russian.l %></th><th><%= :type_extra.l %></th></tr>
+	<tr><th><%= t(:type_arabic) %></th><th><%= t(:type_greek) %></th><th><%= t(:type_russian) %></th><th><%= t(:type_extra) %></th></tr>
         <tr>
-          <%= @selects %>
+          <%= @selects.html_safe %>
         </tr>
       </table><table>
-        <tr><td><%= submit_tag :type_saveanddone.l_with_args(:action => @action), :name => 'save_and_done' %></td><td><%= submit_tag :type_save.l, :name => 'commit' %></td></tr><tr><td><%= submit_tag :type_abandon.l, :name => 'abandon' %></td><td><%= submit_tag :type_problem.l, :name => 'problem' %></td> </tr>
+        <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %></td><td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr><td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td><td><%= submit_tag t(:type_problem), :name => 'problem' %></td> </tr>
       </table>
     </div>
     
@@ -112,55 +115,51 @@ function chimg(delta) {
   curimg = parts[curpart];
   curfootimg = foots[curfoot];
   humanpart = curpart + 1;
-  $('curpos').innerHTML = humanpart+"/"+humanmaxpart
-  $('curpos2').innerHTML = humanpart+"/"+humanmaxpart
+  $('#curpos').html(humanpart+"/"+humanmaxpart);
+  $('#curpos2').html(humanpart+"/"+humanmaxpart);
 
-  $('defpartlink').writeAttribute('href', curimg);
-  $('defpartimg').writeAttribute('src', curimg);
-  $('footimg').writeAttribute('src', curfootimg);
-  $('foot_prev').hide();
+  $('#defpartlink').attr('href', curimg);
+  $('#defpartimg').attr('src', curimg);
+  $('#footimg').attr('src', curfootimg);
+  $('#foot_prev').hide();
   if(curpart == 0) {
-    $('but_prev').hide();
-    $('but_prev2').hide();
+    $('#but_prev').hide();
+    $('#but_prev2').hide();
   }
   else {
-    $('but_prev').show();
-    $('but_prev2').show();
+    $('#but_prev').show();
+    $('#but_prev2').show();
   }
   if(curpart == maxpart) {
-    $('but_next').hide();
-    $('but_next2').hide();
+    $('#but_next').hide();
+    $('#but_next2').hide();
     if(extra_foots > 0)
-      $('foot_next').show();
+      $('#foot_next').show();
   }
   else {
-   $('foot_next').hide();
-   $('but_next').show();
-   $('but_next2').show();
+   $('#foot_next').hide();
+   $('#but_next').show();
+   $('#but_next2').show();
   }
 }
 
 function chfoot(delta) {
   curfoot += delta;
   if(curfoot == maxpart) {
-    $('foot_prev').hide();
+    $('#foot_prev').hide();
     chimg(0); // we're back where def parts are available, so delegate
   }
   else { // we are beyond the def parts
    if(curfoot == maxpart + extra_foots) {
-     $('foot_next').hide();
+     $('#foot_next').hide();
    }
-   $('foot_prev').show();
-   $('but_prev').hide();
-   $('but_prev2').hide();
+   $('#foot_prev').show();
+   $('#but_prev').hide();
+   $('#but_prev2').hide();
    curfootimg = foots[curfoot]; 
-   $('footimg').writeAttribute('src', curfootimg);
+   $('#footimg').attr('src', curfootimg);
   }
   // TODO: figure out why at the end of this func, the view resets to page 1!
-}
-
-function onload() {
-  chimg(0);
 }
 
 function gonext(e) {
@@ -177,11 +176,6 @@ function footprev(e) {
   chfoot(-1);
 }
 
-
 </script>
 
 </html>
-
-
-
-
