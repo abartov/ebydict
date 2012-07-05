@@ -2,7 +2,7 @@
 <div dir="ltr" align="left">
 <h1>Add a User to EbyDict</h1>
 
-<% form_for(:eby_user, :url => { :action => "doadduser" } ) do |f| %>
+<%= form_for(:eby_user, :url => { :action => "doadduser" } ) do |f| %>
   <p>
     <b>Username</b><br />
     <%= f.text_field :login %>

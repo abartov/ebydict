@@ -209,9 +209,10 @@ class TypeController < ApplicationController
     d.deftext = params[:deftext]
     d.defhead = params[:defhead]
     d.footnotes = params[:footnotes]
-    ['arabic', 'greek', 'russian', 'extra'].each { |which|
-      d.write_attribute(which, params[which])
-    }
+    d.arabic, d.greek, d.russian, d.extra = params[:arabic], params[:greek], params[:russian], params[:extra]
+    #['arabic', 'greek', 'russian', 'extra'].each { |which|
+    #  d.write_attribute(which, params[which])
+    #}
   end
   def call_assign_def_by_size(size, action)
     @thedef = EbyDef.assign_def_by_size(session['user'], size, action)

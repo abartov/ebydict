@@ -39,6 +39,7 @@ class UserController < ApplicationController
     end
     if @user.role_publisher == true
       @avail_publish = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedPublish'")
+      @avail_problem = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'Problem'")
     end
   end
   def prefs

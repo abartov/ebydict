@@ -1,4 +1,8 @@
 Ebydict::Application.routes.draw do
+  get "problem/list"
+
+  get "problem/resolve"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -18,6 +22,9 @@ Ebydict::Application.routes.draw do
   match 'scan/docolpart/:id' => 'scan#docolpart'
   match 'scan/dopartdef/:id' => 'scan#dopartdef'
   match 'type/edit/:id' => 'type#edit'
+  match 'type/proof/:id' => 'type#proof'
+  match 'type/processtype/:id' => 'type#processtype'
+  get 'problem/list'
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'

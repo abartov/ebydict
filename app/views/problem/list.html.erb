@@ -1,0 +1,12 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<h1>Problems</h1>
+
+<table border=1 cellpadding=5>
+<tr><th>Def</th><th>Problem since</th><th>Actions</th></tr>
+<% for d in @probs 
+  since = d.events.where(:new_status => 'Problem')[0].created_at %>
+  <tr><td><%=h d.defhead %></td><td><%=h since %></td><td><%= link_to 'Review', :controller => 'type', :action => 'edit', :id => d %></td></tr>
+<% end %>
+</table>
+<%= will_paginate @probs %>
+
