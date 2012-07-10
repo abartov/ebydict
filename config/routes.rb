@@ -25,6 +25,7 @@ Ebydict::Application.routes.draw do
   match 'type/proof/:id' => 'type#proof'
   match 'type/processtype/:id' => 'type#processtype'
   get 'problem/list'
+  match 'problem/tackle/:id' => 'problem#tackle'
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'

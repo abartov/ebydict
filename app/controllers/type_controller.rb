@@ -96,6 +96,9 @@ class TypeController < ApplicationController
         when 'NeedFixup'
           @action = t(:type_fixups)
           @actno = AppConstants.fixup
+        when 'Problem'
+          @action = t(:type_problem)
+          @actno = AppConstants.problem
         else
           flash[:error] = t(:type_unknown_status, :status => @thedef.status)
           redirect_to :controller => 'user'

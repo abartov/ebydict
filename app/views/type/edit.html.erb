@@ -34,7 +34,7 @@ tinyMCE.init({
     // Add our custom buttons
     ed.addButton('makor', {
     title : '<%= t(:type_source) %>',
-                image : '/images/source.png',
+                image : '/assets/source.png',
     onclick : function() {
       ed.focus();
       ed.selection.setContent('<%= t(:type_source_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
@@ -42,7 +42,7 @@ tinyMCE.init({
     });
     ed.addButton('problem', {
     title : '<%= t(:type_problem) %>',
-                image : '/images/problem.png',
+                image : '/assets/problem.png',
     onclick : function() {
       ed.focus();
       ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
@@ -50,7 +50,7 @@ tinyMCE.init({
     });
     ed.addButton('comment', {
     title : '<%= t(:type_comment) %>',
-                image : '/images/comment.png',
+                image : '/assets/comment.png',
     onclick : function() {
       ed.focus();
       ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');

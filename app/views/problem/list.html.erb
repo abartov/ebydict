@@ -5,7 +5,7 @@
 <tr><th>Def</th><th>Problem since</th><th>Actions</th></tr>
 <% for d in @probs 
   since = d.events.where(:new_status => 'Problem')[0].created_at %>
-  <tr><td><%=h d.defhead %></td><td><%=h since %></td><td><%= link_to 'Review', :controller => 'type', :action => 'edit', :id => d %></td></tr>
+  <tr><td><%=h d.defhead %></td><td><%=h since %></td><td><%= link_to 'Review', :action => 'tackle', :id => d %></td></tr>
 <% end %>
 </table>
 <%= will_paginate @probs %>

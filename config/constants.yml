@@ -4,6 +4,7 @@ development: &default
   type:  1
   proof: 2
   fixup: 3
+  problem: 4
 
 production:
   <<: *default
