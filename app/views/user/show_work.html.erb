@@ -91,7 +91,7 @@
   end
    if @user.role_publisher %>
   <br/>
-  <li><%= link_to t(:user_publish), :controller => 'publish', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
+  <li><%= link_to t(:user_publish), :controller => 'definition', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
   <li><%= link_to t(:user_problems), :controller => 'problem', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_problem, :things => t(:user_tofix)) %><br/>
 <% end %>
   <li><%= t(:user_wantmore_html) %>

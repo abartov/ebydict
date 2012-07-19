@@ -1,4 +1,12 @@
 Ebydict::Application.routes.draw do
+  get "definition/list"
+
+  get "definition/review"
+
+  get "definition/publish"
+
+  get "definition/reproof"
+
   get "problem/list"
 
   get "problem/resolve"
