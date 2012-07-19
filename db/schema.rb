@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626025304) do
+ActiveRecord::Schema.define(:version => 20120718231153) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20120626025304) do
     t.text     "footnotes"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.string   "prob_desc"
   end
 
   create_table "eby_scan_images", :force => true do |t|

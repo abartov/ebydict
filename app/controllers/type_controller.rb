@@ -216,6 +216,7 @@ class TypeController < ApplicationController
     #['arabic', 'greek', 'russian', 'extra'].each { |which|
     #  d.write_attribute(which, params[which])
     #}
+    d.prob_desc = params[:prob_desc]
   end
   def call_assign_def_by_size(size, action)
     @thedef = EbyDef.assign_def_by_size(session['user'], size, action)

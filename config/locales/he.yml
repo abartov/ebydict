@@ -50,7 +50,7 @@ he:
   type_abandoned: השינויים נזנחו וההגדרה הוחזרה למאגר ואינה מוקצה לך עוד.
   type_save: שמור וצא
   type_saveanddone: שמור וסמן סוף %{action}
-  type_problem: שמור וסמן בעיה
+  type_problem: <-תאר בעיה ושמור
   type_text: טקסט
   type_footnotes: הערות שוליים
   type_notproofer: אינך מוגדר/ת כמגיה/ה.  פנה/י לרכז המתנדבים אם ברצונך להגיה הגדרות.
