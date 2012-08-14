@@ -2,11 +2,6 @@ class DefinitionController < ApplicationController
   def list
     @status = params[:status] || 'NeedPublish'
     @defs = EbyDef.where(:status => @status).page(params[:page])
-
-  end
-
-  def review
-    @d = EbyDef.find(params[:id])
   end
 
   def publish
@@ -14,7 +9,6 @@ class DefinitionController < ApplicationController
     @d.status = 'Published'
     @d.save
     flash[:notice] = t(:definition_published_html, :defhead => @d.defhead).html_safe
-
     redirect_to :action => 'list'
   end
 

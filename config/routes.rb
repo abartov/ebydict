@@ -37,6 +37,7 @@ Ebydict::Application.routes.draw do
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'
+  get 'type/edit'
   get 'type/get_fixup'
   get 'type/get_proof'
   get 'type/abandon'

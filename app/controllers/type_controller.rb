@@ -56,9 +56,11 @@ class TypeController < ApplicationController
     if @thedef.nil?
       flash[:error] = t(:type_defnotfound)
       redirect_to :controller => 'user'
-    elsif not is_assignee(@thedef)
+      return
+    elsif not check_role('publisher') and not is_assignee(@thedef)
       flash[:error] = t(:type_defnotyours)
       redirect_to :controller => 'user'
+      return
     else
       # prepare defpart images for client-side JS to handle
       @parts_js = "var parts = new Array(); \nvar foots = new Array(); \n"
@@ -99,7 +101,11 @@ class TypeController < ApplicationController
         when 'Problem'
           @action = t(:type_problem)
           @actno = AppConstants.problem
+        when 'NeedPublish'
+          @action = t(:type_proofing)
+          @actno = AppConstants.proof # a NeedPublish def would be here for reproofing
         else
+          print "DBG: unknown status!\n"
           flash[:error] = t(:type_unknown_status, :status => @thedef.status)
           redirect_to :controller => 'user'
           return
@@ -152,7 +158,7 @@ class TypeController < ApplicationController
         @d.proof_round_passed = 0
       elsif act == AppConstants.proof
         @d.proof_round_passed += 1
-        if @d.proof_round_passed == LAST_PROOF_ROUND
+        if @d.proof_round_passed >= LAST_PROOF_ROUND # >= because reproofing could take it beyond the limit
           newstat = t(:type_proofing_done)
           @d.status = 'NeedPublish'
         else
