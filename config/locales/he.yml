@@ -80,6 +80,10 @@ he:
   type_comment_markup: '[[הערה: '
   type_unknown: (טרם הוקלד)
 
+## definitions controller
+  definition_published_html: ההגדרה <b>%{defhead}</b> עברה למילון הפומבי!
+  definition_sent_to_reproof_html: ההגדרה <b>%{defhead}</b> נשלחה להגהה נוספת.
+
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p><b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
   user_logout: יציאה מהמערכת
