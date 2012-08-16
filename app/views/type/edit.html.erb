@@ -61,12 +61,19 @@ tinyMCE.init({
 });
 
   chimg(0);
-})
+  $('#instructions_button').click(function() { 
+  $('#instructions').show().dialog({modal: true, resizable:true, autoOpen: true, width:500 });
+    });
+});
 </script>
 </head>
 <body>
 <%= form_tag '/type/processtype/'+@thedef.id.to_s %>
+<!-- instructions popup -->
 
+<div id="instructions" style="display:none" title="<%= t(:type_instructions_title) %>">
+<%= t(:type_instructions_body_html) %>
+</div>
 <!-- main editing area -->
 <table>
 <tr>
@@ -93,7 +100,10 @@ tinyMCE.init({
           <%= @selects.html_safe %>
         </tr>
       </table><table>
-        <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %></td><td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr><td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td></tr>
+        <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %></td><td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
+        <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
+        <td><a href="#" id="instructions_button"><%= t(:type_show_instructions) %></a></td>
+        </tr>
         <tr><td><textarea class="prob" style="font-family:David;font-size:14pt" dir="rtl" align="right" name="prob_desc" cols="15" rows="3"><%= h(@thedef.prob_desc) %></textarea></td>
         <td><%= submit_tag t(:type_problem), :name => 'problem' %></td></tr>
       </table>

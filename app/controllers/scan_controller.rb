@@ -362,7 +362,7 @@ class ScanController < ApplicationController
     return partname
   end
   def makedef(col, jpeg, defno, is_complete)
-    newdef = EbyDef.new(:defhead => 'unknown', :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'))
+    newdef = EbyDef.new(:defhead => t(:type_unknown), :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'))
     newdef.save
     defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'])
     defev.save

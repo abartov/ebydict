@@ -79,6 +79,9 @@ he:
   type_problem_markup: '[[בעיה: '
   type_comment_markup: '[[הערה: '
   type_unknown: (טרם הוקלד)
+  type_instructions_body_html: כאן יופיעו ההנחיות
+  type_instructions_title: הנחיות למתנדבי מיזם המילון
+  type_show_instructions: הצג עזרה
 
 ## definitions controller
   definition_published_html: ההגדרה <b>%{defhead}</b> עברה למילון הפומבי!

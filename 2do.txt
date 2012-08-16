@@ -3,6 +3,7 @@ To-Do
 
 - run 'rake notes' and handle code annotated issues
 - add user management
+- add instructions page
 
 BUG: chfoot() function in the JavaScript code in the typing view has a bug in paging back and forth
 ===================================================================================================
@@ -10,7 +11,7 @@ BUG: chfoot() function in the JavaScript code in the typing view has a bug in pa
 - Improve partitioning views
 - keyboard-based scrolling?
 - auto-assign a scan instead of list (done?)
-- IE 7/8 support for typing interface
++ IE 7/8 support for typing interface (switched to HTML5 canvases)
 - auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
 - one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
 - user preferences page (change password, what else?)
@@ -44,10 +45,10 @@ Publishing Flow:
 - publishers can PREVIEW a def (i.e. get it rendered by THE SAME mechanism that would ultimately render it in the published dictionary)
 - publishers can view a def with NEED_PUBLISH status, and:
   - demote it to any other status (NEED_FIXUP, NEED_PROOF) with any proof_round_passed value they choose
-  - publish the def, changing its status to PUBLISHED
+  + publish the def, changing its status to PUBLISHED
 - publishers can view any def with PUBLISHED status and DEMOTE it as above.
 
 The Dictionary:
 ---------------
-- The (publicly-accessible-at-some-point) partial dictionary is a dynamic page (or set of pages) displaying a sorted[see below] list of all defs with PUBLISHE status
+- The (publicly-accessible-at-some-point) partial dictionary is a dynamic page (or set of pages) displaying a sorted[see below] list of all defs with PUBLISHED status
 

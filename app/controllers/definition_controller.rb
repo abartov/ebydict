@@ -1,9 +1,16 @@
 class DefinitionController < ApplicationController
   def list
-    @status = params[:status] || 'NeedPublish'
-    @defs = EbyDef.where(:status => @status).page(params[:page])
+    @defs = EbyDef.where(:status => 'Published').page(params[:page])
   end
-
+  def listpub
+    if check_role('publisher')
+      @status = params[:status] || 'NeedPublish'
+      @pubdefs = EbyDef.where(:status => @status).page(params[:page])
+    else
+      flash[:error] = t(:definition_not_publisher)
+      redirect_to :action => 'list'
+    end
+  end
   def publish
     @d = EbyDef.find(params[:id])
     @d.status = 'Published'
