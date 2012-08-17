@@ -64,8 +64,8 @@ tinyMCE.init({
   $(".dialog").hide();
   
   $("#instructions").dialog({
-      modal: true ,
-      width: 400,
+      modal: true,
+      width: 600,
       title: '<%= t(:type_instructions_title) %>',
       overlay: {opacity: 0.5, background: "black" },
       show:"blind",
@@ -85,6 +85,7 @@ tinyMCE.init({
 .dialog
 {
   background: #EEE;
+  padding: 10px;
   border:1px solid #000000;
 }
 .ui-dialog-titlebar-close
@@ -123,6 +124,7 @@ tinyMCE.init({
   top: 0;
   left:0;
   background:#000000;
+  padding: 10px;
 }
 
 </style>
