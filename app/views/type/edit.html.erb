@@ -61,17 +61,78 @@ tinyMCE.init({
 });
 
   chimg(0);
+  $(".dialog").hide();
+  
+  $("#instructions").dialog({
+      modal: true ,
+      width: 400,
+      title: '<%= t(:type_instructions_title) %>',
+      overlay: {opacity: 0.5, background: "black" },
+      show:"blind",
+      hide:"blind",
+      autoResize:true,
+      resizable:true,
+      autoOpen:false
+    });
+
   $('#instructions_button').click(function() { 
-  $('#instructions').show().dialog({modal: true, resizable:true, autoOpen: true, width:500 });
+  $('#instructions').show().dialog("open");
     });
 });
 </script>
+<style type="text/css">
+
+.dialog
+{
+  background: #EEE;
+  border:1px solid #000000;
+}
+.ui-dialog-titlebar-close
+{
+  display: block;
+  position: absolute;
+  right: 12px;
+  top: 11px;
+  height: 20px;
+  width: 20px;
+  background-color: #4B5667;
+  font-size: 0px;
+  border: 1px solid #9D9D9D;
+}
+
+.ui-dialog-titlebar
+{
+  display: block;
+  height: 40px;
+  background: #4F4F4F;
+  border-width:1px 1px 0px 1px;
+  border-color:#000000;
+  border-style:solid;
+  color: #E5E5E5;
+  text-align: center;
+  font: 21px/42px "Arial Black";
+  cursor: move;
+}
+
+.ui-widget-overlay
+{
+  opacity: .7;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.70;
+  position: absolute;
+  top: 0;
+  left:0;
+  background:#000000;
+}
+
+</style>
 </head>
 <body>
+
 <%= form_tag '/type/processtype/'+@thedef.id.to_s %>
 <!-- instructions popup -->
 
-<div id="instructions" style="display:none" title="<%= t(:type_instructions_title) %>">
+<div id="instructions" class="dialog" style="display:none" title="<%= t(:type_instructions_title) %>">
 <%= t(:type_instructions_body_html) %>
 </div>
 <!-- main editing area -->
@@ -102,7 +163,7 @@ tinyMCE.init({
       </table><table>
         <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %></td><td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
         <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
-        <td><a href="#" id="instructions_button"><%= t(:type_show_instructions) %></a></td>
+        <td><span id="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><%= t(:type_show_instructions) %></span></td>
         </tr>
         <tr><td><textarea class="prob" style="font-family:David;font-size:14pt" dir="rtl" align="right" name="prob_desc" cols="15" rows="3"><%= h(@thedef.prob_desc) %></textarea></td>
         <td><%= submit_tag t(:type_problem), :name => 'problem' %></td></tr>
