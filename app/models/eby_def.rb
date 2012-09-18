@@ -8,10 +8,6 @@ class EbyDef < ActiveRecord::Base
   validates_inclusion_of :status, :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published )
   validates_associated :assignee
 
-  #TYPE = 1
-  #PROOF = 2
-  #FIXUP = 3
-
   def self.assign_def_by_size(to_user, size, action)
     sizecond = ""
     wherecond = "" # what to add to the WHERE clause
@@ -22,11 +18,10 @@ class EbyDef < ActiveRecord::Base
       when AppConstants.proof 
         status = "NeedProof"
         action = "proof"
-    wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%')"
+        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
-
         wherecond = " and (false "
         # iterate over possible fixups, against user's defined capabilities
         wherecond += " or eby_defs.arabic = 'todo' " if(to_user.does_arabic)
@@ -40,7 +35,7 @@ class EbyDef < ActiveRecord::Base
     end
     case size
       when 'medium' 
-        sizecond = "> 1"
+        sizecond = "= 2"
       when 'large' 
         sizecond = "> 3"
       else # assume 'small'
