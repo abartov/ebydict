@@ -8,7 +8,7 @@ class EbyDef < ActiveRecord::Base
   validates_inclusion_of :status, :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published )
   validates_associated :assignee
 
-  def self.assign_def_by_size(to_user, size, action)
+  def self.query_by_user_size_and_action(to_user, size, action)
     sizecond = ""
     wherecond = "" # what to add to the WHERE clause
     case action
@@ -34,15 +34,18 @@ class EbyDef < ActiveRecord::Base
         throw Exception.new
     end
     case size
-      when 'medium' 
+      when 'medium'
         sizecond = "= 2"
-      when 'large' 
+      when 'large'
         sizecond = "> 3"
       else # assume 'small'
         sizecond = " = 1"
     end
-
-    rset = EbyDef.find_by_sql("select eby_defs.*, count(dp.id) from eby_defs inner join eby_def_part_images dp on eby_defs.id = dp.thedef where assignedto is null and status = '#{status}' #{wherecond} group by eby_defs.id having count(dp.id) " + sizecond + " limit 1")  #
+    return "select eby_defs.*, count(dp.id) from eby_defs inner join eby_def_part_images dp on eby_defs.id = dp.thedef where assignedto is null and status = '#{status}' #{wherecond} group by eby_defs.id having count(dp.id) " + sizecond
+  end
+  def self.assign_def_by_size(to_user, size, action)
+    sql = self.query_by_user_size_and_action(to_user, size, action)
+    rset = EbyDef.find_by_sql(sql+" limit 1")  
     if rset.nil? or rset[0].nil?
       return nil
     else
@@ -51,5 +54,9 @@ class EbyDef < ActiveRecord::Base
       thedef.save
       return thedef
     end
+  end
+  def self.count_by_action_and_size(user, action, size)
+    sql = self.query_by_user_size_and_action(user, size, action)
+    return EbyDef.count_by_sql(sql)
   end
 end

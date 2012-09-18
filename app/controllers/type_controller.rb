@@ -227,7 +227,7 @@ class TypeController < ApplicationController
   def call_assign_def_by_size(size, action)
     @thedef = EbyDef.assign_def_by_size(session['user'], size, action)
     if @thedef.nil?
-      flash[:error] = t(:type_no_appropriate_def) # TODO: offer just ANY def instead!
+      flash[:error] = t(:type_no_appropriate_def) 
       redirect_to :controller => 'user'
     else
       # edit

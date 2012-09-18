@@ -38,19 +38,17 @@
 <% end 
    if @user.role_typist %>
   <br/>
-  <li><a href="javascript:toggle('typewhich')"><%= t(:user_typedef) %></a> <%= t(:user_todo_html, :count => @avail_defs, :things => t(:user_defs)) %>
-  <div width="80%">
-  <div id="typewhich" style="display: none;  "><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
-    <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_def', :defsize => 'small' %> <br/>
-    <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_def', :defsize => 'medium' %> <br/>
-    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_def', :defsize => 'large' %> <br/></p>
-  </div>
+  <li><%= t(:user_typedef) %></a> <%= t(:user_todo_html, :count => @avail_defs, :things => t(:user_defs)) %>
+  <ul>
+    <li><%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_def', :defsize => 'small' %> <%= t(:user_todo_html, :count => @avail_defs_small, :things => t(:user_defs)) %> <br/>
+    <li><%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_def', :defsize => 'medium' %> <%= t(:user_todo_html, :count => @avail_defs_medium, :things => t(:user_defs)) %><br/>
+    <li><%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_def', :defsize => 'large' %> <%= t(:user_todo_html, :count => @avail_defs_large, :things => t(:user_defs)) %><br/>
+  </ul>
   <% if not (@inprog_defs.nil? or @inprog_defs.empty?) %>
     <% @inprog_defs.each { |inp| %>
       <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
     end  %>
-  </div>
   <% 
  end
    if @user.role_fixer %>
@@ -94,8 +92,9 @@
   <li><%= link_to t(:user_publish), :controller => 'definition', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
   <li><%= link_to t(:user_problems), :controller => 'problem', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_problem, :things => t(:user_tofix)) %><br/>
 <% end %>
+  <br/>
   <li><%= t(:user_wantmore_html) %>
 </ul>
-
+<p/>
 <%= link_to t(:user_logout), :controller => 'login', :action => 'logout' %>
 </div>

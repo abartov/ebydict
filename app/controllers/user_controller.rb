@@ -23,6 +23,9 @@ class UserController < ApplicationController
     if @user.role_typist == true
       @avail_defs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedTyping'")
       @inprog_defs = EbyDef.find(:all, :conditions => "status = 'NeedTyping' and assignedto = #{@user.id}")
+      @avail_defs_small = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'small')
+      @avail_defs_medium = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'medium')
+      @avail_defs_large = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'large')
     end
     if @user.role_proofer == true
       @avail_proofs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedProof'")

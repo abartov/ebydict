@@ -1,6 +1,11 @@
 My quick notes:
 
 - there is currently, on purpose, no way to create the first admin user from the Web application.  You must create a user using the rails console or direct DB writes.  I'll bother with a proper way of bootstrapping the system Some Day<tm>.
+ 
+  example for console:
+    u = EbyUser.new(:login => "yourname", :password => EbyUser.hashfunc("your_password"), :fullname => "your full name", :email => "your.email@gmail.com", :role_partitioner => true, :role_typist => true, :role_proofer => true, :role_publisher => true, :role_fixer => true, :does_russian => true, :does_greek => true, :does_extra => true)
+    u.save!
+
 - for the RMagick gem:
     sudo apt-get install libmagickwand-dev
-- it is assume the Web server serves /_ebydict/* correctly.
+- it is assumed the Web server serves /_ebydict/* correctly.
