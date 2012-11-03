@@ -2,8 +2,8 @@ To-Do
 -----
 
 - run 'rake notes' and handle code annotated issues
-- add user management
-- add instructions page
+- add user management, user prefs
++ add instructions page
 
 BUG: chfoot() function in the JavaScript code in the typing view has a bug in paging back and forth
 ===================================================================================================

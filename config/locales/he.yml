@@ -72,9 +72,9 @@ he:
   type_no_appropriate_def: אין הגדרה זמינה בגודל המבוקש.
   type_typing: הקלדה
   type_proofing: הגהה
-  type_fixups: השלמוֹת
-  type_source: מקור
-  type_comment: הערה
+  type_fixups: fixups
+  type_source: source
+  type_comment: comment
   type_source_markup: '[[מקור: '
   type_problem_markup: '[[בעיה: '
   type_comment_markup: '[[הערה: '
