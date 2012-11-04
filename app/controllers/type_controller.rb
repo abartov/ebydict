@@ -120,6 +120,7 @@ class TypeController < ApplicationController
         }
         @selects += '</select></td>'
       }
+      @page_title = @thedef.defhead
       render :action => 'edit' 
     end
   end

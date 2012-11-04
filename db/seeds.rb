@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
+
+admin = EbyUser.create( :login => 'admin', :password => EbyUser.hashfunc('admin'), :role_typist => true, :role_proofer => true, :role_fixer => true, :max_proof_level => 3, :role_publisher => true, :role_partitioner => true)

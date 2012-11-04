@@ -6,8 +6,10 @@ gem 'rails', '3.2.6'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'airbrake'
-gem 'sqlite3'
+#gem 'sqlite3' # enable for dev, if you like
+gem 'mysql2' 
 gem 'json'
+gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -36,7 +38,8 @@ gem 'jquery-rails'
 # gem 'capistrano'
 
 # To use debugger
-# gem 'ruby-debug'
+gem 'ruby-debug19', :require => 'ruby-debug'
+
 
 gem 'app_constants'
 gem 'rmagick'

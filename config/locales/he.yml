@@ -75,6 +75,7 @@ he:
   type_fixups: השלמוֹת
   type_source: מקור
   type_comment: הערה
+  type_problem_btn: בעיה
   type_source_markup: '[[מקור: '
   type_problem_markup: '[[בעיה: '
   type_comment_markup: '[[הערה: '
