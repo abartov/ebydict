@@ -1,8 +1,3 @@
-<html>
-<head>
-<title>Entry: <%= h(@thedef.defhead) %></title>
-<!-- <script language="javascript" type="text/javascript" src="/javascripts/tiny_mce/tiny_mce.js"></script> -->
-<!-- <script language="javascript" type="text/javascript" src="javascripts/fckeditor/fckeditor.js"></script> -->
 <script language="javascript" type="text/javascript">
 // EBYDict stuff
 
@@ -128,8 +123,6 @@ tinyMCE.init({
 }
 
 </style>
-</head>
-<body>
 
 <%= form_tag '/type/processtype/'+@thedef.id.to_s %>
 <!-- instructions popup -->
@@ -179,7 +172,6 @@ tinyMCE.init({
 </form>
 
 <br/>
-</body>
 <script language="javascript" type="text/javascript">
 function chimg(delta) {
   curpart += delta;
@@ -254,4 +246,3 @@ function footprev(e) {
 
 </script>
 
-</html>
