@@ -28,20 +28,15 @@ class ScanController < ApplicationController
     if check_role('publisher')
       thedir = '/var/www/_ebydict/'+params[:path]
       @dio = ''
-      Dir.foreach(thedir) { |fname|
-        thefile = thedir+'/'+fname
-        if !(File.directory?(thefile)) and fname =~ /\.jpg$/
-          # check for existing image
-          if(EbyScanImage.find_by_origjpeg(thefile))
-            @dio += t(:scan_import_skipexist_html, :thefile => thefile)
-          else
-            # create scanimage object
-            newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => thefile, :status => 'NeedPartition')
-            newimg.save # save scanimage object
-            @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
-          end
+      Dir.glob(thedir+'/*.jpg').sort.each { |fname|
+        # check for existing image
+        if(EbyScanImage.find_by_origjpeg(fname))
+          @dio += t(:scan_import_skipexist_html, :thefile => fname )
         else
-          @dio += t(:scan_import_skip_html, :fname => fname) 
+          # create scanimage object
+          newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => fname, :status => 'NeedPartition')
+          newimg.save # save scanimage object
+          @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
         end
       }
       render :action => 'importdone'
