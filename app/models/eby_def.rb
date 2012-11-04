@@ -41,11 +41,11 @@ class EbyDef < ActiveRecord::Base
       else # assume 'small'
         sizecond = " = 1"
     end
-    return "select count(eby_defs.id) from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and status = '#{status}' #{wherecond}" 
+    return " from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and eby_defs.status = '#{status}' #{wherecond}" 
 
   end
   def self.assign_def_by_size(to_user, size, action)
-    sql = self.query_by_user_size_and_action(to_user, size, action)
+    sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action)
     rset = EbyDef.find_by_sql(sql+" limit 1")  
     if rset.nil? or rset[0].nil?
       return nil
@@ -57,7 +57,7 @@ class EbyDef < ActiveRecord::Base
     end
   end
   def self.count_by_action_and_size(user, action, size)
-    sql = self.query_by_user_size_and_action(user, size, action)
+    sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action)
     return EbyDef.count_by_sql(sql)
   end
 end
