@@ -41,7 +41,8 @@ class EbyDef < ActiveRecord::Base
       else # assume 'small'
         sizecond = " = 1"
     end
-    return "select eby_defs.*, count(dp.id) from eby_defs inner join eby_def_part_images dp on eby_defs.id = dp.thedef where assignedto is null and status = '#{status}' #{wherecond} group by eby_defs.id having count(dp.id) " + sizecond
+    return "select count(eby_defs.id) from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and status = '#{status}' #{wherecond}" 
+
   end
   def self.assign_def_by_size(to_user, size, action)
     sql = self.query_by_user_size_and_action(to_user, size, action)
