@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   # methods
   def changes
     if check_role('publisher')
-      @changes = query_changes
+      @changes = query_changes(params[:page])
       render :action => 'changes'
     else
       redirect_to :controller => 'user'
@@ -32,8 +32,8 @@ class AdminController < ApplicationController
     redirect_to :controller => 'user'
   end
   # pure logic
-  def query_changes
-    evts = EbyDefEvent.find(:all, :limit => 50, :order => 'created_at DESC')
+  def query_changes(pageno)
+    evts = EbyDefEvent.find(:all, :limit => 50, :order => 'created_at DESC').page(pageno)
     return evts
   end
 end
