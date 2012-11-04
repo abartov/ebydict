@@ -80,10 +80,10 @@ protect_from_forgery
       else
         bit = false
     end
-    if not bit
-      flash[:error] = "You're not responsible for that task.  Please stick to what you're supposed to do, or write Asaf"
-      redirect_to :controller => 'user'
-    end
+#    if not bit
+#      flash[:error] = "You're not responsible for that task.  Please stick to what you're supposed to do, or write Asaf"
+#      redirect_to :controller => 'user'
+#    end
     return bit
   end
   def secure?
