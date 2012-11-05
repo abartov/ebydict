@@ -4,6 +4,9 @@ To-Do
 - run 'rake notes' and handle code annotated issues
 - add user management
 - add instructions page
+- update deployment instructions, document canonical deployment set-up
+- localize status names
+- make user management and recent-changes visible on the dashboard for admins
 
 BUG: chfoot() function in the JavaScript code in the typing view has a bug in paging back and forth
 ===================================================================================================
