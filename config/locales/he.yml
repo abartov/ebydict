@@ -162,3 +162,50 @@ he:
 ## definition controller
   definition_notavail: הגדרה זו אינה זמינה לעיון עדיין.
   definition_title: 'שם הערך: %{defhead}'
+
+## recent changes 
+  changes_title: שינויים אחרונים
+  changes_who: 'בוצע ע"י'
+  changes_from: סטטוס קודם
+  changes_to: סטטוס נוכחי
+  changes_defhead: שם הערך
+  changes_ago: בוצע לפני
+
+## distance in time (from https://gist.github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml)
+  datetime:
+    distance_in_words:
+      half_a_minute: "חצי דקה"
+      less_than_x_seconds:
+        one:   "פחות משניה"
+        other: "פחות מ- %{count} שניות"
+      x_seconds:
+        one:   "שניה"
+        other: "%{count} שניות"
+      less_than_x_minutes:
+        one:   "פחות מדקה"
+        other: "פחות מ- %{count} דקות"
+      x_minutes:
+        one:   "דקה"
+        other: "%{count} דקות"
+      about_x_hours:
+        one:   "כשעה"
+        other: "בערך %{count} שעות"
+      x_days:
+        one:   "יום אחד"
+        other: "%{count} ימים"
+      about_x_months:
+        one:   "כחודש"
+        other: "בערך %{count} חודשים"
+      x_months:
+        one:   "חודש"
+        other: "%{count} חודשים"
+      about_x_years:
+        one:   "כשנה"
+        other: "בערך %{count} שנים"
+      over_x_years:
+        one:   "יותר משנה"
+        other: "יותר מ- %{count} שנים"
+      almost_x_years:
+        one:   "כמעט שנה"
+        other: "כמעט %{count} שנים"
+

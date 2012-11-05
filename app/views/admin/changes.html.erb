@@ -1,5 +1,13 @@
 <h1><%= t(:changes_title) %></h1>
 
+<table border="1" cellpadding="3">
+<tr><th><%= t(:changes_defhead) %></th><th><%= t(:changes_who) %></th><th><%= t(:changes_from) %></th><th><%= t(:changes_to) %></th><th><%= t(:changes_ago) %></th></tr>
+
+<% for c in @changes %> 
+  <tr><td><%=h c.thedef.defhead %></td><td><%=h c.user.fullname %></td><td><%=h c.old_status %></td><td><%=h c.new_status %></td><td><%=h time_ago_in_words(c.created_at)  %></td></tr>
+<% end %>
+</table>
+
 
 <%= will_paginate @changes %>
 

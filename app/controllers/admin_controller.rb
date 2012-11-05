@@ -33,7 +33,7 @@ class AdminController < ApplicationController
   end
   # pure logic
   def query_changes(pageno)
-    evts = EbyDefEvent.find(:all, :limit => 50, :order => 'created_at DESC').page(pageno)
+    evts = EbyDefEvent.page(pageno).order('created_at DESC')
     return evts
   end
 end
