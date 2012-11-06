@@ -1,37 +1,37 @@
 
-<div dir="ltr" align="left">
-<h1>Add a User to EbyDict</h1>
+<h1><%= t(:admin_adduser) %></h1>
 
 <%= form_for(:eby_user, :url => { :action => "doadduser" } ) do |f| %>
   <p>
-    <b>Username</b><br />
+    <b><%= t(:admin_adduser_login) %>:</b><br />
     <%= f.text_field :login %>
   </p>
 
   <p>
-    <b>Password</b><br />
+    <b><%= t(:admin_adduser_password) %>:</b><br />
     <%= f.text_field :password %>
   </p>
-  <p><b>Full Name:</b> <%= f.text_field :fullname %></p>
-  <b>E-mail:</b> <%= f.text_field :email %><br/>
+  <p><b><%= t(:admin_adduser_fullname) %>:</b> <%= f.text_field :fullname %></p>
+  <b><%= t(:admin_adduser_email) %>:</b> <%= f.text_field :email %><br/>
   <p/>
 
-  <%= f.check_box(  :role_partitioner )%> Partitioner? <br/>
-  <%= f.check_box(  :role_typist )%> Typist? <br/>
-  <%= f.check_box(  :role_proofer )%> Proofer?  &nbsp;&nbsp;&nbsp; Proofer Level (1-5):  <%= f.text_field :max_proof_level %><br/>
-  <%= f.check_box( :role_fixer )%> Fixer? <br/>
-  <%= f.check_box( :role_publisher )%> Publisher? <br/>
+  <%= f.check_box(  :role_partitioner )%> <%= t(:admin_adduser_role_partitioner) %>? <br/>
+  <%= f.check_box(  :role_typist )%> <%= t(:admin_adduser_role_typist) %>? <br/>
+  <%= f.check_box(  :role_proofer )%> <%= t(:admin_adduser_role_proofer) %>?  &nbsp;&nbsp;&nbsp; <%= t(:admin_adduser_max_proof_level) %> (1-5):  <%= f.text_field :max_proof_level %><br/>
+  <%= f.check_box( :role_fixer )%> <%= t(:admin_adduser_role_fixer) %>? <br/>
+  <%= f.check_box( :role_publisher )%> <%= t(:admin_adduser_role_publisher) %>? <br/>
 
   <p/>
 
-  <%= f.check_box( :does_arabic )%> Does Arabic? <br/>
-  <%= f.check_box( :does_greek )%> Does Greek? <br/>
-  <%= f.check_box( :does_extra )%> Does Misc? (French, German, difficult words) <br/>
-  <%= f.check_box( :does_russian )%> Does Russian? <br/>
+  <%= f.check_box( :does_arabic )%> <%= t(:admin_adduser_does_arabic) %>? <br/>
+  <%= f.check_box( :does_greek )%> <%= t(:admin_adduser_does_greek) %>? <br/>
+  <%= f.check_box( :does_extra )%> <%= t(:admin_adduser_does_extra) %>? <br/>
+  <%= f.check_box( :does_russian )%> <%= t(:admin_adduser_does_russian) %>? <br/>
   <p>
     <%= f.submit "Create" %>
   </p>
 <% end %>
 
-</div>
+<p/>
+<%= link_to t(:user_back),  :controller => :user, :action => 'index' %>
 

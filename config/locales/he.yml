@@ -171,6 +171,24 @@ he:
   changes_defhead: שם הערך
   changes_ago: בוצע לפני
 
+## admin views
+  admin_recent_changes: שינויים אחרונים
+  admin_adduser: יצירת חשבון משתמש
+  admin_adduser_login: שם משתמש
+  admin_adduser_password: סיסמה
+  admin_adduser_fullname: שם מלא
+  admin_adduser_email: כתובת דואל
+  admin_adduser_role_partitioner: 'הרשאת חיתוך תמונות (זהירות!)'
+  admin_adduser_role_typist: הרשאת הקלדה
+  admin_adduser_role_proofer: הרשאת הגהה
+  admin_adduser_max_proof_level: עד רמת הגהה מספר
+  admin_adduser_role_fixer: הרשאת תיקונים
+  admin_adduser_role_publisher: הרשאת פרסום וניהול
+  admin_adduser_does_arabic: 'מסוגל/ת להקליד ערבית'
+  admin_adduser_does_greek: 'מסוגל/ת להקליד יוונית'
+  admin_adduser_does_russian: 'מסוגל/ת להקליד רוסית'
+  admin_adduser_does_extra: 'מסוגל/ת להקליד תווים מיוחדים'
+
 ## distance in time (from https://gist.github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml)
   datetime:
     distance_in_words:
