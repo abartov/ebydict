@@ -50,9 +50,9 @@ $(document).ready(function() {
 
 <table><tr><td valign="top">
 <%= form_tag '/scan/dopartdef/'+@coldef.id.to_s %>
-<div id="part_tools"><div align="left" dir="ltr" style="position:fixed; left:10px;"><%= submit_tag "Save Partitions and Get Another Column", :name => 'save_and_next' %> <br/> <%= submit_tag "Save Partition", :name => 'commit' %> <br/> <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %><br/> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
+<div id="part_tools" align="left" dir="ltr"><div align="left" dir="ltr" style="position:fixed; left:10px; width:30%"><%= submit_tag "Save Partitions and Get Another Column", :name => 'save_and_next' %> <br/> <%= submit_tag "Save Partition", :name => 'commit' %> <br/> <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %><br/> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
 <font size="+2"><b>Is the first line <br/>a <u>continuation</u> of an entry?</b></font><br/><label>No<%= radio_button_tag "first_cont", "no", :id => 'iscont' %></label><label>Yes<%= radio_button_tag "first_cont", "yes", :checked => 'true', :id => 'iscont' %></label>
-<br/>Separations between definitions: <span id="col_seps"></span>
+<br/>Separations between definitions: <br/><span id="col_seps"></span>
 <input type="hidden" name="seps" id="final_seps"/>
 </div>
 </form> <br/></div></td><td><canvas id="myCanvas" align="center" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></td></tr></table>
