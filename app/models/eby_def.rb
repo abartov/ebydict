@@ -60,4 +60,40 @@ class EbyDef < ActiveRecord::Base
     sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action)
     return EbyDef.count_by_sql(sql)
   end
+
+  def render_body_as_html
+    ret_body = ''
+    ret_footnotes = ''
+    # first, mass-replace source, comment, and problem markup.
+    buf = (deftext.nil? ? '' : deftext)
+    buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
+
+    # renumber footnote references, starting with 1
+    newbuf = ''
+    footnote_num = 1
+    foots = {}
+    while buf =~ /\[(\d+)\]/ do  
+      newbuf += $` + "[#{footnote_num.to_s}]" 
+      foots[$1] = footnote_num.to_s
+      footnote_num += 1
+      buf = $'
+    end
+    buf = newbuf + buf
+    # next, mass-replace now-renumbered footnote references with spans
+    buf.gsub!(/\[(\d+)\]/, '<span class="footnote_ref">\1</span>')
+    ret_body = buf
+    # prepare footnotes
+    buf = (footnotes.nil? ? '' : footnotes)
+    newbuf = ''
+    prefix = ''
+    while buf =~ /\[(\d+)\]/ do
+      newbuf += $` + prefix + '<span class="footnote_num">'+foots[$1]+'</span><span class="footnote"> '
+      buf = $'
+      prefix = '</span>'
+    end
+    ret_footnotes = newbuf + buf + prefix
+    return [ret_body, ret_footnotes]
+  end
 end

@@ -26,4 +26,11 @@ class DefinitionController < ApplicationController
     flash[:notice] = t(:definition_sent_to_reproof_html, :defhead => @d.defhead).html_safe
     redirect_to :action => 'list'
   end
+
+  # process a definition and render it in preview/final mode
+  def view
+    d = EbyDef.find(params[:id])
+    @defhead = d.defhead or ''
+    (@defbody,@footnotes) = d.render_body_as_html
+  end
 end

@@ -7,6 +7,8 @@ Ebydict::Application.routes.draw do
 
   get "definition/reproof"
 
+  match 'definition/view/:id' => 'definition#view'
+
   get "problem/list"
 
   get "problem/resolve"
