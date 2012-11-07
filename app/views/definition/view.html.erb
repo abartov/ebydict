@@ -1,0 +1,50 @@
+<script language="javascript" type="text/javascript">
+// EBYDict stuff
+
+$(document).ready(function() {
+
+});
+</script>
+<style type="text/css">
+.defhead
+{
+  font-size: 200%;
+  font-weight: bold;
+}
+.footnote_num
+{
+  font-size: 50%;
+  vertical-align: super;
+}
+.footnote_ref
+{
+  font-size: 50%;
+  vertical-align: super;
+}
+.footnote
+{
+}
+.comment
+{
+  color:blue;
+}
+.source
+{
+  color: green;
+  font-size: 75%;
+}
+.problem
+{
+  color: red;
+  font-size: 75%;
+  vertical-align: sub;
+}
+</style>
+
+<div class="defhead"><%= raw @defhead %></div>
+<div class="defbody"><%= raw @defbody %></div>
+<div class="footnotes"><%= raw @footnotes %></div>
+
+<p/>
+<%= link_to t(:user_back),  :controller => :user, :action => 'index' %>
+
