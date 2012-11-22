@@ -179,6 +179,9 @@ class TypeController < ApplicationController
           @d.proof_round_passed = 0 # start over in any case
           newstat = t(:type_await_proof_round, :round => '1')
 	end
+      elsif act == AppConstants.problem
+        @d.status = params[:resolve_to]
+        newstat = @d.status_label
       else
         throw Exception.new
       end

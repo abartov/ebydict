@@ -60,7 +60,23 @@ class EbyDef < ActiveRecord::Base
     sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action)
     return EbyDef.count_by_sql(sql)
   end
-
+  def status_label
+    case self.status
+      when "NeedTyping"
+        label = I18n.t(:type_await_typing)
+      when "NeedProof"
+        label = I18n.t(:type_await_proofing, :round => self.proof_round_passed + 1)
+      when "NeedFixup"
+        label = I18n.t(:type_await_fixups)
+      when "Problem"
+        label = I18n.t(:type_await_resolution)
+      when "NeedPublish"
+        label = I18n.t(:type_await_publishing)
+      when "Published"
+        label = I18n.t(:type_published)
+    end
+    return label
+  end
   def render_body_as_html
     ret_body = ''
     ret_footnotes = ''
