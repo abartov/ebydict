@@ -72,7 +72,7 @@ class TypeController < ApplicationController
         @parts_js += "parts[#{part.partnum - 1}] = '#{url_from_file(part.filename)}';\n"
         colfoot = url_from_file(part.colimg.colfootjpeg)
         if colfoot.nil?
-          colfoot = '/images/nofoot.png'
+          colfoot = '/assets/nofoot.png'
         end
         @parts_js += "foots[#{part.partnum - 1}] = '#{colfoot}';\n"
         @partcount += 1
