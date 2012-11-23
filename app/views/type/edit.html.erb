@@ -157,7 +157,7 @@ tinyMCE.init({
         </tr>
       </table><table>
         <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %>
-                <%= (@thedef.status == 'Problem' ? "<select id=\"resolve_to\" name=\"resolve_to\"><option value=\"NeedTyping\">#{t(:type_await_typing)}</option><option value=\"NeedProof#{(@thedef.proof_round_passed + 1).to_s}\" selected=\"selected\">#{t(:type_await_proofing, :round => @thedef.proof_round_passed + 1)}</option><option value=\"NeedPublish\">#{t(:type_await_publishing)}</option></select></td>" : '</td>' %>
+                <%= (@thedef.status == 'Problem' ? "<select id=\"resolve_to\" name=\"resolve_to\"><option value=\"NeedTyping\">#{t(:type_await_typing)}</option><option value=\"NeedProof#{(@thedef.proof_round_passed + 1).to_s}\" selected=\"selected\">#{t(:type_await_proofing, :round => @thedef.proof_round_passed + 1)}</option><option value=\"NeedPublish\">#{t(:type_await_publishing)}</option></select></td>" : '</td>') %>
             <td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
         <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
         <td><span id="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><%= t(:type_show_instructions) %></span></td>
