@@ -8,9 +8,6 @@ To-Do
 - localize status names
 - make user management and recent-changes visible on the dashboard for admins
 
-BUG: chfoot() function in the JavaScript code in the typing view has a bug in paging back and forth
-===================================================================================================
-
 - Improve partitioning views
 - keyboard-based scrolling?
 - auto-assign a scan instead of list (done?)
@@ -45,7 +42,7 @@ Proofing Flow:
 Publishing Flow:
 ----------------
 - publishers can batch-publish all defs with NEED_PUBLISH status; all such defs get status PUBLISHED
-- publishers can PREVIEW a def (i.e. get it rendered by THE SAME mechanism that would ultimately render it in the published dictionary)
++ publishers can PREVIEW a def (i.e. get it rendered by THE SAME mechanism that would ultimately render it in the published dictionary)
 - publishers can view a def with NEED_PUBLISH status, and:
   - demote it to any other status (NEED_FIXUP, NEED_PROOF) with any proof_round_passed value they choose
   + publish the def, changing its status to PUBLISHED

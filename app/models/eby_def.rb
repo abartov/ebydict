@@ -15,10 +15,11 @@ class EbyDef < ActiveRecord::Base
       when AppConstants.type 
         status = "NeedTyping"
         action = "type"
+        wherecond = "ORDER BY reject_count ASC"
       when AppConstants.proof 
         status = "NeedProof"
         action = "proof"
-        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
+        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY reject_count ASC, proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
@@ -29,7 +30,7 @@ class EbyDef < ActiveRecord::Base
         wherecond += " or eby_defs.russian = 'todo' " if(to_user.does_russian)
         wherecond += " or eby_defs.extra = 'todo' " if(to_user.does_extra)
         # finally, close the where condition
-        wherecond += " )"
+        wherecond += " ) ORDER BY reject_count ASC"
       else
         throw Exception.new
     end
@@ -60,7 +61,23 @@ class EbyDef < ActiveRecord::Base
     sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action)
     return EbyDef.count_by_sql(sql)
   end
-
+  def status_label
+    case self.status
+      when "NeedTyping"
+        label = I18n.t(:type_await_typing)
+      when "NeedProof"
+        label = I18n.t(:type_await_proofing, :round => self.proof_round_passed + 1)
+      when "NeedFixup"
+        label = I18n.t(:type_await_fixups)
+      when "Problem"
+        label = I18n.t(:type_await_resolution)
+      when "NeedPublish"
+        label = I18n.t(:type_await_publishing)
+      when "Published"
+        label = I18n.t(:type_published)
+    end
+    return label
+  end
   def render_body_as_html
     ret_body = ''
     ret_footnotes = ''
@@ -86,6 +103,7 @@ class EbyDef < ActiveRecord::Base
     ret_body = buf
     # prepare footnotes
     buf = (footnotes.nil? ? '' : footnotes)
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do

@@ -20,7 +20,7 @@ tinyMCE.init({
         mode : "specific_textareas",
         editor_selector : "mceEditor",
         theme : "advanced",
-  theme_advanced_buttons1 : "bold,removeformat,separator,undo,redo,separator,charmap,styleselect",
+  theme_advanced_buttons1 : "bold,removeformat,separator,undo,redo,separator,charmap",
   theme_advanced_buttons2 : "makor,problem,comment",
   theme_advanced_buttons3 : "",
         directionality : "rtl",
@@ -136,7 +136,7 @@ tinyMCE.init({
   <td>
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a></div><br/>
     <img id="defpartimg" border="1" src=""/><p/>
-    <div align="center"><a href="" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
+    <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
     <img id="footimg" border="1" src=""/><p/>
@@ -156,7 +156,16 @@ tinyMCE.init({
           <%= @selects.html_safe %>
         </tr>
       </table><table>
-        <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %></td><td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
+        <tr><td><%= submit_tag t(:type_saveanddone, :action => @action), :name => 'save_and_done' %>
+                <% if @thedef.status == 'Problem' %>
+                  <select id="resolve_to" name="resolve_to">
+                    <option value="NeedTyping"><%= t(:type_await_typing) %></option>
+                    <option value="NeedProof<%= (@thedef.proof_round_passed + 1).to_s %>" selected="selected"><%= t(:type_await_proofing, :round => @thedef.proof_round_passed + 1) %></option>
+                    <option value="NeedPublish"><%= t(:type_await_publishing) %></option>
+                  </select>
+                <% end %>
+            </td>
+            <td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
         <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
         <td><span id="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><%= t(:type_show_instructions) %></span></td>
         </tr>
@@ -220,6 +229,8 @@ function chfoot(delta) {
   else { // we are beyond the def parts
    if(curfoot == maxpart + extra_foots) {
      $('#foot_next').hide();
+   } else {
+     $('#foot_next').show();
    }
    $('#foot_prev').show();
    $('#but_prev').hide();

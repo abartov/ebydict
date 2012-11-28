@@ -72,7 +72,7 @@ class TypeController < ApplicationController
         @parts_js += "parts[#{part.partnum - 1}] = '#{url_from_file(part.filename)}';\n"
         colfoot = url_from_file(part.colimg.colfootjpeg)
         if colfoot.nil?
-          colfoot = '/images/nofoot.png'
+          colfoot = '/assets/nofoot.png'
         end
         @parts_js += "foots[#{part.partnum - 1}] = '#{colfoot}';\n"
         @partcount += 1
@@ -179,6 +179,9 @@ class TypeController < ApplicationController
           @d.proof_round_passed = 0 # start over in any case
           newstat = t(:type_await_proof_round, :round => '1')
 	end
+      elsif act == AppConstants.problem
+        @d.status = params[:resolve_to]
+        newstat = @d.status_label
       else
         throw Exception.new
       end
@@ -237,6 +240,7 @@ class TypeController < ApplicationController
   end
   def do_abandon(d)
     d.assignee = nil
+    d.reject_count += 1
     d.save
     flash[:notice] = t(:type_abandoned)
   end
