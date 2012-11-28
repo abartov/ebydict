@@ -103,6 +103,7 @@ class EbyDef < ActiveRecord::Base
     ret_body = buf
     # prepare footnotes
     buf = (footnotes.nil? ? '' : footnotes)
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do
