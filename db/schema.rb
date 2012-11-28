@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718231153) do
+ActiveRecord::Schema.define(:version => 20121128060715) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120718231153) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.string   "prob_desc"
+    t.integer  "reject_count"
   end
 
   create_table "eby_scan_images", :force => true do |t|

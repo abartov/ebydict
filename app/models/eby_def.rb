@@ -15,10 +15,11 @@ class EbyDef < ActiveRecord::Base
       when AppConstants.type 
         status = "NeedTyping"
         action = "type"
+        wherecond = "ORDER BY reject_count ASC"
       when AppConstants.proof 
         status = "NeedProof"
         action = "proof"
-        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
+        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY reject_count ASC, proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
@@ -29,7 +30,7 @@ class EbyDef < ActiveRecord::Base
         wherecond += " or eby_defs.russian = 'todo' " if(to_user.does_russian)
         wherecond += " or eby_defs.extra = 'todo' " if(to_user.does_extra)
         # finally, close the where condition
-        wherecond += " )"
+        wherecond += " ) ORDER BY reject_count ASC"
       else
         throw Exception.new
     end

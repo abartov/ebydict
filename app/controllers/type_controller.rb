@@ -240,6 +240,7 @@ class TypeController < ApplicationController
   end
   def do_abandon(d)
     d.assignee = nil
+    d.reject_count += 1
     d.save
     flash[:notice] = t(:type_abandoned)
   end
