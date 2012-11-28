@@ -113,9 +113,9 @@ class EbyDef < ActiveRecord::Base
       else
         print "$` = #{$`}, $1 = #{$1}, foots = #{foots[$1]}\n"
         newbuf += $` + prefix + '<span class="footnote_num">'+foots[$1]+'</span><span class="footnote"> '
-        buf = $'
         prefix = '</span>'
       end
+      buf = $'
     end
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
