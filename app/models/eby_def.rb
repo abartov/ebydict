@@ -107,9 +107,15 @@ class EbyDef < ActiveRecord::Base
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do
-      newbuf += $` + prefix + '<span class="footnote_num">'+foots[$1]+'</span><span class="footnote"> '
+      if foots[$1].nil?
+        newbuf += $` + prefix + '<span class="problem">'+I18n.t(:definition_missing_footnote_body, :num => $1)+'</span>'
+        prefix = ''
+      else
+        print "$` = #{$`}, $1 = #{$1}, foots = #{foots[$1]}\n"
+        newbuf += $` + prefix + '<span class="footnote_num">'+foots[$1]+'</span><span class="footnote"> '
+        prefix = '</span>'
+      end
       buf = $'
-      prefix = '</span>'
     end
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
