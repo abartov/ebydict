@@ -37,6 +37,6 @@ class DefinitionController < ApplicationController
   private
   
   def secure?
-    return (params[:action] == 'view')
+    return not (params[:action] == 'view')
   end
 end
