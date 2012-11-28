@@ -33,4 +33,10 @@ class DefinitionController < ApplicationController
     @defhead = d.defhead or ''
     (@defbody,@footnotes) = d.render_body_as_html
   end
+
+  private
+  
+  def secure?
+    return (params[:action] == 'view')
+  end
 end
