@@ -77,6 +77,9 @@ he:
   type_comment: הערה
   type_problem_btn: בעיה
   type_redirect: הפניה
+  type_talmud: משנה, תלמוד ובן סירא
+  type_post_xazal: 'לאחר תקופת חז"ל'
+  type_neologism: חידושים
   type_source_markup: '[[מקור: '
   type_problem_markup: '[[בעיה: '
   type_comment_markup: '[[הערה: '
