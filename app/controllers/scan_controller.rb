@@ -416,7 +416,9 @@ class ScanController < ApplicationController
       defpart.save
       # save
       if (is_complete or is_newdef_at_nextcol(col)) 
+        defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'])
         thedef.status = 'NeedTyping'
+        defev.save
       end
       thedef.save
       return thedef
