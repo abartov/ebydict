@@ -389,6 +389,8 @@ class ScanController < ApplicationController
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
       thedef.save
+      defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'])
+      defev.save
     end
   end
   def add_to_prev_def(col, imgname,defno, is_complete)
