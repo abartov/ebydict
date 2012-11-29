@@ -136,7 +136,7 @@ tinyMCE.init({
 <%= form_tag '/type/processtype/'+@thedef.id.to_s %>
 <!-- instructions popup -->
 
-<div id="instructions" class="dialog" style="display:none" title="<%= t(:type_instructions_title) %>">
+<div id="instructions" class="dialog" style="display:none; direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
 <%= t(:type_instructions_body_html) %>
 </div>
 <!-- main editing area -->

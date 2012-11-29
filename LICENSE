@@ -1,0 +1,10 @@
+This code is released under the GNU Affero General Public License -- http://www.gnu.org/licenses/agpl-3.0.html
+
+The principal author of this production system is Asaf Bartov -- asaf.bartov@gmail.com
+
+External Software and Resources
+===============================
+- the system is written in Ruby using the Rails platform and an assortment of free software Ruby gems (see Gemfile for the full list)
+- the editor is TinyMCE, by Moxiecode Systems AB
+- The redirect icon used in the editor was created by http://deviantdark.deviantart.com/
+

@@ -83,9 +83,7 @@ class EbyDef < ActiveRecord::Base
     ret_footnotes = ''
     # first, mass-replace source, comment, and problem markup.
     buf = (deftext.nil? ? '' : deftext)
-    buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
-    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
-    buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
+    buf = mass_replace_html(buf)
 
     # renumber footnote references, starting with 1
     newbuf = ''
@@ -103,7 +101,7 @@ class EbyDef < ActiveRecord::Base
     ret_body = buf
     # prepare footnotes
     buf = (footnotes.nil? ? '' : footnotes)
-    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
+    buf = mass_replace_html(buf)
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do
@@ -120,4 +118,14 @@ class EbyDef < ActiveRecord::Base
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
   end
+
+  protected
+  
+  def mass_replace_html(buf)
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
+    return buf
+  end
+   
 end
