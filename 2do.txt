@@ -6,7 +6,8 @@ To-Do
 - add instructions page
 - update deployment instructions, document canonical deployment set-up
 - localize status names
-- make user management and recent-changes visible on the dashboard for admins
++ make user management and recent-changes visible on the dashboard for admins
++ add buttons for the period markers used by EBY -- http://he.wikipedia.org/wiki/%D7%A7%D7%95%D7%91%D7%A5:BYarticle_sign.png
 
 - Improve partitioning views
 - keyboard-based scrolling?

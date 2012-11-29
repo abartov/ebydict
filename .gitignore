@@ -15,3 +15,5 @@
 /tmp
 /config/database.yml
 /config/constants.yml
+/public/assets/*
+
