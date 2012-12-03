@@ -3,6 +3,11 @@ class UserController < ApplicationController
     show_work
     render :action => 'show_work'
   end
+  def list
+    redirect_to :controller => 'user' unless check_role('publisher')
+    @users = EbyUser.page(params[:page])
+  end
+
   def show_work
     @page_title = t(:user_maintitle)
     @user = EbyUser.find(session["user"])
