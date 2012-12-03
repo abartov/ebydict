@@ -1,14 +1,15 @@
 %h1= 'User List'
-  %table
-    %tbody
+%table
+  %tbody
+    %tr
+      %th= 'Name'
+      %th= 'e-mail'
+      %th= 'roles'
+      %th= 'actions'
+    - @users.each do |u|
       %tr
-        %th= 'Name'
-        %th= 'e-mail'
-        %th= 'roles'
-        %th= 'actions'
-      - @users.each do |u|
-        %tr
-          %td= u.fullname
-          %td= u.email
-          %td= u.list_roles
-          %td= ...
+        %td= u.fullname
+        %td= u.email
+        %td= 'list_roles'
+        / %td= u.list_roles
+        %td= '...'
