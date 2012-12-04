@@ -3,6 +3,7 @@ class ProblemController < ApplicationController
 
   def list
     @probs = EbyDef.where(:status => 'Problem', :assignedto => nil).page(params[:page])
+    @my_probs = EbyDef.where(:status => 'Problem', :assignedto => session['user'].id)
   end
   def tackle
     d = EbyDef.find(params[:id])
