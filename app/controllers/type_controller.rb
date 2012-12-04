@@ -188,7 +188,7 @@ class TypeController < ApplicationController
       @d.assignee = nil
       defev.new_status = (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status)
       defev.save
-      @d.save
+      @d.save!
       flash[:notice] = t(:type_saved_with_status, :status => newstat)
     elsif params[:problem]
       populate(@d)

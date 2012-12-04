@@ -9,10 +9,15 @@ To-Do
 - add user stats to user's dashboard
 + make user management and recent-changes visible on the dashboard for admins
 + add buttons for the period markers used by EBY -- http://he.wikipedia.org/wiki/%D7%A7%D7%95%D7%91%D7%A5:BYarticle_sign.png
+- improve definition view: 
+  - clearly demarcate footnotes
+  - translate redirects
+  - font
+  - container
 
 - Improve partitioning views
 - keyboard-based scrolling?
-- auto-assign a scan instead of list (done?)
++ auto-assign a scan instead of list
 + IE 7/8 support for typing interface (switched to HTML5 canvases)
 - auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
 - one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
