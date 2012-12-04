@@ -93,14 +93,21 @@ tinyMCE.init({
   
   $("#instructions").dialog({
       modal: true,
-      width: 750,
       title: '<%= t(:type_instructions_title) %>',
       overlay: {opacity: 0.5, background: "black" },
+      width:790,
+      height:580,
       show:"blind",
       hide:"blind",
-      autoResize:true,
       resizable:true,
-      autoOpen:false
+      autoResize:true,
+      autoOpen:false,
+      create: function(event, ui) {
+        $("body").css({ overflow: 'hidden' })
+      },
+      beforeClose: function(event, ui) {
+        $("body").css({ overflow: 'inherit' })
+      }
     });
 
   $('#instructions_button').click(function() { 
@@ -115,6 +122,7 @@ tinyMCE.init({
   background: #EEE;
   padding: 10px;
   border:1px solid #000000;
+  overflow-y: auto; 
 }
 .ui-dialog-titlebar-close
 {
@@ -160,7 +168,7 @@ tinyMCE.init({
 <%= form_tag '/type/processtype/'+@thedef.id.to_s %>
 <!-- instructions popup -->
 
-<div id="instructions" class="dialog" style="display:none; direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
+<div id="instructions" class="dialog" style="display:none; overflow:auto;  direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
 <%= t(:type_instructions_body_html) %>
 </div>
 <!-- main editing area -->
