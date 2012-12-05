@@ -102,7 +102,7 @@ tinyMCE.init({
       resizable:true,
       autoResize:true,
       autoOpen:false,
-      create: function(event, ui) {
+      open: function(event, ui) {
         $("body").css({ overflow: 'hidden' })
       },
       beforeClose: function(event, ui) {
