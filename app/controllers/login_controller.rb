@@ -25,6 +25,9 @@ class LoginController < ApplicationController
       else
         # login successful!
         session['user'] = user
+        user.login_count += 1
+        user.last_login = Time.now.to_datetime
+        user.save!
         flash[:notice] = "Login successful!"
         redirect_to :controller => 'user'
       end

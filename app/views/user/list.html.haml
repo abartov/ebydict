@@ -5,12 +5,20 @@
       %th= t(:admin_adduser_login)
       %th= t(:admin_adduser_fullname)
       %th= t(:admin_adduser_email)
+      %th= t(:admin_user_login_count)
+      %th= t(:admin_user_last_login)
       %th= t(:admin_user_roles)
       %th= t(:table_actions)
     - @users.each do |u|
       %tr
+        %td= u.login
         %td= u.fullname
         %td= u.email
+        %td= u.login_count.to_s
+        %td= time_ago_in_words(u.last_login)
         %td= 'list_roles'
         / %td= u.list_roles
         %td= '...'
+
+%a{ :href => user_index_path }
+  = t(:user_back)

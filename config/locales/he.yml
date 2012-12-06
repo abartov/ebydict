@@ -167,7 +167,7 @@ he:
 ## login controller
   login_must_login: עליך להתחבר למערכת כדי להתחיל לעבוד
   login_help_bring_html: <b>עזרו להביא את <u>מילון העברית הישנה והחדשה</u> של אליעזר בן-יהודה לרשת!</b>
-  login_username: שם משתמש
+  login_username: שם משתמש או דואל
   login_password: סיסמה
   login_submit: התחבר
   login_apply_html: 'אם אין לך שם משתמש וסיסמה למערכת זו, וברצונך לעזור, פנה אל עורך הפרויקט בכתובת <a href="mailto:editor@benyehuda.org">editor@benyehuda.org</a>'
@@ -210,6 +210,8 @@ he:
   admin_adduser_does_extra: 'מסוגל/ת להקליד תווים מיוחדים'
   admin_userlist: רשימת משתמשים
   admin_user_roles: תפקידים
+  admin_user_login_count: מספר כניסות אי פעם
+  admin_user_last_login: כניסה אחרונה
   table_actions: פעולות
 
 ## distance in time (from https://gist.github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128060715) do
+ActiveRecord::Schema.define(:version => 20121206022332) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(:version => 20121128060715) do
     t.boolean  "does_extra"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.datetime "last_login"
+    t.integer  "login_count"
   end
 
   create_table "sessions", :force => true do |t|
