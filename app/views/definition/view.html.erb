@@ -11,18 +11,25 @@ $(document).ready(function() {
   font-size: 200%;
   font-weight: bold;
 }
+.defbody
+{
+  font-family:David,serif;
+  font-size: 14pt;
+}
 .footnote_num
 {
-  font-size: 50%;
+  font-size: 70%;
   vertical-align: super;
 }
 .footnote_ref
 {
-  font-size: 50%;
+  font-size: 70%;
   vertical-align: super;
 }
 .footnote
 {
+  font-family:David,serif;
+  font-size: 12pt;
 }
 .comment
 {
@@ -40,11 +47,12 @@ $(document).ready(function() {
   vertical-align: sub;
 }
 </style>
-
+<div class="defcontainer">
 <div class="defhead"><%= raw @defhead %></div>
 <div class="defbody"><%= raw @defbody %></div>
+<hr/>
 <div class="footnotes"><%= raw @footnotes %></div>
-
+</div>
 <p/>
 <%= link_to t(:user_back),  :controller => :user, :action => 'index' %>
 
