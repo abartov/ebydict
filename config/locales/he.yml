@@ -51,6 +51,7 @@ he:
   type_save: שמור וצא
   type_saveanddone: שמור וסמן סוף %{action}
   type_problem: <-תאר בעיה ושמור
+  type_problem_btn: בעיה מקומית
   type_text: טקסט
   type_footnotes: הערות שוליים
   type_notproofer: אינך מוגדר/ת כמגיה/ה.  פנה/י לרכז המתנדבים אם ברצונך להגיה הגדרות.
