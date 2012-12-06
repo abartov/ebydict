@@ -15,7 +15,7 @@
         %td= u.fullname
         %td= u.email
         %td= u.login_count.to_s
-        %td= time_ago_in_words(u.last_login)
+        %td= u.last_login.nil? ? t(:never) : time_ago_in_words(u.last_login)
         %td= 'list_roles'
         / %td= u.list_roles
         %td= '...'
