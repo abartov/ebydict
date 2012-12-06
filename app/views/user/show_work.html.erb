@@ -93,6 +93,7 @@
   <li><%= link_to t(:user_problems), :controller => 'problem', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_problem, :things => t(:user_tofix)) %><br/>
   <li><%= link_to t(:admin_adduser), :controller => 'admin', :action => 'adduser' %> <br/>
   <li><%= link_to t(:admin_recent_changes), :controller => 'admin', :action => 'changes' %><br/>
+  <li><%= link_to t(:admin_userlist), :action => 'list' %><br/>
 <% end %>
   <br/>
   <li><%= t(:user_wantmore_html) %>

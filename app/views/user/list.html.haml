@@ -1,11 +1,12 @@
-%h1= 'User List'
+%h1= t(:admin_userlist) 
 %table
   %tbody
     %tr
-      %th= 'Name'
-      %th= 'e-mail'
-      %th= 'roles'
-      %th= 'actions'
+      %th= t(:admin_adduser_login)
+      %th= t(:admin_adduser_fullname)
+      %th= t(:admin_adduser_email)
+      %th= t(:admin_user_roles)
+      %th= t(:table_actions)
     - @users.each do |u|
       %tr
         %td= u.fullname
