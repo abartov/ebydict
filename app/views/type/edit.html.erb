@@ -110,12 +110,11 @@ tinyMCE.init({
       }
     });
 
-  $('#instructions_button').click(function() { 
+  $('.instructions_button').click(function() { 
   $('#instructions').show().dialog("open");
     });
 });
-</script>
-<style type="text/css">
+</script><style type="text/css">
 
 .dialog
 {
@@ -163,19 +162,12 @@ tinyMCE.init({
   padding: 10px;
 }
 
-</style>
-
-<%= form_tag '/type/processtype/'+@thedef.id.to_s %>
-<!-- instructions popup -->
-
-<div id="instructions" class="dialog" style="display:none; overflow:auto;  direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
+</style><%= form_tag '/type/processtype/'+@thedef.id.to_s %> <!-- instructions popup --> <div id="instructions" class="dialog" style="display:none; overflow:auto;  direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
 <%= t(:type_instructions_body_html) %>
-</div>
-<!-- main editing area -->
-<table>
+</div> <!-- main editing area --> <table>
 <tr>
   <td>
-    <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a></div><br/>
+    <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
     <img id="defpartimg" border="1" src=""/><p/>
     <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
@@ -208,7 +200,7 @@ tinyMCE.init({
             </td>
             <td><%= submit_tag t(:type_save), :name => 'commit' %></td></tr><tr>
         <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
-        <td><span id="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><%= t(:type_show_instructions) %></span></td>
+        <td><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></td>
         </tr>
         <tr><td><textarea class="prob" style="font-family:David;font-size:14pt" dir="rtl" align="right" name="prob_desc" cols="15" rows="3"><%= h(@thedef.prob_desc) %></textarea></td>
         <td><%= submit_tag t(:type_problem), :name => 'problem' %></td></tr>
@@ -217,11 +209,7 @@ tinyMCE.init({
     
   </td>
 </tr>
-</table>
-<input type="hidden" name="act" value="<%= @actno  %>"/>
-</form>
-
-<br/>
+</table><input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
 function chimg(delta) {
   curpart += delta;

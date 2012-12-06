@@ -55,10 +55,10 @@
   <br/>
   <li><a href="javascript:toggle('fixupwhich')"><%= t(:user_fixup) %></a> <%= t(:user_todo_html, :count => @avail_fixups, :things => t(:user_fixups)) %><br/>
   <div width="80%">
-  <div id="fixupwhich" style="display: none;  "><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
+  <div id="fixupwhich" style="display: none;  ">
     <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_fixup', :defsize => 'small' %> <br/>
     <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_fixup', :defsize => 'medium' %> <br/>
-    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_fixup', :defsize => 'large' %> <br/></p>
+    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_fixup', :defsize => 'large' %> <br/>
   </div>
   <!-- show fixups in progress -->
   <% if not (@inprog_fixups.nil? or @inprog_fixups.empty?) %>
@@ -70,9 +70,9 @@
 <% end
      if @user.role_proofer %>
   <br/>
-  <li><a href="javascript:toggle('proofwhich')"><%= t(:user_proof, :maxproof => @user.max_proof_level) %></a> <%= t(:user_todo_html, :count => @avail_proofs, :things => t(:user_proofs)) %>
+  <li><%= t(:user_proof, :maxproof => @user.max_proof_level) %> <%= t(:user_todo_html, :count => @avail_proofs, :things => t(:user_proofs)) %>
   <div width="80%">
-  <div id="proofwhich" style="display: none;"><p style="border: medium solid rgb(0,0,255); margin-right: 2cm">
+  <div id="proofwhich" style="display: none;">
     <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_proof', :defsize => 'small' %><br/>
     <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_proof', :defsize => 'medium' %><br/>
     <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_proof', :defsize => 'large' %><br/>
@@ -91,12 +91,11 @@
   <br/>
   <li><%= link_to t(:user_publish), :controller => 'definition', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
   <li><%= link_to t(:user_problems), :controller => 'problem', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_problem, :things => t(:user_tofix)) %><br/>
-  <li><%= link_to t(:admin_adduser), :controller => 'admin', :action => 'adduser' %> <br/>
-  <li><%= link_to t(:admin_recent_changes), :controller => 'admin', :action => 'changes' %><br/>
+  <li><b><%= link_to t(:admin_recent_changes), :controller => 'admin', :action => 'changes' %></b><br/>
   <li><%= link_to t(:admin_userlist), :action => 'list' %><br/>
+  <li><%= link_to t(:admin_adduser), :controller => 'admin', :action => 'adduser' %> <br/>
 <% end %>
   <br/>
-  <li><%= t(:user_wantmore_html) %>
 </ul>
 <p/>
 <%= link_to t(:user_logout), :controller => 'login', :action => 'logout' %>
