@@ -8,6 +8,7 @@
       %th= t(:admin_user_login_count)
       %th= t(:admin_user_last_login)
       %th= t(:admin_user_roles)
+      %th= t(:user_assigned_defs)
       %th= t(:table_actions)
     - @users.each do |u|
       %tr
@@ -18,6 +19,11 @@
         %td= u.last_login.nil? ? t(:never) : time_ago_in_words(u.last_login)
         %td= 'list_roles'
         / %td= u.list_roles
+        %td
+          - u.assigned_defs.each do |d| 
+            %a{ :href=> url_for(:controller => :definition, :action => :view, :id => d.id) } 
+              = "#{d.defhead} (#{action_label_for_status(d.status)})"
+            = raw "&nbsp;&nbsp;&nbsp;&nbsp;"
         %td= '...'
 
 %a{ :href => user_index_path }

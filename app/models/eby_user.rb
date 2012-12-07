@@ -2,6 +2,15 @@ require 'digest/sha1'
 class EbyUser < ActiveRecord::Base
   attr_accessible :does_arabic, :does_extra, :does_greek, :does_russian, :email, :fullname, :login, :max_proof_level, :password, :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist
 
+  has_many :eby_def_events, :foreign_key => "who"
+  has_many :eby_defs, :through => :eby_def_events, :source => :thedef
+  has_many :assigned_defs, :class_name => "EbyDef", :foreign_key => "assignedto"
+  has_many :typed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedTyping'", :source => :thedef
+  has_many :proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status LIKE 'NeedProof%'", :source => :thedef
+  has_many :first_proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedProof1'", :source => :thedef
+  has_many :second_proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedProof2'", :source => :thedef
+  has_many :fixed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedFixup'", :source => :thedef
+
   def self.authenticate(login, pass)
     begin
       u = find_by_login(login) || find_by_email(login) # try both

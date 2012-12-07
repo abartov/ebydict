@@ -10,6 +10,13 @@ he:
 
 ## application controller
   app_flash_notice: 'הצג/הסתר תוצאות פעולה אחרונה'
+  status_problem: בעיה
+  status_partial: חלקית
+  status_need_typing: ממתינה להקלדה
+  status_need_proofing: " ממתינה להגהה מס' %{round}"
+  status_need_fixup: ממתינה להשלמות
+  status_need_publish: מוכנה לשחרור
+  status_published: שוחררה לציבור
 
 ## user model
   user_login_bad_length: 'tmp: login bad length'
@@ -76,7 +83,6 @@ he:
   type_fixups: השלמוֹת
   type_source: מקור
   type_comment: הערה
-  type_problem_btn: בעיה
   type_redirect: הפניה
   type_talmud: משנה, תלמוד ובן סירא
   type_post_xazal: 'לאחר תקופת חז"ל'
