@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   # methods
   def changes
+    @page_title = I18n.t(:changes_title)
     if check_role('publisher')
       @changes = query_changes(params[:page])
       render :action => 'changes'

@@ -31,6 +31,7 @@ class DefinitionController < ApplicationController
   def view
     d = EbyDef.find(params[:id])
     @defhead = d.defhead or ''
+    @page_title = "#{@defhead} - #{I18n.t(:definition_from_eby)}"
     (@defbody,@footnotes) = d.render_body_as_html
   end
 
