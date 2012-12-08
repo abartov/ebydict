@@ -125,6 +125,7 @@ class EbyDef < ActiveRecord::Base
     buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_redirect)}:\s*([^\]]+?)\]\]/, '<span class="redirect">\1</span>') # TODO: replace with actual redirecting logic?
     return buf
   end
    

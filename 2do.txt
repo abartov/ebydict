@@ -1,28 +1,39 @@
 To-Do
 -----
 
-- run 'rake notes' and handle code annotated issues
+==high priority==
+- fix font issue that strips bottom of bottom diacritics
+- re-layout action buttons, prob. as an action dialog.
+
+==medium priority==
 - add user management
+  - user preferences page (change password, what else?)
+  - Forgot-my-password handling
 - add instructions page
-- update deployment instructions, document canonical deployment set-up
-- localize status names
 - add user stats to user's dashboard
-+ make user management and recent-changes visible on the dashboard for admins
-+ add buttons for the period markers used by EBY -- http://he.wikipedia.org/wiki/%D7%A7%D7%95%D7%91%D7%A5:BYarticle_sign.png
 - improve definition view: 
   - clearly demarcate footnotes
   - translate redirects
   - font
   - container
+- one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
 
+==low priority==
+- run 'rake notes' and handle code annotated issues
+- update deployment instructions, document canonical deployment set-up
 - Improve partitioning views
 - keyboard-based scrolling?
+- auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
+
+==done==
+
++ localize status names
++ make user management and recent-changes visible on the dashboard for admins
++ add buttons for the period markers used by EBY -- http://he.wikipedia.org/wiki/%D7%A7%D7%95%D7%91%D7%A5:BYarticle_sign.png
 + auto-assign a scan instead of list
 + IE 7/8 support for typing interface (switched to HTML5 canvases)
-- auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
-- one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
-- user preferences page (change password, what else?)
-- Forgot-my-password handling
+
+==old stuff==
 
 Typing Flow:
 ------------
