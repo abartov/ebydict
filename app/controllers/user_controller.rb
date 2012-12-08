@@ -66,4 +66,10 @@ class UserController < ApplicationController
     end
     index
   end
+  def show
+    @user = session[:user]
+    if @user.role_publisher and (params[:id] != nil and not params[:id].empty?)
+      @user = EbyUser.find(params[:id]) # only admins can look at other users
+    end
+  end
 end

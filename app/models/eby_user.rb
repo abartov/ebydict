@@ -13,7 +13,11 @@ class EbyUser < ActiveRecord::Base
 
   def self.authenticate(login, pass)
     begin
-      u = find_by_login(login) || find_by_email(login) # try both
+      u = find_by_login(login)
+      if u.nil?
+        u = find_by_email(login) # try both
+      end
+      #u = find_by_login(login) || find_by_email(login) # try both
       return (u.password == hashfunc(pass) ? u : nil)
       # TODO: add salting to hashfunc?  store the salt in the user record, and use to hash the provided password before comparing...
     rescue

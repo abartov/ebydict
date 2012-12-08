@@ -25,6 +25,8 @@ Ebydict::Application.routes.draw do
   post 'login/do_login'
   get 'user/index'
   get 'user/list'
+  get 'user/show'
+  match 'user/show/:id' => 'user#show'
   get 'admin/adduser'
   post 'admin/doadduser'
   get 'admin/changes'
