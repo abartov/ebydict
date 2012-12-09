@@ -1,5 +1,5 @@
 class EbyDef < ActiveRecord::Base
-  attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status
+  attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'

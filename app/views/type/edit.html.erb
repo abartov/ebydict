@@ -221,8 +221,9 @@ function chimg(delta) {
   curimg = parts[curpart];
   curfootimg = foots[curfoot];
   humanpart = curpart + 1;
-  $('#curpos').html(humanpart+"/"+humanmaxpart);
-  $('#curpos2').html(humanpart+"/"+humanmaxpart);
+  var curpos = "<%= t(:type_curpos) %> "+humanpart+" <%= t(:type_out_of) %> "+humanmaxpart;
+  $('#curpos').html(curpos);
+  $('#curpos2').html(curpos);
 
   $('#defpartlink').attr('href', curimg);
   $('#defpartimg').attr('src', curimg);
