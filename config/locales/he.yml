@@ -144,7 +144,7 @@ he:
   user_logout: יציאה מהמערכת
   user_wantmore_html: רוצה עוד סוגי משימות?  פנה/י אל <a href="mailto:asaf@benyehuda.org">asaf@benyehuda.org</a> 
   user_partscans: הפרדת עמודות בסריקת עמוד יחיד או כפול
-  user_abandon: "<b>ויתור</b> על המטלה והחזרתה למאגר המטלות הבלתי-מוקצות"
+  user_abandon_html: "<b>ויתור</b> על המטלה והחזרתה למאגר המטלות הבלתי-מוקצות"
   user_partcols: הפרדת אזור ההגדרות מאזור הערות השוליים בעמודה בודדת
   user_partdefs: הפרדת הגדרות זו מזו בתוך חלק מעמודה
   user_typedef_html: "<b>הקלדה</b>: הקצאת הגדרה חדשה להקלדה"
