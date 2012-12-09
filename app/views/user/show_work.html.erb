@@ -2,11 +2,9 @@
  <!-- // Begin
  function toggle(id) { element = document.getElementById(id); element.style.display = (element.style.display == "none" ) ? "" : "none";}
  --> </script>
-
-<div dir="rtl" align="right">
-<%= t :user_hello_html, :user => @user.fullname %>
-
-<!-- TODO: make items links to action controllers; list number of available unassigned work items in each category -->
+<div dir="rtl" align="right"> <%= t :user_hello_html, :user => @user.fullname %>
+<h3><%= link_to t(:user_your_contributions), :action => :show %></h3> <p/>
+<%= t(:user_now_what_html) %><p/>
 <ul>
 <% if @user.role_partitioner %>
   <li> <%= link_to t(:user_partscans), :controller => 'scan', :action => 'partition' %> <%= t :user_todo_html, :count => @avail_scanimgs, :things => t(:user_scans) %><br/>
@@ -38,7 +36,7 @@
 <% end 
    if @user.role_typist %>
   <br/>
-  <li><%= t(:user_typedef) %></a> <%= t(:user_todo_html, :count => @avail_defs, :things => t(:user_defs)) %>
+  <li><%= t(:user_typedef_html) %></a> <%= t(:user_todo_html, :count => @avail_defs, :things => t(:user_defs)) %>
   <ul>
     <li><%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_def', :defsize => 'small' %> <%= t(:user_todo_html, :count => @avail_defs_small, :things => t(:user_defs)) %> <br/>
     <li><%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_def', :defsize => 'medium' %> <%= t(:user_todo_html, :count => @avail_defs_medium, :things => t(:user_defs)) %><br/>
@@ -53,7 +51,7 @@
  end
    if @user.role_fixer %>
   <br/>
-  <li><a href="javascript:toggle('fixupwhich')"><%= t(:user_fixup) %></a> <%= t(:user_todo_html, :count => @avail_fixups, :things => t(:user_fixups)) %><br/>
+  <li><a href="javascript:toggle('fixupwhich')"><%= t(:user_fixup_html) %></a> <%= t(:user_todo_html, :count => @avail_fixups, :things => t(:user_fixups)) %><br/>
   <div width="80%">
   <div id="fixupwhich" style="display: none;  ">
     <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_fixup', :defsize => 'small' %> <br/>
@@ -70,7 +68,7 @@
 <% end
      if @user.role_proofer %>
   <br/>
-  <li><%= t(:user_proof, :maxproof => @user.max_proof_level) %> <%= t(:user_todo_html, :count => @avail_proofs, :things => t(:user_proofs)) %>
+  <li><%= t(:user_proof_html, :maxproof => @user.max_proof_level) %> <%= t(:user_todo_html, :count => @avail_proofs, :things => t(:user_proofs)) %>
   <div width="80%">
   <div id="proofwhich">
     <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_proof', :defsize => 'small' %><br/>

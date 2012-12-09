@@ -139,14 +139,15 @@ he:
   definition_sent_to_reproof_html: ההגדרה <b>%{defhead}</b> נשלחה להגהה נוספת.
 
 ## user controller
-  user_hello_html: <p>שלום, %{user}!</p><b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
+  user_hello_html: <p>שלום, %{user}!</p>
+  user_now_what_html: <b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
   user_logout: יציאה מהמערכת
   user_wantmore_html: רוצה עוד סוגי משימות?  פנה/י אל <a href="mailto:asaf@benyehuda.org">asaf@benyehuda.org</a> 
   user_partscans: הפרדת עמודות בסריקת עמוד יחיד או כפול
-  user_abandon: ויתור על המטלה והחזרתה למאגר המטלות הבלתי-מוקצות
+  user_abandon: "<b>ויתור</b> על המטלה והחזרתה למאגר המטלות הבלתי-מוקצות"
   user_partcols: הפרדת אזור ההגדרות מאזור הערות השוליים בעמודה בודדת
   user_partdefs: הפרדת הגדרות זו מזו בתוך חלק מעמודה
-  user_typedef: הקצאת הגדרה והערות השוליים שלה להקלדה
+  user_typedef_html: "<b>הקלדה</b>: הקצאת הגדרה חדשה להקלדה"
   user_deflarge_html: הקצאת הגדרה <b>ארוכה</b>
   user_defmedium_html: הקצאת הגדרה <b>בינונית</b>
   user_defsmall_html: הקצאת הגדרה <b>קצרה</b>
@@ -160,8 +161,8 @@ he:
   user_proofs: הגדרות להגהה
   user_topublish: הגדרות מוכנות
   user_todo_html: (יש עוד <b>%{count}</b> %{things} שלא הוקצו)
-  user_fixup: השלמת הגדרה מוקלדת (שפות זרות, קריאת מלים קשות, וכו') 
-  user_proof: הגהת הגדרה מוקלדת (עד הגהה מספר %{maxproof})
+  user_fixup_html: "<b>השלמת</b> הגדרה מוקלדת (שפות זרות, קריאת מלים קשות, וכו') "
+  user_proof_html: "<b>הגהת</b> הגדרה מוקלדת (עד הגהה מספר %{maxproof})"
   user_publish: שחרר הגדרות מוגהות לדף המילון המצטבר
   user_maintitle: 'העלאת מילון בן-יהודה לרשת: מרכז הפעילות'
   user_back: חזרה אל מרכז הפעילות
@@ -172,6 +173,7 @@ he:
   user_problems: עיון בהגדרות עם בעיות
   user_tofix: הגדרות בעייתיות
   user_details: "פרטי המשתמש/ת "
+  user_your_contributions: דף התרומות שלך
 
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
