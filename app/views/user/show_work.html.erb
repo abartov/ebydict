@@ -19,7 +19,7 @@
   <div width="80%">
   <% if not (@inprog_colimgs.nil? or @inprog_colimgs.empty?) %>
     <% @inprog_colimgs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coljpeg)), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coljpeg)), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
@@ -28,7 +28,7 @@
   <div width="80%">
   <% if not (@inprog_coldefimgs.nil? or @inprog_coldefimgs.empty?) %>
     <% @inprog_coldefimgs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coldefjpeg)), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coldefjpeg)), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
@@ -44,7 +44,7 @@
   </ul>
   <% if not (@inprog_defs.nil? or @inprog_defs.empty?) %>
     <% @inprog_defs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
     end  %>
   <% 
@@ -61,7 +61,7 @@
   <!-- show fixups in progress -->
   <% if not (@inprog_fixups.nil? or @inprog_fixups.empty?) %>
     <% @inprog_fixups.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'fixup', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'fixup', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
     end %>
   </div>
@@ -78,7 +78,7 @@
   <!-- show proofs in progress -->
   <% if not (@inprog_proofs.nil? or @inprog_proofs.empty?) %>
     <% @inprog_proofs.each { |inp| %>
-      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon), :controller => 'type', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp %><br/>
   <% }
      end  %>
   
