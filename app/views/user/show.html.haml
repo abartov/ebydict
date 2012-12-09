@@ -1,8 +1,10 @@
-%h1= t(:user_details) 
+%h1= t(:user_details) + @user.fullname
 / general stuff
-%h2= @user.fullname
+%p
 / user's contributions
-%table
+%hr
+%h2= t(:user_contributions)
+%table{ :border => "1" }
   %tbody
     %tr
       %th= t(:history_typed)
@@ -12,10 +14,12 @@
       - [@user.typed_defs, @user.proofed_defs, @user.fixed_defs].each do |defs|
         %td 
           - unless (defs.nil? or defs.empty?)
-            = "#{defs.length} #{t(:definitions)}: "
+            %b
+              = "#{defs.length} #{t(:definitions)}: "
+            %br
             - defs.each do |d|
-              = d.defhead
+              = link_to d.defhead, :controller => :definition, :action => :view, :id => d
               = raw "&nbsp;&nbsp;&nbsp;&nbsp;"
-
+%p
 %a{ :href => user_index_path }
   = t(:user_back)

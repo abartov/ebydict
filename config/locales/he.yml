@@ -7,23 +7,28 @@
 he:
 ## common
   or: או
+  definitions: הגדרות
 
 ## application controller
   app_flash_notice: 'הצג/הסתר תוצאות פעולה אחרונה'
   status_problem: בעיה
   status_partial: חלקית
   status_need_typing: ממתינה להקלדה
-  status_need_proofing: " ממתינה להגהה מס' %{round}"
+  status_need_proofing: " ממתינה להגהה מספר %{round}"
   status_need_fixup: ממתינה להשלמות
   status_need_publish: מוכנה לשחרור
   status_published: שוחררה לציבור
 
 ## user model
-  user_login_bad_length: 'tmp: login bad length'
-  user_password_bad_length: 'tmp: pwd bad length'
-  user_login_cant_be_blank: 'tmp: login blank!'
-  user_password_cant_be_blank: 'tmp: pwd blank!'
-  user_login_not_unique: 'tmp: login exists!'
+  user_login_bad_length: 'שם החשבון קצר מדי!'
+  user_password_bad_length: 'הסיסמה קצרה מדי!'
+  user_login_cant_be_blank: 'שם החשבון ריק!'
+  user_password_cant_be_blank: 'הסיסמה ריקה!'
+  user_login_not_unique: 'קיים כבר חשבון בשם זה!'
+  user_contributions: "תרומות המשתמש/ת"
+  history_typed: "הקליד/ה"
+  history_proofed: "הגיה/ה"
+  history_fixed: "השלים/ה"
 
 ##  scan controller
   scan_maintitle: 'העלאת מילון בן-יהודה לרשת: מערכת הפרדת סריקות'
@@ -92,6 +97,8 @@ he:
   type_comment_markup: '[[הערה: '
   type_redirect_markup: '[[הפניה: '
   type_unknown: (טרם הוקלד)
+  type_out_of: מתוך 
+  type_curpos: מציג סריקה מספר 
   type_instructions_body_html: |
         לפניכם מסך הקלדה/הגהה של ערך ממילון אליעזר בן-יהודה.  בצד ימין מופיעים שני מקטעים סרוקים מתוך המילון: העליון מכיל הגדרה אחת, או התחלה של הגדרה ארוכה (עם אפשרות דפדוף לחלקים הבאים), והתחתון מכיל את הערות השוליים מאותו טור במילון, שחלקן <b>עשויות</b> להופיע בהגדרה שלפנינו.  המטרה היא להקליד ולהגיה את מה שכתוב במקטעים הסרוקים לתוך תיבות הטקסט בצד השמאלי -- ההגדרה לתיבה העליונה, והערות השוליים <u>הרלבנטיות</u> (כלומר, <b>רק</b> אלו המופיעות בגוף ההגדרה) בתיבת הערות השוליים.
         <p/>
@@ -164,6 +171,7 @@ he:
   user_pwd_changed: הסיסמה שונתה בהצלחה.
   user_problems: עיון בהגדרות עם בעיות
   user_tofix: הגדרות בעייתיות
+  user_details: "פרטי המשתמש/ת "
 
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
@@ -197,7 +205,7 @@ he:
   changes_who: 'בוצע ע"י'
   changes_from: סטטוס קודם
   changes_to: סטטוס נוכחי
-  changes_defhead: שם הערך
+  changes_defhead: שם ההגדרה
   changes_ago: בוצע לפני
 
 ## admin views
