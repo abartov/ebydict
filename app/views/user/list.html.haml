@@ -13,7 +13,7 @@
     - @users.each do |u|
       %tr
         %td= u.login
-        %td= u.fullname
+        %td= link_to u.fullname, :controller => :user, :action => :show, :id => u
         %td= u.email
         %td= u.login_count.to_s
         %td= u.last_login.nil? ? t(:never) : time_ago_in_words(u.last_login)
