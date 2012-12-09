@@ -15,7 +15,7 @@ he:
   status_partial: חלקית
   status_need_typing: ממתינה להקלדה
   status_need_proofing: " ממתינה להגהה מספר %{round}"
-  status_need_fixup: ממתינה להשלמות
+  status_need_fixups: ממתינה להשלמות
   status_need_publish: מוכנה לשחרור
   status_published: שוחררה לציבור
 
