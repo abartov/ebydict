@@ -24,7 +24,8 @@ protect_from_forgery
   end
 
   # global consts
-  URLBASE = 'http://localhost:80'
+  URLBASE = AppConstants.urlbase
+  #'http://localhost:80'
   #FILEBASE = '/BenYehuda/scans'
   FILEBASE = '/var/www'
   NEXT = 1
