@@ -6,6 +6,27 @@ $(document).ready(function() {
 });
 </script>
 <style type="text/css">
+.bordercontainer
+{
+  position:absolute;
+  left:50%;
+  margin-left:-375px;
+  /*background:url('/assets/awful_bg.png') no-repeat;
+  background-size:contain; */
+  width:750px;
+  height:474px;
+}
+.defcontainer
+{
+  text-direction:rtl;
+  text-align:right;
+  /*position:absolute; 
+  left:355px;
+  width:245px; */
+  height:473px; 
+  background-color: #FFFFCC;
+}
+/* left: 353x472; right: 150x473 */
 .defhead
 {
   font-size: 200%;
@@ -13,7 +34,7 @@ $(document).ready(function() {
 }
 .defbody
 {
-  font-family:David,serif;
+  font-family:David, David CLM,serif;
   font-size: 14pt;
 }
 .footnote_num
@@ -28,7 +49,7 @@ $(document).ready(function() {
 }
 .footnote
 {
-  font-family:David,serif;
+  font-family:David, David CLM, serif;
   font-size: 12pt;
 }
 .comment
@@ -52,13 +73,35 @@ $(document).ready(function() {
   font-size: 75%;
   vertical-align: sub;
 }
+.link_back
+{
+  position:absolute;
+  top: 490px;
+}
+.preview_note
+{
+  font-family:David, David CLM, serif;
+  font-size:18pt;
+}
 </style>
-<div class="defcontainer">
-<div class="defhead"><%= raw @defhead %></div>
-<div class="defbody"><%= raw @defbody %></div>
-<hr/>
-<div class="footnotes"><%= raw @footnotes %></div>
+<!-- <div class="bordercontainer"> -->
+<span class="preview_note"><%= t(:definition_preview_from_ebydict_html) %></span>
+<div align="center">
+  <table dir="ltr">
+  <tr><td><img src="/assets/awful_bg_left.png"></td>
+  <td align="right" dir="rtl">
+  <div class="defcontainer">
+    <div class="defhead"><%= raw @defhead %></div>
+    <div class="defbody"><%= raw @defbody %></div>
+    <hr/>
+    <div class="footnotes"><%= raw @footnotes %></div>
+  </div>
+  </td>
+  <td><img src="/assets/awful_bg_right.png"></td>
+  </tr></table>
 </div>
+<!-- </div>-->
+<div class="link_back">
 <p/>
 <%= link_to t(:user_back),  :controller => :user, :action => 'index' %>
-
+</div>
