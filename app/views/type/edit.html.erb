@@ -41,7 +41,7 @@ tinyMCE.init({
                 image : '/assets/problem.png',
     onclick : function() {
       ed.focus();
-      ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+      ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
     }
     });
     ed.addButton('comment', {
@@ -49,7 +49,7 @@ tinyMCE.init({
                 image : '/assets/comment.png',
     onclick : function() {
       ed.focus();
-      ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+      ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
       }
     });
     ed.addButton('redirect', {
@@ -57,7 +57,7 @@ tinyMCE.init({
                 image : '/assets/vide.png',
     onclick : function() {
       ed.focus();
-      ed.selection.setContent('<%= t(:type_redirect_markup) %>'+ed.selection.getContent()+'&#93;&#93; ');
+      ed.selection.setContent('<%= t(:type_redirect_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
       }
     });
     ed.addButton('talmud', {

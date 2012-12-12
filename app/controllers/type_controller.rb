@@ -14,15 +14,19 @@ class TypeController < ApplicationController
       flash[:error] = t(:type_notfixer)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.fixup)
+      call_assign_def_by_size(params[:defsize], AppConstants.fixup, nil)
     end
   end
   def get_proof
-    unless(check_role('proofer'))
+    if not check_role('proofer')
       flash[:error] = t(:type_notproofer)
       redirect_to :controller => 'user'
+    elsif(session[:user].max_proof_level < params[:round])
+      flash[:error] = t(:type_round_not_allowed)
+      redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.proof)
+      round = params[:round].nil? ? nil : params[:round].to_i
+      call_assign_def_by_size(params[:defsize], AppConstants.proof, round)
     end
   end
   def get_def
@@ -30,7 +34,7 @@ class TypeController < ApplicationController
       flash[:error] = t(:type_nottypist)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.type)
+      call_assign_def_by_size(params[:defsize], AppConstants.type, nil)
     end
   end
   def proof
@@ -228,8 +232,8 @@ class TypeController < ApplicationController
     #}
     d.prob_desc = params[:prob_desc]
   end
-  def call_assign_def_by_size(size, action)
-    @thedef = EbyDef.assign_def_by_size(session['user'], size, action)
+  def call_assign_def_by_size(size, action, round)
+    @thedef = EbyDef.assign_def_by_size(session['user'], size, action, round)
     if @thedef.nil?
       flash[:error] = t(:type_no_appropriate_def) 
       redirect_to :controller => 'user'

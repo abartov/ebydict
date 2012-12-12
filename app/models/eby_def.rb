@@ -8,7 +8,7 @@ class EbyDef < ActiveRecord::Base
   validates_inclusion_of :status, :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published )
   validates_associated :assignee
 
-  def self.query_by_user_size_and_action(to_user, size, action)
+  def self.query_by_user_size_and_action(to_user, size, action, round)
     sizecond = ""
     wherecond = "" # what to add to the WHERE clause
     case action
@@ -17,9 +17,10 @@ class EbyDef < ActiveRecord::Base
         action = "type"
         wherecond = "ORDER BY reject_count ASC"
       when AppConstants.proof 
+        round_part = round.nil? ? '' : " and proof_round_passed = #{(round-1).to_s}"
         status = "NeedProof"
         action = "proof"
-        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY reject_count ASC, proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
+        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+round_part+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%' ORDER BY reject_count ASC, proof_round_passed )" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
@@ -38,15 +39,15 @@ class EbyDef < ActiveRecord::Base
       when 'medium'
         sizecond = "= 2"
       when 'large'
-        sizecond = "> 3"
+        sizecond = "> 2"
       else # assume 'small'
         sizecond = " = 1"
     end
     return " from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and eby_defs.status = '#{status}' #{wherecond}" 
 
   end
-  def self.assign_def_by_size(to_user, size, action)
-    sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action)
+  def self.assign_def_by_size(to_user, size, action, round)
+    sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
     rset = EbyDef.find_by_sql(sql+" limit 1")  
     if rset.nil? or rset[0].nil?
       return nil
@@ -57,8 +58,8 @@ class EbyDef < ActiveRecord::Base
       return thedef
     end
   end
-  def self.count_by_action_and_size(user, action, size)
-    sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action)
+  def self.count_by_action_and_size(user, action, size, round)
+    sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action, round)
     return EbyDef.count_by_sql(sql)
   end
   def status_label
