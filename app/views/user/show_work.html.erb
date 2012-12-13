@@ -71,9 +71,9 @@
   <li><%= t(:user_proof_html, :maxproof => @user.max_proof_level) %> 
   <div width="80%">
   <div id="proofwhich">
-    <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_proof', :defsize => 'small' %> <%= t(:user_todo_html, :count => @avail_proofs[:small], :things => t(:user_proofs)) %><br/>
-    <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_proof', :defsize => 'medium' %> <%= t(:user_todo_html, :count => @avail_proofs[:medium], :things => t(:user_proofs)) %><br/>
-    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_proof', :defsize => 'large' %> <%= t(:user_todo_html, :count => @avail_proofs[:large], :things => t(:user_proofs)) %><br/>
+    <%= link_to t(:user_defsmall_html), :controller => 'type', :action => 'get_proof', :defsize => 'small' %> <%= t(:user_todo_html, :count => @avail_proofs['small'], :things => t(:user_proofs)) %><br/>
+    <%= link_to t(:user_defmedium_html), :controller => 'type', :action => 'get_proof', :defsize => 'medium' %> <%= t(:user_todo_html, :count => @avail_proofs['medium'], :things => t(:user_proofs)) %><br/>
+    <%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_proof', :defsize => 'large' %> <%= t(:user_todo_html, :count => @avail_proofs['large'], :things => t(:user_proofs)) %><br/>
   </div>
   <!-- show proofs in progress -->
   <% if not (@inprog_proofs.nil? or @inprog_proofs.empty?) %>
