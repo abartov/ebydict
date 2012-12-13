@@ -35,7 +35,7 @@ class UserController < ApplicationController
     end
     if @user.role_proofer == true
       @avail_proofs = {}
-      [:small, :medium, :large].each do |size|
+      ['small', 'medium', 'large'].each do |size|
         @avail_proofs[size] = ''
         (1..@user.max_proof_level).each do |round|
           @avail_proofs[size] += "#{I18n.t(:type_round)} #{round}: #{EbyDef.count_by_action_and_size(@user, AppConstants.proof, size, round)}; "
