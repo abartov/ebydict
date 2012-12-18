@@ -63,6 +63,7 @@ he:
   type_save: שמור וצא
   type_saveanddone: שמור וסמן סוף %{action}
   type_problem: <-תאר בעיה ושמור
+  type_problem_action: בעיה
   type_problem_btn: בעיה מקומית
   type_text: טקסט
   type_footnotes: הערות שוליים
@@ -77,8 +78,10 @@ he:
   type_todo: לטיפול
   type_done: טופל
   type_saved_kept: ההגדרה נשמרה באותו סטטוס
-  type_await_proof_round: ממתין לסבב הגהה מספר %{round}
-  type_await_fixups: ממתין להשלמות
+  type_await_proof_round: ממתינה לסבב הגהה מספר %{round}
+  type_await_fixups: ממתינה להשלמות
+  type_await_typing: ממתינה להקלדה
+  type_await_publishing: ממתינה לשחרור
   type_proofing_done: תמו כל סבבי ההגהה!  ההגדרה מוכנה לראות אור!
   type_saved_with_status: ההגדרה נשמרה בסטטוס חדש של %{status}
   type_problematic: ההגדרה נשמרה, וסומנה כבעייתית.

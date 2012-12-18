@@ -15,7 +15,6 @@ To-Do
   + translate redirects
   - font
   - container
-- one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
 
 ==low priority==
 - run 'rake notes' and handle code annotated issues
@@ -26,6 +25,7 @@ To-Do
 
 ==done==
 
++ one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
 + localize status names
 + add user stats to user's dashboard
 + make user management and recent-changes visible on the dashboard for admins

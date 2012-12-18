@@ -67,7 +67,7 @@ class EbyDef < ActiveRecord::Base
       when "NeedTyping"
         label = I18n.t(:type_await_typing)
       when "NeedProof"
-        label = I18n.t(:type_await_proofing, :round => self.proof_round_passed + 1)
+        label = I18n.t(:type_await_proof_round, :round => self.proof_round_passed + 1)
       when "NeedFixup"
         label = I18n.t(:type_await_fixups)
       when "Problem"

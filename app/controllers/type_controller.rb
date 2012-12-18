@@ -103,7 +103,7 @@ class TypeController < ApplicationController
           @action = t(:type_fixups)
           @actno = AppConstants.fixup
         when 'Problem'
-          @action = t(:type_problem)
+          @action = t(:type_problem_action)
           @actno = AppConstants.problem
         when 'NeedPublish'
           @action = t(:type_proofing)
