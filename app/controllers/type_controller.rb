@@ -62,8 +62,6 @@ class TypeController < ApplicationController
       redirect_to :controller => 'user'
       return
     elsif not check_role('publisher') and not is_assignee(@thedef)
-      flash[:error] = t(:type_defnotyours)
-      redirect_to :controller => 'user'
       return
     else
       # prepare defpart images for client-side JS to handle
