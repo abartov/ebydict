@@ -18,14 +18,14 @@ class TypeController < ApplicationController
     end
   end
   def get_proof
+    round = params[:round].nil? ? 1 : params[:round].to_i
     if not check_role('proofer')
       flash[:error] = t(:type_notproofer)
       redirect_to :controller => 'user'
-    elsif(session[:user].max_proof_level < params[:round])
+    elsif(session[:user].max_proof_level < round)
       flash[:error] = t(:type_round_not_allowed)
       redirect_to :controller => 'user'
     else
-      round = params[:round].nil? ? nil : params[:round].to_i
       call_assign_def_by_size(params[:defsize], AppConstants.proof, round)
     end
   end
