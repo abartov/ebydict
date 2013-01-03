@@ -205,8 +205,15 @@ tinyMCE.init({
         <tr><td><textarea class="prob" style="font-family:David;font-size:14pt" dir="rtl" align="right" name="prob_desc" cols="15" rows="3"><%= h(@thedef.prob_desc) %></textarea></td>
         <td><%= submit_tag t(:type_problem), :name => 'problem' %></td></tr>
       </table>
-    </div>
     
+    <% if session['user'].role_publisher %>
+      <table>
+        <%  @thedef.events.each {|e| %>
+        <tr><td><%= link_to e.user.fullname, :controller => :user, :action => :show, :id => e.who %></td><td><%=h label_for_status(e.new_status, @thedef.proof_round_passed, false) %></td></tr>
+        <% } %>
+      </table>
+    <% end %>
+    </div>
   </td>
 </tr>
 </table><input type="hidden" name="act" value="<%= @actno  %>"/></form>
@@ -268,7 +275,6 @@ function chfoot(delta) {
    curfootimg = foots[curfoot]; 
    $('#footimg').attr('src', curfootimg);
   }
-  // TODO: figure out why at the end of this func, the view resets to page 1!
 }
 
 function gonext(e) {
