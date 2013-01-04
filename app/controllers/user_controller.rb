@@ -74,7 +74,7 @@ class UserController < ApplicationController
     index
   end
   def show
-    @user = session[:user]
+    @user = EbyUser.find(session[:user].id) # deliberately don't use the session EbyUser instance, to force fresh associations.  TODO: this is inelegant, but I couldn't be bothered to find out why it wasn't refreshed
     if @user.role_publisher and (params[:id] != nil and not params[:id].empty?)
       @user = EbyUser.find(params[:id]) # only admins can look at other users
     end
