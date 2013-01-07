@@ -47,16 +47,19 @@ class EbyDef < ActiveRecord::Base
 
   end
   def self.assign_def_by_size(to_user, size, action, round)
-    sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
-    rset = EbyDef.find_by_sql(sql+" limit 1")  
-    if rset.nil? or rset[0].nil?
-      return nil
-    else
-      thedef = rset[0]
-      thedef.assignedto = to_user.id
-      thedef.save
-      return thedef
+    while round == nil or round > 0
+      sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
+      rset = EbyDef.find_by_sql(sql+" limit 1")  
+      if rset.nil? or rset[0].nil?
+        round -= 1 unless round.nil?
+      else
+        thedef = rset[0]
+        thedef.assignedto = to_user.id
+        thedef.save
+        return thedef
+      end
     end
+    return nil
   end
   def self.count_by_action_and_size(user, action, size, round)
     sql = 'select count(eby_defs.id) '+self.query_by_user_size_and_action(user, size, action, round)
