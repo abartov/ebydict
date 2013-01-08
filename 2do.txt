@@ -5,6 +5,7 @@ To-Do
 - re-layout action buttons, prob. as an action dialog.
 - add instructions page
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
+- handle WIDE footnotes
 
 ==medium priority==
 - add user management
