@@ -140,7 +140,7 @@ class TypeController < ApplicationController
     end
     if params[:abandon]
       do_abandon(@d)
-    elsif params[:commit]
+    elsif params[:commit] or params[:save]
       populate(@d)
       @d.save
       flash[:notice] = t(:type_saved_kept)
@@ -171,16 +171,16 @@ class TypeController < ApplicationController
         still_todo = false
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
           if(@d.read_attribute(which) == 'todo')
-	    still_todo = true
+            still_todo = true
           end
         }
-	if(still_todo)
+        if(still_todo)
           newstat = t(:type_await_fixups)
         else
           @d.status = 'NeedProof'
           @d.proof_round_passed = 0 # start over in any case
           newstat = t(:type_await_proof_round, :round => '1')
-	end
+        end
       elsif act == AppConstants.problem
         @d.status = params[:resolve_to]
         newstat = @d.status_label
@@ -203,7 +203,12 @@ class TypeController < ApplicationController
     else
       flash[:error] = "not sure what I'm supposed to do with this submission.  Notify Asaf."
     end
-    redirect_to :controller => 'user'
+    unless params[:save]
+      redirect_to :controller => 'user'
+    else # if user just wanted to save and continue, render the edit view right back again
+      @thedef = @d
+      edit
+    end
   end
 
   protected

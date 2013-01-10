@@ -60,7 +60,8 @@ he:
   type_prev: החלק הקודם
   type_abandon: זנח את ההגדרה
   type_abandoned: השינויים נזנחו וההגדרה הוחזרה למאגר ואינה מוקצה לך עוד.
-  type_save: שמור וצא
+  type_save: שמור 
+  type_save_and_exit: שמור וצא
   type_saveanddone: שמור וסמן סוף %{action}
   type_problem: <-תאר בעיה ושמור
   type_problem_action: בעיה
