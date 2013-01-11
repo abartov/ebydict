@@ -2,17 +2,17 @@
 // EBYDict stuff
 
 // the following is a bit of generated JS prepared by the typing controller
-<%= @parts_js %>
+<%= raw @parts_js %>
 
 var curpart = 0;
 var curfoot = 0;
 var curimg = parts[curpart];
 var curfootimg = foots[curfoot];
 var humanpart;
-var humanmaxpart = <%= @partcount %>;
+var humanmaxpart = <%= raw @partcount %>;
 var maxpart = humanmaxpart - 1;
 var humanfoot;
-var extra_foots = <%= @extra_foots %>;
+var extra_foots = <%= raw @extra_foots %>;
 
 $(document).ready(function() {
 // TinyMCE stuff
