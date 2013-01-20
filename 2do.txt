@@ -24,7 +24,13 @@ To-Do
 - Improve partitioning views
 - keyboard-based scrolling?
 - auto-linkify references to Bible/Talmud/etc., based on Wikisource-like templates, to be added at typing or proofing time.
-
+- source-validation system
+  - source extractor script/task (per completed volume? for economy of scale!)
+    - clever handling of ibid.!
+  - list source res per source book (e.g. all citations from Leviticus)
+    - per source, attempt to auto-generate a link
+    - per ref, mark valid/invalid auto-link, and valid/invalid citation
+      - offer corrected citation (properly marked as PBY emendation)
 ==done==
 
 + fix font issue that strips bottom of bottom diacritics
