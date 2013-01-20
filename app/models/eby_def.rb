@@ -113,7 +113,7 @@ class EbyDef < ActiveRecord::Base
         newbuf += $` + prefix + '<span class="problem">'+I18n.t(:definition_missing_footnote_body, :num => $1)+'</span>'
         prefix = ''
       else
-        print "$` = #{$`}, $1 = #{$1}, foots = #{foots[$1]}\n"
+        #print "$` = #{$`}, $1 = #{$1}, foots = #{foots[$1]}\n"
         newbuf += $` + prefix + '<span class="footnote_num">'+foots[$1]+'</span><span class="footnote"> '
         prefix = '</span>'
       end
