@@ -193,6 +193,7 @@ tinyMCE.init({
                 <% if @thedef.status == 'Problem' %>
                   <select id="resolve_to" name="resolve_to">
                     <option value="NeedTyping"><%= t(:type_await_typing) %></option>
+                    <option value="NeedFixup"><%= t(:type_await_fixups) %></option>
                     <option value="NeedProof" selected="selected"><%= t(:type_await_proof_round, :round => @thedef.proof_round_passed + 1) %></option>
                     <option value="NeedPublish"><%= t(:type_await_publishing) %></option>
                   </select>
