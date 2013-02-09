@@ -359,7 +359,7 @@ class ScanController < ApplicationController
   def makedef(col, jpeg, defno, is_complete)
     newdef = EbyDef.new(:defhead => t(:type_unknown), :reject_count => 0, :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'))
     newdef.save
-    defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'])
+    defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'].id)
     defev.save
     newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
     newdefpart.save
@@ -389,7 +389,7 @@ class ScanController < ApplicationController
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
       thedef.save
-      defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'])
+      defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
       defev.save
     end
   end
@@ -416,7 +416,7 @@ class ScanController < ApplicationController
       defpart.save
       # save
       if (is_complete or is_newdef_at_nextcol(col)) 
-        defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'])
+        defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
         thedef.status = 'NeedTyping'
         defev.save
       end
