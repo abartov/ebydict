@@ -8,8 +8,11 @@ gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
 gem 'mysql2' 
 gem 'json'
-gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
-gem 'mongrel_cluster'
+#gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
+#gem 'mongrel_cluster'
+#gem 'dispatcher'
+#gem 'daemons', '~> 1.0.10' # for mongrel
+gem 'thin'
 gem 'haml'
 # Gems used only for assets and not required
 # in production environments by default.
