@@ -6,6 +6,7 @@
 
 var curpart = 0;
 var curfoot = 0;
+var reached_end = false;
 var curimg = parts[curpart];
 var curfootimg = foots[curfoot];
 var humanpart;
@@ -109,10 +110,33 @@ tinyMCE.init({
         $("body").css({ overflow: 'inherit' })
       }
     });
-
+  $("#not_done").dialog({
+    modal: true,
+    title: '<%= t(:type_not_done) %>',
+    overlay: {opacity: 0.5, background: "black" },
+    width:450,
+    autoResize:true,
+    autoOpen:false,
+    open: function(event, ui) {
+      $("body").css({ overflow: 'hidden'})
+    },
+    beforeClose: function(event, ui) {
+      $("body").css({ overflow: 'hidden'})
+    }
+  });
   $('.instructions_button').click(function() { 
   $('#instructions').show().dialog("open");
     });
+  $("#edit_form").submit(function() {
+    if ($(this).data('clicked').is('[name=save_and_done]') && !reached_end) {
+      $('#not_done').show().dialog("open");
+      return false;
+    }
+    return true;
+  });
+  $('form').click(function(event) {
+      $(this).data('clicked',$(event.target))
+  });
 });
 </script><style type="text/css">
 
@@ -162,9 +186,16 @@ tinyMCE.init({
   padding: 10px;
 }
 
-</style><%= form_tag '/type/processtype/'+@thedef.id.to_s %> <!-- instructions popup --> <div id="instructions" class="dialog" style="display:none; overflow:auto;  direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
+</style><%= form_tag '/type/processtype/'+@thedef.id.to_s, { :id => 'edit_form' } %> 
+<!-- instructions popup --> 
+<div id="instructions" class="dialog" style="display:none; overflow:auto;  direction:rtl; text-align:right;" title="<%= t(:type_instructions_title) %>">
 <%= t(:type_instructions_body_html) %>
-</div> <!-- main editing area --> <table>
+</div>
+<!-- not done with all def parts warning dialog -->
+<div id="not_done" class="dialog" style="display:none; overflow:auto; direction:rtl; text-align:right;">
+<%= t(:type_not_done_body_html) %>
+</div>
+ <!-- main editing area --> <table>
 <tr>
   <td>
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
@@ -246,6 +277,7 @@ function chimg(delta) {
     $('#but_prev2').show();
   }
   if(curpart == maxpart) {
+    reached_end = true;
     $('#but_next').hide();
     $('#but_next2').hide();
     if(extra_foots > 0)
