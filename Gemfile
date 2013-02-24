@@ -7,7 +7,8 @@ gem 'rails', '>=3.2.11'
 gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
 gem 'mysql2' 
-gem 'json'
+gem 'json', '>=1.7.7'
+
 #gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 #gem 'mongrel_cluster'
 #gem 'dispatcher'
