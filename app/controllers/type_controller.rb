@@ -183,6 +183,7 @@ class TypeController < ApplicationController
         end
       elsif act == AppConstants.problem
         @d.status = params[:resolve_to]
+        @d.proof_round_passed += 1 if params['increase_proof'] == '1'
         newstat = @d.status_label
       else
         throw Exception.new

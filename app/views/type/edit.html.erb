@@ -227,9 +227,13 @@ tinyMCE.init({
                     <option value="NeedFixup"><%= t(:type_await_fixups) %></option>
                     <option value="NeedProof" selected="selected"><%= t(:type_await_proof_round, :round => @thedef.proof_round_passed + 1) %></option>
                     <option value="NeedPublish"><%= t(:type_await_publishing) %></option>
-                  </select>
+                  </select>&nbsp;
+                  <%= t(:type_inc_proof) %>
+                  <%= check_box_tag 'increase_proof', '1', true %>
+                  </td></tr><tr>
+                <% else %>
+                  </td>
                 <% end %>
-            </td>
             <td><%= submit_tag t(:type_save_and_exit), :name => 'commit' %></td><td><%= submit_tag t(:type_save), :name => 'save' %></td></tr><tr>
         <td><%= submit_tag t(:type_abandon), :name => 'abandon' %></td>
         <td><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></td>
