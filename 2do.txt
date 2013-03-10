@@ -18,6 +18,11 @@ To-Do
   - font
   - container
 + add button for 'save now' without exit
+- add 'proof_round_passed' to eby_def_events, then fix status code and publisher view in typing 
+- implement publishing
+- design and implement final definition browsing
+- design and implement final definition view
+- design and implement a clever search mechanism (precise with nikkud, stripping nikkud, perhaps matching partial nikkud, perhaps even with errors?)
 
 ==low priority==
 - run 'rake notes' and handle code annotated issues
