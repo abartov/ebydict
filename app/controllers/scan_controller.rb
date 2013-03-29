@@ -352,7 +352,7 @@ class ScanController < ApplicationController
     last_slash = fname.rindex('/')
     filename = fname.slice(last_slash+1, fname.length - last_slash - 1)
     # TODO: optimize this to some app-level variable instead of a conditional here
-    partdir = ENV['RAILS_ENV'] == 'production' ? PART_JPEGS_DIR : DEV_PART_JPEGS_DIR   
+    partdir = (Rails.env == 'production' ? PART_JPEGS_DIR : DEV_PART_JPEGS_DIR)   
     partname = partdir+'/'+prefix+filename
     return partname
   end
