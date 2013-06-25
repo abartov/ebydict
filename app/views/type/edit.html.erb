@@ -185,6 +185,22 @@ tinyMCE.init({
   background:#000000;
   padding: 10px;
 }
+.controls {
+  position:fixed;
+  top:2px;
+  left:0px;
+  width:400px;
+  overflow:auto;
+}
+.scans {
+  /*float:right;*/
+  margin-left:400px;
+  top:2px;
+  width:auto;
+/*  max-width: 800px; */
+  overflow-x:scroll;
+  overflow-y:auto;
+}
 
 </style><%= form_tag '/type/processtype/'+@thedef.id.to_s, { :id => 'edit_form' } %> 
 <!-- instructions popup --> 
@@ -195,19 +211,22 @@ tinyMCE.init({
 <div id="not_done" class="dialog" style="display:none; overflow:auto; direction:rtl; text-align:right;">
 <%= t(:type_not_done_body_html) %>
 </div>
- <!-- main editing area --> <table>
+ <!-- main editing area -->
+<!-- <table>
 <tr>
-  <td>
+<td>-->
+<div class="scans">
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
     <img id="defpartimg" border="1" src=""/><p/>
     <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
     <img id="footimg" border="1" src=""/><p/>
-
-  </td>
-  <td><!-- TinyMCE goes here -->
-    <div style="position: fixed; top:25px">
+</div>
+<!-- </td><td> -->
+<div class="controls">
+  <!-- TinyMCE goes here -->
+    <div>
 <span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
     
       <table><tr><td><textarea class="mceEditor" id="deftext" name="deftext" rows="10" cols="30"><%= h(@thedef.deftext) %></textarea></td><td> &nbsp;&nbsp; <%= t(:type_text) %></td></tr></table>
@@ -250,9 +269,8 @@ tinyMCE.init({
       </table>
     <% end %>
     </div>
-  </td>
-</tr>
-</table><input type="hidden" name="act" value="<%= @actno  %>"/></form>
+</div><!-- </tr></table> -->
+<input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
 function chimg(delta) {
   curpart += delta;
