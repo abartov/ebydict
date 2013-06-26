@@ -122,7 +122,23 @@ class EbyDef < ActiveRecord::Base
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
   end
-
+  def predecessor_def
+    d = nil
+    if part_images.first.defno > 0
+      # the prev def must be the one ending on this same colimg with defno-1
+      return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef 
+    else
+      # we'd have to find the last def of the previous column, which may be on a different page
+      # TODO: continue this logic -- find the def, check status, etc.
+      return nil
+    end
+  end 
+  def successor_def
+  end
+  def prev_published?
+  end
+  def next_published?
+  end
   protected
   
   def mass_replace_html(buf)
