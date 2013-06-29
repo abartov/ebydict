@@ -18,4 +18,16 @@ class EbyColumnImage < ActiveRecord::Base
     }
     return nil
   end
+  def last_def_part
+    ret = def_part_images.first
+    def_part_images.each {|dp|
+      ret = dp if dp.defno > ret.defno
+    }
+    return ret
+  end
+  def def_by_defno(defno)
+    d = def_part_images.where(defno: defno).first
+    return nil if d.nil?
+    return d.thedef
+  end
 end

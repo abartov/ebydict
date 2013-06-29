@@ -122,18 +122,32 @@ class EbyDef < ActiveRecord::Base
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
   end
+  def volume
+    return part_images.first.colimg.scan.volume # this, like much else, assumes defs don't span volumes
+  end
+  def first?
+   unless is_volume_partitioned(volume)
+     raise VolumeNotCompletelyPartitioned
+   end
+   return false if part_images.first.defno > 0
+   prevcol = col_from_col(part_images.first.colimg, PREV)
+    
+  end 
+  def last?
+  end 
   def predecessor_def
-    d = nil
     if part_images.first.defno > 0
       # the prev def must be the one ending on this same colimg with defno-1
       return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef 
     else
       # we'd have to find the last def of the previous column, which may be on a different page
-      # TODO: continue this logic -- find the def, check status, etc.
-      return nil
+      prevcol = col_from_col(part_images.first.colimg, PREV)
+      return nil if prevcol.nil? or prevcol.status != 'Partitioned'
+      return prevcol.last_defpart.thedef
     end
   end 
   def successor_def
+    
   end
   def prev_published?
   end

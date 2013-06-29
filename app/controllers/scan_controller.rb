@@ -212,7 +212,6 @@ class ScanController < ApplicationController
       else
         last_def = nil
         colimg = ImageList.new(@col.coldefjpeg)
-        #debugger
         seps = parse_seps(params[:seps]) 
         if seps.nil?
           # no partitions at all (i.e. the entire coldef is one definition (or continuation of one!)
@@ -424,11 +423,25 @@ class ScanController < ApplicationController
       return thedef
     end
   end
+  def check_for_end_of_volume(col)
+    # if all scans and all columns of the volume have been partitioned, we should mark the very last def NeedTyping rather than Partial
+    if is_volume_partitioned(col.scan.volume)
+      # for safety, look up the very last def manually rather than assume it's this exact column
+      last_col = EbyColumnImage.find(:first, :order => "pagenum desc, colnum desc")
+      last_def = last_col.def_part_images.order("defno desc").first.thedef # find last defpartimage for col and get its def
+      last_def.status = "NeedTyping" 
+      last_def.save! # whee!
+    end
+  end
   def collect_orphan_partdefs_for_col(col, lastdef)
     curcol = col
     curdef = lastdef
     begin 
-      nextcol = col_from_col(curcol, NEXT) or return
+      nextcol = col_from_col(curcol, NEXT)
+      if nextcol.nil?
+        check_for_end_of_volume(curcol)
+        return
+      end
       if(nextcol.status == 'GotOrphans')
         # orphan defparts have defno and partnum both 0
         orphan_part = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{nextcol.id} and defno = 0 and partnum = 0")
@@ -444,7 +457,7 @@ class ScanController < ApplicationController
             curdef.status = 'NeedTyping' # Whee!
             curdef.save
             orphan_part = nil # exit loop
-	  elsif nextpart.nil?
+	        elsif nextpart.nil?
             curcol = nextcol
             last_defpart = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{curcol.id}", :order => 'defno desc') # find LAST def of next column
             curdef = last_defpart.thedef

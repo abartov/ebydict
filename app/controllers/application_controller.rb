@@ -60,6 +60,14 @@ protect_from_forgery
     end
     return retcol
   end
+  # determine whether a volume of scans is _completely_ partitioned (i.e. all pages, all columns, all defs within columns)
+  # this is crucial for generating the dictionary view, determining with certainty whether defs are first/last, etc.
+  def is_volume_partitioned(vol)
+    return false if EbyScanImage.where(status: 'NeedPartition').count > 0
+    return false if EbyColumnImage.where.not(status: 'Partitioned').count > 0
+    return true
+  end
+
   before_filter :login_required
   #before_filter [:set_locale, :login_required]
 

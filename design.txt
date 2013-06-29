@@ -76,6 +76,7 @@ a DEF:
   - may be promoted/demoted between statuses as needed.
   - may be assigned/unassigned back and forth between users.  Any def may only be assigned to one user at a time (but a user may have multiple defs assigned to them)
   - is related to N def-part-images, each def-part-image knowing its place in the sequence of the def's images
+  - does not span volumes
 
 a USER:
   - has boolean ROLE_* fields: ROLE_PARTITIONER, ROLE_TYPIST, ROLE_FIXER, ROLE_PROOFER, ROLE_PUBLISHER, all defaulting to FALSE
