@@ -11,22 +11,17 @@ class EbyColumnImage < ActiveRecord::Base
  
   validates_uniqueness_of :coljpeg
   def def_part_by_defno(defno)
-    def_part_images.each {|dp|
-      if dp.defno == defno
-        return dp
-      end
-    }
-    return nil
+    return def_part_images.where(defno: defno).first
+  end
+  # NB: this is the last def part _in the column_, not the last part of any particular def
+  def first_def_part
+    return def_part_images.minimum(:defno)
   end
   def last_def_part
-    ret = def_part_images.first
-    def_part_images.each {|dp|
-      ret = dp if dp.defno > ret.defno
-    }
-    return ret
+    return def_part_images.maximum(:defno)
   end
   def def_by_defno(defno)
-    d = def_part_images.where(defno: defno).first
+    d = def_part_by_defno(defno)
     return nil if d.nil?
     return d.thedef
   end

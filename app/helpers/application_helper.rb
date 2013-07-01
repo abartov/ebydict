@@ -40,4 +40,5 @@ module ApplicationHelper
         return I18n.t(:status_published)
     end
   end
+
 end

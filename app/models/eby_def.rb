@@ -1,4 +1,5 @@
 class EbyDef < ActiveRecord::Base
+  include EbyUtils
   attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
@@ -126,8 +127,9 @@ class EbyDef < ActiveRecord::Base
     return part_images.first.colimg.scan.volume # this, like much else, assumes defs don't span volumes
   end
   def first?
+   # do I still need this method?
    unless is_volume_partitioned(volume)
-     raise VolumeNotCompletelyPartitioned
+     raise VolumeNotCompletelyPartitioned.new
    end
    return false if part_images.first.defno > 0
    prevcol = col_from_col(part_images.first.colimg, PREV)
@@ -136,7 +138,10 @@ class EbyDef < ActiveRecord::Base
   def last?
   end 
   def predecessor_def
-    if part_images.first.defno > 0
+    unless is_volume_partitioned(volume)
+      raise VolumeNotCompletelyPartitioned.new
+    end
+    if part_images.first.defno > 0 # easy case
       # the prev def must be the one ending on this same colimg with defno-1
       return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef 
     else
@@ -147,12 +152,22 @@ class EbyDef < ActiveRecord::Base
     end
   end 
   def successor_def
-    
+    unless is_volume_partitioned(volume)
+      raise VolumeNotCompletelyPartitioned.new
+    end
+    debugger
+    if part_images.last.defno < part_images.last.colimg.last_def_part  # easy case
+      return part_images.last.colimg.def_by_defno(part_images.last.defno + 1)
+    else
+      nextcol = col_from_col(part_images.last.colimg, NEXT)
+      return nil if nextcol.nil? or nextcol.status != 'Partitioned' # latter cond shouldn't happen
+      return nextcol.first_defpart.thedef
+    end
   end
-  def prev_published?
+  def published?
+    return status == 'Published'
   end
-  def next_published?
-  end
+
   protected
   
   def mass_replace_html(buf)
@@ -162,5 +177,4 @@ class EbyDef < ActiveRecord::Base
     buf.gsub!(/\[\[#{I18n.t(:type_redirect)}:\s*([^\]]+?)\]\]/, '<span class="redirect">\1</span>') # TODO: replace with actual redirecting logic?
     return buf
   end
-   
 end

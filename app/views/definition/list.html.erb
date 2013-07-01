@@ -1,21 +1,24 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <h1>מילון העברית הישנה והחדשה מאת אליעזר בן-יהודה</h1>
-
+<% # assumes @defs is already dictionary-sorted %>
 <%
   emitted_ellipsis = false  
   for d in @defs
     #since = d.events.where(:new_status => 'Published')[0].created_at 
     (rendered_body, rendered_footnotes) = d.render_body_as_html
-    unless d.prev_published? or emitted_ellipsis %>
+    prev = d.predecessor_def
+    unless prev.nil? or prev.published? or emitted_ellipsis %>
       <div class="ellipsis">...</div>
       <hr/>
     <% end %>
+    <a name="def_#{d.id}"/>
     <div class="defhead"><%= d.defhead %></div>
     <div class="deftext"><%= raw rendered_body %></div>
     <br/>
     <div class="defnotes"><%= raw rendered_footnotes %></div>
     <hr/>
-    <% unless d.next_published? %>
+    <% nextdef = d.successor_def
+       unless nextdef.nil? or nextdef.published? %>
       <div class="ellipsis">...</div>
       <hr/>
     <% emitted_ellipsis = true

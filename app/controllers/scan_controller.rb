@@ -202,6 +202,7 @@ class ScanController < ApplicationController
     end
   end
   def dopartdef
+    debugger
     @col = EbyColumnImage.find_by_id(params[:id])
     begin
       if params[:abandon]
@@ -239,13 +240,13 @@ class ScanController < ApplicationController
         if params[:first_cont] == 'no' # see if previous column had a partial def waiting to know it's actually complete
           mark_prev_col_def_complete(@col)
         end
-        collect_orphan_partdefs_for_col(@col, last_def) unless last_def.nil? # resolve partial defs continuing a def from THIS col!
         if @col.status == 'NeedDefPartition' # only mark as partition if status wasn't changed (e.g. to GotOrphans by add_to_prev_def)
           @col.status = 'Partitioned'
         end 
         @col.defpartitioner = session['user']
         @col.assignee = nil
         @col.save
+        collect_orphan_partdefs_for_col(@col, last_def) unless last_def.nil? # resolve partial defs continuing a def from THIS col!
 
         flash[:notice] = "Partitioned!" # TODO: improve message
         if params[:save_and_next]
@@ -438,6 +439,7 @@ class ScanController < ApplicationController
     curdef = lastdef
     begin 
       nextcol = col_from_col(curcol, NEXT)
+      debugger
       if nextcol.nil?
         check_for_end_of_volume(curcol)
         return

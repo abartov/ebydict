@@ -1,6 +1,6 @@
 class DefinitionController < ApplicationController
   def list
-    @defs = EbyDef.where(:status => 'Published').page(params[:page])
+    @defs = EbyDef.where(:status => 'Published').order("defhead asc").page(params[:page])
   end
   def listpub
     if check_role('publisher')

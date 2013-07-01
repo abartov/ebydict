@@ -1,6 +1,9 @@
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
+class VolumeNotCompletelyPartitioned < Exception
+
+end
 class ApplicationController < ActionController::Base
 protect_from_forgery
   helper :all # include all helpers, all the time
@@ -28,8 +31,6 @@ protect_from_forgery
   #'http://localhost:80'
   #FILEBASE = '/BenYehuda/scans'
   FILEBASE = '/var/www'
-  NEXT = 1
-  PREV = -1
   LAST_PROOF_ROUND = 3
 
   def url_from_file(filename)
@@ -42,30 +43,12 @@ protect_from_forgery
     url = URLBASE + filepart
     return url
   end
-  def col_from_col(col, delta) # retrieves next or prev column image, based on given colimg object and delta (NEXT, PREV)
-    return nil unless delta == NEXT || delta == PREV
-    retcolnum = col.colnum + delta
-    if retcolnum < 1 # look for prev scanimg
-      page = col.pagenum-1
-      prevscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
-      return nil if prevscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+prevscan.id.to_s, :order => 'colnum desc') # find LAST column of scan
-    elsif retcolnum > col.scan.columns # look for next scanimg
-      page = col.pagenum+1
-      nextscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
-      return nil if nextscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+nextscan.id.to_s, :order => 'colnum asc') # find FIRST column of scan
-    else # simple case - same scan, different col
-      retcol = EbyColumnImage.find(:first, :conditions => "eby_scan_image_id = "+col.scan.id.to_s+" and colnum = #{retcolnum}")
-    end
-    return retcol
-  end
-  # determine whether a volume of scans is _completely_ partitioned (i.e. all pages, all columns, all defs within columns)
-  # this is crucial for generating the dictionary view, determining with certainty whether defs are first/last, etc.
-  def is_volume_partitioned(vol)
-    return false if EbyScanImage.where(status: 'NeedPartition').count > 0
-    return false if EbyColumnImage.where.not(status: 'Partitioned').count > 0
-    return true
+  def first_def
+    raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(1)
+    minpage = EbyScanImage.where(volume: 1).minimum(:firstpagenum)
+    sc = EbyScanImage.where(firstpagenum: minpage, volume: 1).first # first scan of first volume
+    c = sc.col_images.where(colnum: 1).first # first col
+    return c.def_by_defno(0) # first def
   end
 
   before_filter :login_required
