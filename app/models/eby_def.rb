@@ -148,7 +148,7 @@ class EbyDef < ActiveRecord::Base
       # we'd have to find the last def of the previous column, which may be on a different page
       prevcol = col_from_col(part_images.first.colimg, PREV)
       return nil if prevcol.nil? or prevcol.status != 'Partitioned'
-      return prevcol.last_defpart.thedef
+      return prevcol.last_def_part.thedef
     end
   end 
   def successor_def
@@ -160,8 +160,19 @@ class EbyDef < ActiveRecord::Base
     else
       nextcol = col_from_col(part_images.last.colimg, NEXT)
       return nil if nextcol.nil? or nextcol.status != 'Partitioned' # latter cond shouldn't happen
-      return nextcol.first_defpart.thedef
+      return nextcol.def_by_defno(0)
     end
+  end
+  def next_published_def
+    unless is_volume_partitioned(volume)
+      raise VolumeNotCompletelyPartitioned.new
+    end
+    d = self.successor_def
+    until d.nil?
+      return d if d.published?
+      d = d.successor_def
+    end 
+    return d
   end
   def published?
     return status == 'Published'

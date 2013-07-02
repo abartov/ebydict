@@ -15,6 +15,7 @@ class EbyColumnImage < ActiveRecord::Base
   end
   # NB: this is the last def part _in the column_, not the last part of any particular def
   def first_def_part
+    # er, this seems like a silly method -- this would be definition be zero, wouldn't it?  TODO: verify and remove
     return def_part_images.minimum(:defno)
   end
   def last_def_part
