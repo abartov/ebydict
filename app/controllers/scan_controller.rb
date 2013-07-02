@@ -202,7 +202,6 @@ class ScanController < ApplicationController
     end
   end
   def dopartdef
-    debugger
     @col = EbyColumnImage.find_by_id(params[:id])
     begin
       if params[:abandon]
@@ -439,7 +438,6 @@ class ScanController < ApplicationController
     curdef = lastdef
     begin 
       nextcol = col_from_col(curcol, NEXT)
-      debugger
       if nextcol.nil?
         check_for_end_of_volume(curcol)
         return

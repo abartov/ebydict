@@ -155,7 +155,6 @@ class EbyDef < ActiveRecord::Base
     unless is_volume_partitioned(volume)
       raise VolumeNotCompletelyPartitioned.new
     end
-    debugger
     if part_images.last.defno < part_images.last.colimg.last_def_part  # easy case
       return part_images.last.colimg.def_by_defno(part_images.last.defno + 1)
     else
