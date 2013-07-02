@@ -8,7 +8,7 @@ class DefinitionController < ApplicationController
       @pubdefs = EbyDef.where(:status => @status).page(params[:page])
     else
       flash[:error] = t(:definition_not_publisher)
-      redirect_to :action => 'list'
+      redirect_to :action => 'listpub'
     end
   end
   def publish

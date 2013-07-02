@@ -6,7 +6,6 @@ To-Do
 - add instructions page
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
 - handle WIDE footnotes
-+ warn before save_and_done if not all def parts were viewed
 
 ==medium priority==
 - add user management
@@ -14,10 +13,9 @@ To-Do
   - Forgot-my-password handling
 - improve definition view: 
   + clearly demarcate footnotes
-  + translate redirects
+  - translate redirects
   - font
   - container
-+ add button for 'save now' without exit
 - add 'proof_round_passed' to eby_def_events, then fix status code and publisher view in typing 
 - implement publishing
 - design and implement final definition browsing
@@ -37,8 +35,11 @@ To-Do
     - per source, attempt to auto-generate a link
     - per ref, mark valid/invalid auto-link, and valid/invalid citation
       - offer corrected citation (properly marked as PBY emendation)
+- convert remaining ERB to HAML
 ==done==
 
++ warn before save_and_done if not all def parts were viewed
++ add button for 'save now' without exit
 + fix font issue that strips bottom of bottom diacritics
 + one does not proof one's own work.  Each user may only be involved with a definition in exactly ONE phase of typing/proofing.  TBD: what about fixups?
 + localize status names
