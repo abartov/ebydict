@@ -16,7 +16,7 @@ class DefinitionController < ApplicationController
     @d.status = 'Published'
     @d.save
     flash[:notice] = t(:definition_published_html, :defhead => @d.defhead).html_safe
-    redirect_to :action => 'list'
+    redirect_to :action => 'listpub'
   end
 
   def reproof
@@ -24,7 +24,7 @@ class DefinitionController < ApplicationController
     @d.status = 'NeedProof'
     @d.save
     flash[:notice] = t(:definition_sent_to_reproof_html, :defhead => @d.defhead).html_safe
-    redirect_to :action => 'list'
+    redirect_to :action => 'listpub'
   end
 
   # process a definition and render it in preview/final mode
