@@ -1,3 +1,82 @@
 // Place all the styles related to the Definition controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.comment
+{
+  color:blue;
+}
+.source
+{
+  color: green;
+  font-size: 75%;
+}
+.redirect
+{
+  color:white;
+  background-color:maroon;
+  font-size: 120%;
+}
+.problem
+{
+  color: red;
+  font-size: 75%;
+  vertical-align: sub;
+}
+.link_back
+{
+/*  position:absolute;
+  top: 490px; */
+}
+.preview_note
+{
+  font-family:David, David CLM, serif;
+  font-size:18pt;
+}
+.defhead
+{
+  font-size: 200%;
+  font-weight: bold;
+}
+.defbody
+{
+  font-family:David, David CLM,serif;
+  font-size: 14pt;
+}
+.footnote_num
+{
+  font-size: 70%;
+  vertical-align: super;
+}
+.footnote_ref
+{
+  font-size: 70%;
+  vertical-align: super;
+}
+.footnote
+{
+  font-family:David, David CLM, serif;
+  font-size: 12pt;
+}
+
+.bordercontainer
+{
+  position:absolute;
+  left:50%;
+  margin-left:-375px;
+  /*background:url('/assets/awful_bg.png') no-repeat;*/
+  /*background-size:contain; */
+  width:750px;
+  height:474px;
+}
+.defcontainer
+{
+  text-direction:rtl;
+  text-align:right;
+  /*position:absolute; 
+  left:355px;
+  width:245px; */
+  height:473px;
+  background-color: #FFFFCC;
+}
+/* left: 353x472; right: 150x473 */
