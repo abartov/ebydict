@@ -43,13 +43,6 @@ protect_from_forgery
     url = URLBASE + filepart
     return url
   end
-  def first_def
-    raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(1)
-    minpage = EbyScanImage.where(volume: 1).minimum(:firstpagenum)
-    sc = EbyScanImage.where(firstpagenum: minpage, volume: 1).first # first scan of first volume
-    c = sc.col_images.where(colnum: 1).first # first col
-    return c.def_by_defno(0) # first def
-  end
 
   before_filter :login_required
   #before_filter [:set_locale, :login_required]

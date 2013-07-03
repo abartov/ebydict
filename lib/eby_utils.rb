@@ -28,5 +28,16 @@ module EbyUtils
     end
     return retcol
   end
+  def first_def_for_vol(vol)
+    raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
+   
+    minpage = EbyScanImage.where(volume: 1).minimum(:firstpagenum)
+    sc = EbyScanImage.where(firstpagenum: minpage, volume: vol).first # first scan of first volume
+    c = sc.col_images.where(colnum: 1).first # first col
+    return c.def_by_defno(0) # first def
  
+  end
+  def first_def
+    return first_def_for_vol(1)
+  end
 end
