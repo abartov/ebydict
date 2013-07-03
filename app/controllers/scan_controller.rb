@@ -1,6 +1,6 @@
 require 'RMagick'
 include Magick
-
+include EbyUtils
 class ScanController < ApplicationController
   ZOOM_FACTOR = 0.25 # perhaps 0.33?
   COL_ZOOM_FACTOR = 0.33
