@@ -1,5 +1,5 @@
 class TypeController < ApplicationController
-
+  include EbyUtils
   before_filter :check_the_roles
 
   def index
