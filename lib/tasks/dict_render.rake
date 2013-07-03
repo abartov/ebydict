@@ -7,9 +7,16 @@ namespace :dict do
     print "\nEbyDict - rendering volumes 1 to #{maxvol}!\n"
     for vol in 1..maxvol do
       # collect all the published defs _in the original order_ (therefore not through a query)
-      pubdefs = collect_published_defs_for_vol(vol)
+      print "Volume #{vol} -\n  building defs array... "
+      @defs = collect_published_defs_for_vol(vol)
       # TODO: then render them to a static file through a view via render_to_string
-      print "DEBUG: Pubdefs = \n #{pubdefs.to_s}\n"
+      print "done!\n  Rendering... "
+      template = File.read("#{Rails.root}/app/views/definition/list.html.erb")
+      renderer = ERB.new(template)
+      result = renderer.result(binding) # pass the current context, to give access to @defs
+      print "done!\n  Writing file... "
+      File.open("full_dict.html","wb") {|f| f.write(result) }
+      print "done!\nDone rendering volume #{vol} of #{maxvol}.\n"
     end
   end
 end
