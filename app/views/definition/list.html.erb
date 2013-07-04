@@ -15,7 +15,7 @@
     else
       (rendered_body, rendered_footnotes) = d.render_body_as_html
       %>
-    <a name="def_<%= d.id %>"/>
+    <span class="permalink"><a name="def_<%= d.id %>" href="<%= d.permalink %>"><%= t(:definition_permalink) %>&nbsp;</span>
     <div class="defhead"><%= d.defhead %></div>
     <div class="deftext"><%= rendered_body %></div>
     <% if rendered_footnotes =~ /\S/ %>

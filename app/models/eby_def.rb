@@ -177,7 +177,9 @@ class EbyDef < ActiveRecord::Base
   def published?
     return status == 'Published'
   end
-
+  def permalink
+    return AppConstants.urlbase+"/definition/view/#{id}"
+  end
   protected
   
   def mass_replace_html(buf)
