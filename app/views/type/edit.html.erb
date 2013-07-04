@@ -88,7 +88,6 @@ tinyMCE.init({
 
     }
 });
-
   chimg(0);
   $(".dialog").hide();
   
@@ -219,11 +218,11 @@ tinyMCE.init({
 <td>-->
 <div class="scans">
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
-    <img id="defpartimg" border="1" src=""/><p/>
+    <img id="defpartimg" border="1" src="/assets/loading.png"/><p/>
     <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
-    <img id="footimg" border="1" src=""/><p/>
+    <img id="footimg" border="1" src="/assets/loading.png"/><p/>
 </div>
 <!-- </td><td> -->
 <div class="controls">
@@ -274,16 +273,23 @@ tinyMCE.init({
 </div><!-- </tr></table> -->
 <input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
-function chimg_loading() {
-  $('#defpartimg').attr('src', ''); // first make any existing image (when paging) disappear
+function chfoot_loading() {
   $('#footimg').attr('src', '');
-  $('#defpartimg').attr('src', '/assets/loading.png');
   $('#footimg').attr('src', '/assets/loading.png');
 }
-
+function chimg_loading() {
+  $('#defpartimg').attr('src', ''); // first make any existing image (when paging) disappear
+  $('#defpartimg').attr('src', '/assets/loading.png');
+  chfoot_loading();
+}
 function chimg(delta) {
-  debugger;
   chimg_loading(); // start with the "loading..." image
+  setTimeout(function() {
+    actual_chimg(delta);
+  }, 500);
+}
+
+function actual_chimg(delta) {
   curpart += delta;
   curfoot += delta;
   if(curpart > maxpart)
@@ -324,6 +330,13 @@ function chimg(delta) {
 }
 
 function chfoot(delta) {
+  chfoot_loading(); // start with the "loading..." image
+  setTimeout(function() {
+    actual_chfoot(delta);
+  }, 500);
+
+}
+function actual_chfoot(delta) {
   curfoot += delta;
   if(curfoot == maxpart) {
     $('#foot_prev').hide();
