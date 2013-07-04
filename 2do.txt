@@ -2,12 +2,12 @@ To-Do
 -----
 
 ==high priority==
-- re-layout action buttons, prob. as an action dialog.
 - add instructions page
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
 - handle WIDE footnotes
 
 ==medium priority==
+- re-layout action buttons, prob. as an action dialog.
 - add user management
   - user preferences page (change password, what else?)
   - Forgot-my-password handling
@@ -17,7 +17,6 @@ To-Do
   - font
   - container
 - add 'proof_round_passed' to eby_def_events, then fix status code and publisher view in typing 
-- implement publishing
 - design and implement final definition browsing
 - design and implement final definition view
 - design and implement a clever search mechanism (precise with nikkud, stripping nikkud, perhaps matching partial nikkud, perhaps even with errors?)
@@ -37,6 +36,7 @@ To-Do
       - offer corrected citation (properly marked as PBY emendation)
 - convert remaining ERB to HAML
 ==done==
++ implement publishing
 
 + warn before save_and_done if not all def parts were viewed
 + add button for 'save now' without exit

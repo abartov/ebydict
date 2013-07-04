@@ -274,7 +274,15 @@ tinyMCE.init({
 </div><!-- </tr></table> -->
 <input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
+function chimg_loading() {
+  $('#defpartimg').attr('src', ''); // first make any existing image (when paging) disappear
+  $('#footimg').attr('src', '');
+  $('#defpartimg').attr('src', '/assets/loading.png');
+  $('#footimg').attr('src', '/assets/loading.png');
+}
+
 function chimg(delta) {
+  chimg_loading(); // start with the "loading..." image
   curpart += delta;
   curfoot += delta;
   if(curpart > maxpart)
