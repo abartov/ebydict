@@ -7,6 +7,7 @@
   # NOTE: not meant to be called from the Web.  This view is only used by a Rake task.
   # assumes @defs is already dictionary-sorted according to original publication.  Assumes nil elements in array are definitions not yet published. %>
 <%
+  I18n.locale = :he
   for d in @defs
     if d.nil? %>
       <div class="ellipsis">...</div>
@@ -15,7 +16,7 @@
     else
       (rendered_body, rendered_footnotes) = d.render_body_as_html
       %>
-    <span class="permalink"><a name="def_<%= d.id %>" href="<%= d.permalink %>"><%= t(:definition_permalink) %>&nbsp;</span>
+    <span class="permalink"><a name="def_<%= d.id %>" href="<%= d.permalink %>"><%= I18n.t(:definition_permalink) %>&nbsp;</span>
     <div class="defhead"><%= d.defhead %></div>
     <div class="deftext"><%= rendered_body %></div>
     <% if rendered_footnotes =~ /\S/ %>
