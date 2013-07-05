@@ -5,6 +5,7 @@ development: &default
   proof: 2
   fixup: 3
   problem: 4
+  urlbase: "http://example.com/scans"
 
 production:
   <<: *default
