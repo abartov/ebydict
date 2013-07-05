@@ -146,6 +146,8 @@ he:
   definition_published_html: ההגדרה <b>%{defhead}</b> עברה למילון הפומבי!
   definition_sent_to_reproof_html: ההגדרה <b>%{defhead}</b> נשלחה להגהה נוספת.
   definition_preview_from_ebydict_html: לפניך תצוגה מקדימה של הגדרה מ<b>מילון העברית הישנה והחדשה</b> מאת אליעזר בן-יהודה,<br/> שהוכנה בידי מתנדבי <a href="http://benyehuda.org/">פרויקט בן-יהודה</a><p/>
+  definition_permalink: קישורית קבועה
+  definition_made_by_volunteers: "המילון הוא קנין הציבור, והוא מוגש לציבור בחינם: מהדורה דיגיטלית זו היא פרי עמלם של מתנדבי פרויקט בן-יהודה באינטרנט, שעושים את מלאכתם על טהרת ההתנדבות."  
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p>
   user_now_what_html: <b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
