@@ -18,7 +18,9 @@ class DefinitionController < ApplicationController
   end
   def publish
     @d = EbyDef.find(params[:id])
+    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => session['user'].id, :new_status => 'Published')
     @d.status = 'Published'
+    defev.save
     @d.save
     flash[:notice] = t(:definition_published_html, :defhead => @d.defhead).html_safe
     redirect_to :action => 'listpub'
