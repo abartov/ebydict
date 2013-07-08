@@ -18,7 +18,7 @@ class DefinitionController < ApplicationController
   end
   def publish
     @d = EbyDef.find(params[:id])
-    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => s    @d.status = 'Published'
+    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => s    @d.status = 'Published')
     defev.save
     @d.save
     flash[:notice] = t(:definition_published_html, :defhead => @d.defhead).html_safe
