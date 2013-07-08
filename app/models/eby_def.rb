@@ -2,7 +2,7 @@ class EbyDef < ActiveRecord::Base
   include EbyUtils
   include Rails.application.routes.url_helpers
 
-  attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count
+  attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count, :volume, :ordinal
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
@@ -124,9 +124,6 @@ class EbyDef < ActiveRecord::Base
     end
     ret_footnotes = newbuf + buf + prefix
     return [ret_body, ret_footnotes]
-  end
-  def volume
-    return part_images.first.colimg.scan.volume # this, like much else, assumes defs don't span volumes
   end
   def first?
    # do I still need this method?

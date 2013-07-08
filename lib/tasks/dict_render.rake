@@ -25,9 +25,14 @@ private
 
 def collect_published_defs_for_vol(vol)
   ret = []
-  d = first_def_for_vol(vol)
+  # index the volume if we haven't yet
+  if last_def_for_vol(vol).ordinal.nil?
+    print "Enumerating volume ##{vol}... (one-time process) -- "
+    enumerate_vol(vol)
+    print "done!\n"
+  end
   ellipsis = false
-  until d.nil? do
+  EbyDef.where(volume: vol).order('ordinal asc').each {|d|
     if d.published?
       ret << d
       ellipsis = false
@@ -37,8 +42,7 @@ def collect_published_defs_for_vol(vol)
         ret << nil # add a nil member to the array, to signify any number of intervening headwords -- this may be output as ellipsis in HTML
       end
     end
-    d = d.successor_def # iterate
-  end
+  }  
   return ret
 end
 

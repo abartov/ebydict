@@ -31,13 +31,38 @@ module EbyUtils
   def first_def_for_vol(vol)
     raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
    
-    minpage = EbyScanImage.where(volume: 1).minimum(:firstpagenum)
+    minpage = EbyScanImage.where(volume: vol).minimum(:firstpagenum)
     sc = EbyScanImage.where(firstpagenum: minpage, volume: vol).first # first scan of first volume
     c = sc.col_images.where(colnum: 1).first # first col
     return c.def_by_defno(0) # first def
  
   end
+  def last_def_for_vol(vol)
+    raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
+    
+    maxfirstpage = EbyScanImage.where(volume: vol).maximum(:firstpagenum)
+    maxsecondpage = EbyScanImage.where(volume: vol).maximum(:secondpagenum)
+    if maxsecondpage > maxfirstpage 
+      maxpage = EbyScanImage.where(secondpagenum: maxsecondpage, volume: vol).first
+    else
+      maxpage = EbyScanImage.where(firstpagenum: maxfirstpage, volume: vol).first
+    end
+    c = maxpage.col_images.where(colnum: maxpage.col_images.maximum(:colnum)).first
+    return c.def_part_images.last.thedef
+  end
   def first_def
     return first_def_for_vol(1)
+  end
+  # write ordinal numbers for definitions in the volume, for faster dictionary-view render
+  def enumerate_vol(vol)
+    raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
+    d = first_def_for_vol(vol)
+    counter = 1
+    until d.nil? do
+      d.ordinal = counter
+      d.save
+      counter += 1
+      d = d.successor_def
+    end
   end
 end

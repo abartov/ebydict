@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121213192212) do
+ActiveRecord::Schema.define(:version => 20130708043954) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(:version => 20121213192212) do
     t.datetime "updated_at",         :null => false
     t.string   "prob_desc"
     t.integer  "reject_count"
+    t.integer  "ordinal"
+    t.integer  "volume"
   end
 
   create_table "eby_scan_images", :force => true do |t|
@@ -110,5 +112,16 @@ ActiveRecord::Schema.define(:version => 20121213192212) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "sources", :force => true do |t|
+    t.string   "title"
+    t.string   "nick1"
+    t.string   "nick2"
+    t.string   "nick3"
+    t.integer  "source_algorithm_id"
+    t.text     "comments"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
 end
