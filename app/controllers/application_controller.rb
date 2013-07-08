@@ -27,8 +27,6 @@ protect_from_forgery
   end
 
   # global consts
-  URLBASE = AppConstants.urlbase
-  #'http://localhost:80'
   #FILEBASE = '/BenYehuda/scans'
   FILEBASE = '/var/www'
   LAST_PROOF_ROUND = 3
@@ -40,7 +38,7 @@ protect_from_forgery
       return nil
     end
     filepart = fmatch.post_match
-    url = URLBASE + filepart
+    url = AppConstants.scanurlbase + filepart
     return url
   end
 

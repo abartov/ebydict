@@ -1,5 +1,7 @@
 class EbyDef < ActiveRecord::Base
   include EbyUtils
+  include Rails.application.routes.url_helpers
+
   attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
@@ -178,7 +180,7 @@ class EbyDef < ActiveRecord::Base
     return status == 'Published'
   end
   def permalink
-    return AppConstants.urlbase+"/definition/view/#{id}"
+    return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
   end
   protected
   
