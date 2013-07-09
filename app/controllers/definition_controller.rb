@@ -18,7 +18,7 @@ class DefinitionController < ApplicationController
   end
   def publish
     @d = EbyDef.find(params[:id])
-    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => s, :new_status => 'Published')
+    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => session['user'].id, :new_status => 'Published')
     defev.save
     @d.status = 'Published'
     @d.save
