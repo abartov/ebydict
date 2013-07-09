@@ -148,6 +148,15 @@ he:
   definition_preview_from_ebydict_html: לפניך תצוגה מקדימה של הגדרה מ<b>מילון העברית הישנה והחדשה</b> מאת אליעזר בן-יהודה,<br/> שהוכנה בידי מתנדבי <a href="http://benyehuda.org/">פרויקט בן-יהודה</a><p/>
   definition_permalink: קישורית קבועה
   definition_made_by_volunteers: "המילון הוא קנין הציבור, והוא מוגש לציבור בחינם: מהדורה דיגיטלית זו היא פרי עמלם של מתנדבי פרויקט בן-יהודה באינטרנט, שעושים את מלאכתם על טהרת ההתנדבות."  
+  definition_return_to_proof: החזר להגהה נוספת
+  definition_publish: פרסם!
+  definition_edit: ערוך
+  definition_notavail: הגדרה זו אינה זמינה לעיון עדיין.
+  definition_title: 'שם הערך: %{defhead}'
+  definition_missing_footnote_body: 'הערת השוליים מספר %{num} חסרה, או לא מוספרה נכון!'
+  definition_from_eby: הגדרה מתוך מילון אליעזר בן-יהודה
+
+
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p>
   user_now_what_html: <b>תן/י יד להבאת מילון העברית הישנה והחדשה של אליעזר בן-יהודה לרשת!</b><p/>מה ברצונך לעשות עכשיו?
@@ -205,12 +214,6 @@ he:
   publish_list: חשיפת הגדרות מוכנות לציבור המעיינים
   publish_published: ההגדרה צורפה למאגר, והיא נגישה למעיינים.
   publish_failed: 'אירעה שגיאה; ההגדרה נותרה בהמתנה.'
-
-## definition controller
-  definition_notavail: הגדרה זו אינה זמינה לעיון עדיין.
-  definition_title: 'שם הערך: %{defhead}'
-  definition_missing_footnote_body: 'הערת השוליים מספר %{num} חסרה, או לא מוספרה נכון!'
-  definition_from_eby: הגדרה מתוך מילון אליעזר בן-יהודה
 
 ## recent changes 
   changes_title: שינויים אחרונים

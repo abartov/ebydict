@@ -1,0 +1,22 @@
+%h1= t(:defs_to_publish)
+- for d in @pubdefs
+  - since = d.events.where(:new_status => @status)[0].created_at
+  / render the def's current status, then AJAXy controls
+  .defhead 
+    = d.defhead
+  .defbody
+    - (defbody,footnotes) = d.render_body_as_html
+    != defbody
+    - if footnotes =~ /\S/ 
+      %hr{ :width => "30%"}
+      .defnotes
+        = footnotes
+  .pub_actions
+    = link_to t(:definition_edit), :controller => 'type', :action => 'edit', :id => d 
+    = link_to t(:definition_publish), :action => 'publish', :id => d 
+    = link_to t(:definition_return_to_proof), :action => 'reproof', :id => d
+  %hr
+= will_paginate @pubdefs
+%p
+= link_to t(:user_back),  :controller => :user, :action => 'index'
+
