@@ -9,9 +9,9 @@
       - (defbody,footnotes) = d.render_body_as_html
       != defbody
       - if footnotes =~ /\S/ 
-        %hr{ :width => "30%"}
+        %hr{ :width => "30%", :align => :right}
         .defnotes
-          = footnotes
+          != footnotes
     .pub_actions
       = t(:definition_waiting_since) + " " + since.to_s() 
       = link_to t(:definition_edit), :controller => 'type', :action => 'edit', :id => d 
