@@ -155,7 +155,9 @@ he:
   definition_title: 'שם הערך: %{defhead}'
   definition_missing_footnote_body: 'הערת השוליים מספר %{num} חסרה, או לא מוספרה נכון!'
   definition_from_eby: הגדרה מתוך מילון אליעזר בן-יהודה
-
+  definition_executing: מבצע...
+  definition_waiting_since: ממתינה לפרסום מאז 
+  definition_defs_to_publish: הגדרות ממתינות לפרסום במילון
 
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p>

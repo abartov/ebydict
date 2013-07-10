@@ -1,22 +1,37 @@
-%h1= t(:defs_to_publish)
+%h1= t(:definition_defs_to_publish)
 - for d in @pubdefs
   - since = d.events.where(:new_status => @status)[0].created_at
-  / render the def's current status, then AJAXy controls
-  .defhead 
-    = d.defhead
-  .defbody
-    - (defbody,footnotes) = d.render_body_as_html
-    != defbody
-    - if footnotes =~ /\S/ 
-      %hr{ :width => "30%"}
-      .defnotes
-        = footnotes
-  .pub_actions
-    = link_to t(:definition_edit), :controller => 'type', :action => 'edit', :id => d 
-    = link_to t(:definition_publish), :action => 'publish', :id => d 
-    = link_to t(:definition_return_to_proof), :action => 'reproof', :id => d
-  %hr
+  .wholedef
+    / render the def's current status, then AJAXy controls
+    .defhead 
+      = d.defhead
+    .defbody
+      - (defbody,footnotes) = d.render_body_as_html
+      != defbody
+      - if footnotes =~ /\S/ 
+        %hr{ :width => "30%"}
+        .defnotes
+          = footnotes
+    .pub_actions
+      = t(:definition_waiting_since) + " " + since.to_s() 
+      = link_to t(:definition_edit), :controller => 'type', :action => 'edit', :id => d 
+      = link_to t(:definition_publish), {:controller => :definition, :action => :publish, :id => d, :remote => true}, {:class => "def_action", "data-done-msg" => t(:definition_published_html, :defhead => d.defhead) }
+      = link_to t(:definition_return_to_proof), {:controller => :definition, :action => 'reproof', :id => d, :remote => true}, {:class => "def_action", "data-done-msg" => t(:definition_sent_to_reproof_html, :defhead => d.defhead)}
+    %hr
 = will_paginate @pubdefs
 %p
 = link_to t(:user_back),  :controller => :user, :action => 'index'
 
+:javascript
+  $(document).ready(function() {
+    $('.def_action')
+      .bind("ajax:beforeSend", function(evt, xhr, settings) {
+        var $link = $(this);
+        $link.html( "<b>#{t(:definition_executing)}</b>");
+      }) 
+      .bind("ajax:success", function(evt, data, status, xhr){
+        var $defsection = $(this).parents('div:eq(1)'); // grandparent DIV would be the one for the whole def
+        $defsection.html("<span style='color:green'>"+$(this).data('done-msg')+"</span>");
+        $defsection.fadeOut(2000); // whee! :)
+    })
+  });
