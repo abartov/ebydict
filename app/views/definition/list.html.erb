@@ -10,13 +10,13 @@
   I18n.locale = :he
   for d in @defs
     if d.nil? %>
-      <div class="ellipsis">...</div>
+      <div class="ellipsis">.<br/>.<br/>.</div>
       <hr/>
     <% 
     else
       (rendered_body, rendered_footnotes) = d.render_body_as_html
       %>
-    <span class="permalink"><a name="def_<%= d.id %>" href="<%= d.permalink %>"><%= I18n.t(:definition_permalink) %>&nbsp;</a></span>
+    <span class="permalink"><a name="def_<%= d.id %>" href="<%= d.permalink %>"><%= I18n.t(:definition_permalink) %>&nbsp;</a></span><p/>
     <div class="defhead"><%= d.defhead %></div>
     <div class="deftext"><%= rendered_body %></div>
     <% if rendered_footnotes =~ /\S/ %>
