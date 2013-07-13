@@ -230,7 +230,7 @@ class TypeController < ApplicationController
     d.deftext = params[:deftext]
     d.defhead = params[:defhead]
     d.footnotes = params[:footnotes]
-    d.footnotes = '' if d.footnotes =~ t(:type_footnotes) # remove the placeholder text that TinyMCE causes us to stick in the textarea # TODO: upgrade to TinyMCE 4.x and use proper HTML5 placeholders to avoid this kluge
+    d.footnotes = '' if d.footnotes =~ /#{t(:type_footnotes)}/ # remove the placeholder text that TinyMCE causes us to stick in the textarea # TODO: upgrade to TinyMCE 4.x and use proper HTML5 placeholders to avoid this kluge
     d.arabic, d.greek, d.russian, d.extra = params[:arabic], params[:greek], params[:russian], params[:extra]
     #['arabic', 'greek', 'russian', 'extra'].each { |which|
     #  d.write_attribute(which, params[which])
