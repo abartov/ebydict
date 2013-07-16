@@ -3,27 +3,27 @@
 one:
   eby_scan_image_id: 1
   colnum: 1
-  coljpeg: MyString
-  coldefjpeg: MyString
-  colfootjpeg: MyString
+  coljpeg: '/var/www/_ebydict/_ebyparts_dev/col1_ebydict_v01_0006.jpg'
+  coldefjpeg: nil
+  colfootjpeg: nil
   volume: 1
   pagenum: 1
-  status: MyString
-  assignedto: 1
-  partitioned_by: 1
-  smalljpeg: MyString
-  defpartitioner_id: 1
+  status: 'NeedPartition'
+  assignedto: 
+  partitioned_by: 
+  smalljpeg: 
+  defpartitioner_id: 
 
 two:
   eby_scan_image_id: 1
-  colnum: 1
-  coljpeg: MyString
-  coldefjpeg: MyString
-  colfootjpeg: MyString
+  colnum: 2
+  coljpeg: '/var/www/_ebydict/_ebyparts_dev/col2_ebydict_v01_0006.jpg'
+  coldefjpeg: 
+  colfootjpeg: 
   volume: 1
   pagenum: 1
-  status: MyString
-  assignedto: 1
-  partitioned_by: 1
-  smalljpeg: MyString
-  defpartitioner_id: 1
+  status: 'NeedPartition'
+  assignedto: 
+  partitioned_by: 
+  smalljpeg: 
+  defpartitioner_id: 

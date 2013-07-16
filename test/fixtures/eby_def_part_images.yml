@@ -4,14 +4,14 @@ one:
   thedef: 1
   partnum: 1
   coldefimg_id: 1
-  filename: MyString
-  defno: 1
+  filename: ''
+  defno: 0
   is_last: false
 
 two:
   thedef: 1
-  partnum: 1
-  coldefimg_id: 1
-  filename: MyString
+  partnum: 2
+  coldefimg_id: 2
+  filename: ''
   defno: 1
-  is_last: false
+  is_last: true

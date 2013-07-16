@@ -1,33 +1,33 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  login: MyString
-  password: MyString
-  fullname: MyString
-  email: MyString
-  max_proof_level: 1
-  role_partitioner: false
-  role_typist: false
+  login: 'test'
+  password: 'test'
+  fullname: 'משתמש בדיקה'
+  email: 'test@mailinator.com'
+  max_proof_level: 2
+  role_partitioner: true
+  role_typist: true
   role_fixer: false
   role_publisher: false
-  role_proofer: false
+  role_proofer: true
   does_russian: false
   does_arabic: false
-  does_greek: false
+  does_greek: true
   does_extra: false
 
 two:
-  login: MyString
-  password: MyString
-  fullname: MyString
-  email: MyString
-  max_proof_level: 1
-  role_partitioner: false
-  role_typist: false
-  role_fixer: false
-  role_publisher: false
-  role_proofer: false
+  login: 'admin'
+  password: 'admin'
+  fullname: 'מנהל בדיקה'
+  email: 'admin@mailinator.com'
+  max_proof_level: 3
+  role_partitioner: true
+  role_typist: true
+  role_fixer: true
+  role_publisher: true
+  role_proofer: true
   does_russian: false
-  does_arabic: false
-  does_greek: false
+  does_arabic: true
+  does_greek: true
   does_extra: false

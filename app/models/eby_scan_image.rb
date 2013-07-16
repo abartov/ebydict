@@ -4,7 +4,10 @@ class EbyScanImage < ActiveRecord::Base
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by'
   
-  validates_uniqueness_of :origjpeg
+  validates :origjpeg, presence: true, uniqueness: true
+  validates :volume, presence: true, numericality: true
+  validates :firstpagenum, :secondpagenum, numericality: true, allow_nil: true
+  validates :smalljpeg, uniqueness: true, allow_nil: true
 
   def columns
     return self.col_images.size

@@ -3,11 +3,11 @@
 one:
   who: 1
   thedef: 1
-  old_status: MyString
-  new_status: MyString
+  old_status: 'none'
+  new_status: 'NeedTyping'
 
 two:
   who: 1
-  thedef: 1
-  old_status: MyString
-  new_status: MyString
+  thedef: 2
+  old_status: 'Partial'
+  new_status: 'NeedTyping'
