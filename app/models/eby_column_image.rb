@@ -9,7 +9,12 @@ class EbyColumnImage < ActiveRecord::Base
   belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id'
   belongs_to :coldefimg, :class_name => 'EbyColumnImage', :foreign_key => 'coldefimg_id' # TODO: this looks bogus; verify and remove
  
-  validates_uniqueness_of :coljpeg
+  validates :coljpeg, uniqueness: true, presence: true
+  validates :coldefjpeg, :colfootjpeg, :smalljpeg, uniqueness: true, allow_nil: true
+  validates :pagenum, :colnum, presence: true, numericality: true
+  validates :status, presence: true, inclusion: { in: %w(NeedPartition NeedDefPartition Partitioned GotOrphans) }
+  validates :scan, presence: true # mandatory association
+   
   def def_part_by_defno(defno)
     return def_part_images.where(defno: defno).first
   end

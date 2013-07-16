@@ -8,6 +8,7 @@ class EbyScanImage < ActiveRecord::Base
   validates :volume, presence: true, numericality: true
   validates :firstpagenum, :secondpagenum, numericality: true, allow_nil: true
   validates :smalljpeg, uniqueness: true, allow_nil: true
+  validates :status, inclusion: { in: %w(NeedPartition Partitioned) }
 
   def columns
     return self.col_images.size
