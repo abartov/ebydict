@@ -8,8 +8,12 @@ class EbyDef < ActiveRecord::Base
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
 
   # validations
-  validates_inclusion_of :status, :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published )
+  validates :status, inclusion: { :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published ) }, presence: true
   validates_associated :assignee
+  validates_associated :events
+  validates :arabic, :extra, :greek, :russian, inclusion: { :in => %w(none todo done) }, allow_nil: true
+  validates :proof_round_passed, :reject_count, :ordinal, numericality: true, allow_nil: true
+  validates :volume, numericality: true
 
   def self.query_by_user_size_and_action(to_user, size, action, round)
     sizecond = ""

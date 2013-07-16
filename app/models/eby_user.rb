@@ -11,6 +11,16 @@ class EbyUser < ActiveRecord::Base
   has_many :second_proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedProof2'", :source => :thedef
   has_many :fixed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedFixup'", :source => :thedef
 
+  validates :does_arabic, :does_extra, :does_greek, :does_russian, inclusion: { in: [true, false] }, allow_nil: true
+  validates :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist, inclusion: { in: [true, false] }, allow_nil: true
+  validates :max_proof_level, numericality: true, allow_nil: true
+  validates :password, presence: true, length: { minimum: 4 }
+  validates :fullname, presence: true, length: { minimum: 3 }
+  validates :email, presence: true, length: { minimum: 5 }
+  validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
+  validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
+  validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
+   
   def self.authenticate(login, pass)
     begin
       u = find_by_login(login)
@@ -36,11 +46,8 @@ class EbyUser < ActiveRecord::Base
 #      write_attribute("password", EbyUser.hashfunc(rec.password))
 #  end
 
-  validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
-  validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
 # TODO: fix the below validations! (somehow related to attr_accessor?)
 # validates_presence_of :password, :message => :user_password_cant_be_blank.l
 #  validates_length_of :password, :within => 5..41, :message => :user_password_bad_length.l
-  validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
 
 end
