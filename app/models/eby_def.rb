@@ -101,8 +101,13 @@ class EbyDef < ActiveRecord::Base
     footnote_num = 1
     foots = {}
     while buf =~ /\[(\d+)\]/ do  
-      newbuf += $` + "[#{footnote_num.to_s}]" 
-      foots[$1] = footnote_num.to_s
+      unless foots[$1].nil? # EBY's dictionary sometimes contains _multiple_ references to the same footnote 
+        thenum = foots[$1]
+      else
+        thenum = footnote_num
+      end
+      newbuf += $` + "[#{thenum.to_s}]" 
+      foots[$1] = thenum.to_s
       footnote_num += 1
       buf = $'
     end

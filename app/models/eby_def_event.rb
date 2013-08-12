@@ -5,7 +5,7 @@ class EbyDefEventValidator < ActiveModel::Validator
         record.errors[:base] << "the status fields cannot be empty"
       else
         unless /NeedProof\d+/.match(s)
-          record.errors[:base] << "'#{s}' is not a valid status" unless %w( Problem Partial GotOrphans NeedTyping NeedFixup NeedPublish Published ).include? s 
+          record.errors[:base] << "'#{s}' is not a valid status" unless %w( none Problem Partial GotOrphans NeedTyping NeedFixup NeedPublish Published ).include? s 
         end
       end
     }

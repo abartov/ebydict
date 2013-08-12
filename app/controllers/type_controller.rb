@@ -106,6 +106,9 @@ class TypeController < ApplicationController
         when 'NeedPublish'
           @action = t(:type_proofing)
           @actno = AppConstants.proof # a NeedPublish def would be here for reproofing
+        when 'Published'
+          @action = t(:type_proofing)
+          @actno = AppConstants.proof
         else
           print "DBG: unknown status!\n"
           flash[:error] = t(:type_unknown_status, :status => @thedef.status)
@@ -142,7 +145,7 @@ class TypeController < ApplicationController
       do_abandon(@d)
     elsif params[:commit] or params[:save]
       populate(@d)
-      @d.save
+      @d.save!
       flash[:notice] = t(:type_saved_kept)
     elsif params[:save_and_done]
       populate(@d)
@@ -232,9 +235,6 @@ class TypeController < ApplicationController
     d.footnotes = params[:footnotes]
     d.footnotes = '' if d.footnotes =~ /#{t(:type_footnotes)}/ # remove the placeholder text that TinyMCE causes us to stick in the textarea # TODO: upgrade to TinyMCE 4.x and use proper HTML5 placeholders to avoid this kluge
     d.arabic, d.greek, d.russian, d.extra = params[:arabic], params[:greek], params[:russian], params[:extra]
-    #['arabic', 'greek', 'russian', 'extra'].each { |which|
-    #  d.write_attribute(which, params[which])
-    #}
     d.prob_desc = params[:prob_desc]
   end
   def call_assign_def_by_size(size, action, round)
