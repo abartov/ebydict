@@ -105,10 +105,10 @@ class EbyDef < ActiveRecord::Base
         thenum = foots[$1]
       else
         thenum = footnote_num
+        footnote_num += 1
       end
       newbuf += $` + "[#{thenum.to_s}]" 
       foots[$1] = thenum.to_s
-      footnote_num += 1
       buf = $'
     end
     buf = newbuf + buf
