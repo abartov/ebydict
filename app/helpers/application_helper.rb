@@ -27,7 +27,7 @@ module ApplicationHelper
       when s == 'NeedTyping'
         return I18n.t(:status_need_typing)
       when s =~ /NeedProof/
-        return I18n.t(:status_need_proofing, :round => (before ? prooflevel : prooflevel + 1))
+        return I18n.t(:status_need_proofing, :round => (before ? $' : $'.to_i + 1))
       when s == 'NeedFixup'
         return I18n.t(:status_need_fixups)
       when s == 'Problem'
