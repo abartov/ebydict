@@ -357,11 +357,11 @@ class ScanController < ApplicationController
   end
   def makedef(col, jpeg, defno, is_complete)
     newdef = EbyDef.new(:defhead => t(:type_unknown), :reject_count => 0, :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'))
-    newdef.save
+    newdef.save!
     defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'].id)
-    defev.save
+    defev.save!
     newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
-    newdefpart.save
+    newdefpart.save!
     return newdef
   end 
   def parse_seps(s)
