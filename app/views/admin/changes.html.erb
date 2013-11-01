@@ -4,7 +4,7 @@
 <tr><th><%= t(:changes_defhead) %></th><th><%= t(:changes_who) %></th><th><%= t(:changes_from) %></th><th><%= t(:changes_to) %></th><th><%= t(:changes_ago) %></th></tr>
 
 <% for c in @changes %> 
-  <tr><td><%= link_to c.thedef.defhead, :controller => :definition, :action => :view, :id => c.thedef %></td><td><%= link_to c.user.fullname, :controller => :user, :action => :show, :id => c.user %></td><td><%=h label_for_status(c.old_status, c.thedef.proof_round_passed, true) %></td><td><%=h label_for_status(c.new_status, c.thedef.proof_round_passed, false) %></td><td><%=h time_ago_in_words(c.created_at)  %></td></tr>
+  <tr><td><%= link_to c.thedef.defhead, :controller => :definition, :action => :view, :id => c.thedef %></td><td><%= link_to c.user.fullname, :controller => :user, :action => :show, :id => c.user %></td><td><%=h label_for_status(c.old_status) %></td><td><%=h label_for_status(c.new_status) %></td><td><%=h time_ago_in_words(c.created_at)  %></td></tr>
 <% end %>
 </table>
 

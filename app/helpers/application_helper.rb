@@ -22,12 +22,12 @@ module ApplicationHelper
         return I18n.t(:status_published)
     end
   end
-  def label_for_status(s,prooflevel,before)
+  def label_for_status(s)
     case
       when s == 'NeedTyping'
         return I18n.t(:status_need_typing)
       when s =~ /NeedProof/
-        return I18n.t(:status_need_proofing, :round => (before ? $' : $'.to_i + 1))
+        return I18n.t(:status_need_proofing, :round => $')
       when s == 'NeedFixup'
         return I18n.t(:status_need_fixups)
       when s == 'Problem'

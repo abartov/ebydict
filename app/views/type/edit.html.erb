@@ -289,7 +289,7 @@ tinyMCE.init({
     <% if session['user'].role_publisher %>
       <table>
         <%  @thedef.events.each {|e| %>
-        <tr><td><%= link_to e.user.fullname, :controller => :user, :action => :show, :id => e.who %></td><td><%=h label_for_status(e.new_status, @thedef.proof_round_passed, false) %></td></tr>
+        <tr><td><%= link_to e.user.fullname, :controller => :user, :action => :show, :id => e.who %></td><td><%=h label_for_status(e.new_status) %></td></tr>
         <% } %>
       </table>
     <% end %>
