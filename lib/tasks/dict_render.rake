@@ -16,7 +16,7 @@ namespace :dict do
     print "done!\n  Rendering all defs... "
     template = File.read("#{Rails.root}/app/views/definition/list.html.erb")
     renderer = ERB.new(template)
-    result += renderer.result(binding) # pass the current context, to give access to @defs
+    result = renderer.result(binding) # pass the current context, to give access to @defs
     print "done!\n  Writing file... "
     File.open("#{Rails.root}/public/full_dict.html","wb") {|f| f.write(result) }
   end
