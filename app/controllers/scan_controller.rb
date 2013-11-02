@@ -5,6 +5,7 @@ class ScanController < ApplicationController
   ZOOM_FACTOR = 0.25 # perhaps 0.33?
   COL_ZOOM_FACTOR = 0.33
   MARGIN = 10  # pixels of margin in each cut during partitioning
+  MARGINX = 15  # pixels of margin in separating columns from each other
   PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts'
   DEV_PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts_dev'
 
@@ -300,7 +301,7 @@ class ScanController < ApplicationController
           seps.each_index { |colno|
             realsep = (seps[colno] * (1 / ZOOM_FACTOR)).ceil # calculate real x coordinate according to factor
             # cut up orig jpeg
-            colimg = origimg.crop([0,realsep - MARGIN].max, 0, cur_right - realsep + 2*MARGIN, origimg.rows)
+            colimg = origimg.crop([0,realsep - MARGINX].max, 0, cur_right - realsep + 2*MARGINX, origimg.rows)
             colimgname = fname_for_part(@sc.origjpeg, 'col'+(colno+1).to_s+'_')
             colimg.write(colimgname)
             # create appropriate number of column-image objects initialized to the new column jpegs
