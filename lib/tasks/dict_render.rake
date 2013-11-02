@@ -25,6 +25,7 @@ private
 
 def collect_published_defs_for_vol(vol)
   ret = []
+  return ret unless is_volume_partitioned(vol)
   # index the volume if we haven't yet
   if last_def_for_vol(vol).ordinal.nil?
     print "Enumerating volume ##{vol}... (one-time process) -- "
