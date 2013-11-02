@@ -2,6 +2,7 @@ module EbyUtils
   # determine whether a volume of scans is _completely_ partitioned (i.e. all pages, all columns, all defs within columns)
   # this is crucial for generating the dictionary view, determining with certainty whether defs are first/last, etc.
   def is_volume_partitioned(vol)
+    return false if EbyScanImage.count(volume: vol) == 0 # make sure the volume exists...
     return false if EbyScanImage.where(status: 'NeedPartition', volume: vol).count > 0
     return false if EbyColumnImage.where("status <> 'Partitioned' and volume = #{vol}").count > 0
     return true
