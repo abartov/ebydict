@@ -58,7 +58,8 @@ class EbyDef < ActiveRecord::Base
       sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
       rset = EbyDef.find_by_sql(sql+" limit 1")  
       if rset.nil? or rset[0].nil?
-        round -= 1 unless round.nil?
+        return nil if round.nil?
+        round -= 1 
       else
         thedef = rset[0]
         thedef.assignedto = to_user.id
