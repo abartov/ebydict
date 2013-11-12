@@ -7,6 +7,8 @@ To-Do
 - handle WIDE footnotes
 
 ==medium priority==
+- BUG: handle footnotes within markup.  E.g. http://ebydict.benyehuda.org/definition/view/3741
+
 - re-layout action buttons, prob. as an action dialog.
 - add user management
   - user preferences page (change password, what else?)

@@ -4,7 +4,7 @@ include EbyUtils
 class ScanController < ApplicationController
   ZOOM_FACTOR = 0.25 # perhaps 0.33?
   COL_ZOOM_FACTOR = 0.33
-  MARGIN = 10  # pixels of margin in each cut during partitioning
+  MARGIN = 15  # pixels of margin in each cut during partitioning
   MARGINX = 15  # pixels of margin in separating columns from each other
   PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts'
   DEV_PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts_dev'
