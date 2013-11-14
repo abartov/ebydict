@@ -3,15 +3,18 @@
 <script>
 var colnum = 0;
 var theseps = '';
+var seps = [];
 var canvas;
 var context;
 var imageObj;
+var line;
 function cancel_seps()
 {
   $('#col_seps').html("");
   theseps = '';
   $('#final_seps').attr('value','');
   colnum = 0;
+  seps = [];
   context.drawImage(imageObj,0,0); 
 }
 
@@ -24,14 +27,58 @@ function markColumn(e) {
     theseps += '|';
   theseps += relx;
   $('#final_seps').attr('value', theseps);
-  context.beginPath();
-  context.moveTo(relx, 0);
-  context.lineTo(relx, $('#myCanvas').height());
-  context.stroke();
+  seps.push(relx);
+  drawSeps();
 }
+
+function drawSeps() {
+  for(var i=0; i < seps.length; i++) {
+    context.beginPath();
+    context.moveTo(seps[i], 0);
+    context.lineTo(seps[i], $('#myCanvas').height());
+    context.stroke();
+  }
+}
+
+//------------------------------------------------
+function Line(ctx) {
+    
+    var me = this;
+    
+    this.x1 = 0;
+    this.x2 = 0;
+    this.y1 = 0;
+    this.y2 = 0;
+    
+    this.draw = function() {
+        oldstyle = ctx.strokeStyle;
+        ctx.strokeStyle = '#a8a';
+        ctx.beginPath();
+        ctx.moveTo(me.x1, me.y1);
+        ctx.lineTo(me.x2, me.y2);
+        ctx.stroke();
+        ctx.strokeStyle = oldstyle;
+    }
+}
+
+function updateLine(e) {
+    var r = canvas.getBoundingClientRect(),
+        x = e.clientX - r.left,
+        y = e.clientY - r.top;
+    
+    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+    line.x1 = x;
+    line.y1 = 0;
+    line.x2 = x;
+    line.y2 = canvas.height;
+    line.draw();
+    drawSeps();
+}
+//------------------------------------------------
 
 // Bog bless jQuery!
 $(document).ready(function() {
+
   canvas = document.getElementById("myCanvas");
   context = canvas.getContext("2d");
   imageObj = new Image();
@@ -41,6 +88,8 @@ $(document).ready(function() {
   }
   imageObj.src = "<%= @smallimg %>";
   $('#myCanvas').click(markColumn);
+  line = new Line(context);
+  canvas.onmousemove = updateLine;
 });
 </script>
 
