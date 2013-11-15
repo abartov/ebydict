@@ -40,31 +40,9 @@ function drawSeps() {
   }
 }
 
-//------------------------------------------------
-function Line(ctx) {
-    
-    var me = this;
-    
-    this.x1 = 0;
-    this.x2 = 0;
-    this.y1 = 0;
-    this.y2 = 0;
-    
-    this.draw = function() {
-        oldstyle = ctx.strokeStyle;
-        ctx.strokeStyle = '#a8a';
-        ctx.beginPath();
-        ctx.moveTo(me.x1, me.y1);
-        ctx.lineTo(me.x2, me.y2);
-        ctx.stroke();
-        ctx.strokeStyle = oldstyle;
-    }
-}
-
 function updateLine(e) {
     var r = canvas.getBoundingClientRect(),
-        x = e.clientX - r.left,
-        y = e.clientY - r.top;
+        x = e.clientX - r.left;
     
     context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
     line.x1 = x;
@@ -74,7 +52,6 @@ function updateLine(e) {
     line.draw();
     drawSeps();
 }
-//------------------------------------------------
 
 // Bog bless jQuery!
 $(document).ready(function() {

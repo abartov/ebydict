@@ -9,12 +9,14 @@
 <script>
 var seqno = 0;
 var thesep = '';
+var seps = [];
 function cancel_sep()
 {
   $('#col_seps').html("");
   thesep = '';
   $('#final_seps').attr('value','');
   seqno = 0;
+  seps = [];
   context.drawImage(imageObj, 0,0);
 }
 
@@ -27,10 +29,30 @@ function markSep(e) {
     thesep += '|';
   thesep += rely;
   $('#final_seps').attr('value', thesep);
-  context.beginPath();
-  context.moveTo(0, rely);
-  context.lineTo($('#myCanvas').width(),rely);
-  context.stroke();
+  seps.push(rely);
+  drawSeps();
+}
+
+function drawSeps() {
+  for(var i=0; i < seps.length; i++) {
+    context.beginPath();
+    context.moveTo(0,seps[i]);
+    context.lineTo($('#myCanvas').width(), seps[i]);
+    context.stroke();
+  }
+}
+
+function updateLine(e) {
+    var r = canvas.getBoundingClientRect(),
+        y = e.clientY - r.top;
+    
+    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+    line.x1 = 0;
+    line.y1 = y;
+    line.x2 = canvas.width;
+    line.y2 = y;
+    line.draw();
+    drawSeps();
 }
 
 // Bog bless jQuery!
@@ -44,6 +66,8 @@ $(document).ready(function() {
   }
   imageObj.src = "<%= @img %>";
   $('#myCanvas').click(markSep);
+  line = new Line(context);
+  canvas.onmousemove = updateLine;
 });
 
 </script>

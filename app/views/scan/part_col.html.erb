@@ -3,10 +3,12 @@
 <script>
 var context;
 var canvas;
+var sep;
 function cancel_sep()
 {
   $('#col_seps').html("");
   $('#final_seps').attr('value','');
+  sep = 0;
   context.drawImage(imageObj, 0,0); 
 }
 
@@ -17,11 +19,33 @@ function markSep(e) {
 
   $('#col_seps').html("separated at Y="+rely);
   $('#final_seps').attr('value', rely);
+  sep = rely;
+  drawSep();
+}
+
+function drawSep() {
   context.beginPath();
-  context.moveTo(0, rely);
-  context.lineTo($('#myCanvas').width(),rely);
+  context.moveTo(0, sep);
+  context.lineTo($('#myCanvas').width(),sep);
   context.stroke();
 }
+
+// -------------------------------------------
+
+function updateLine(e) {
+    var r = canvas.getBoundingClientRect(),
+        y = e.clientY - r.top;
+    
+    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+    line.x1 = 0;
+    line.y1 = y;
+    line.x2 = canvas.width;
+    line.y2 = y;
+    line.draw();
+    drawSep();
+}
+
+// -------------------------------------------
 
 // Bog bless jQuery!
 $(document).ready(function() {
@@ -34,6 +58,9 @@ $(document).ready(function() {
   }
   imageObj.src = "<%= @colsmallimg %>";
   $('#myCanvas').click(markSep);
+  line = new Line(context);
+  canvas.onmousemove = updateLine;
+
 });
 </script>
 </head>
