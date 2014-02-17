@@ -189,6 +189,9 @@ class EbyDef < ActiveRecord::Base
   def permalink
     return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
   end
+  def render_tei
+    return "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp><def>#{deftext}</def></entry>"
+  end
   protected
   
   def mass_replace_html(buf)
@@ -199,5 +202,34 @@ class EbyDef < ActiveRecord::Base
     buf.gsub!(/<p>&nbsp;<\/p>/,'') # remove empty paragraphs
     
     return buf
+  end
+  def pure_headword
+    return defhead # eventually handle homonym prefixes
+  end
+  def part_of_speech
+    # this is just a fugly hack, for now
+    buf = deftext[0..100] # grab definitely-enough characters to include the PoS
+    if buf =~ /\S+\"\S+/
+      pos_part = $&
+      pos_part = pos_part[0..-2] if pos_part[-1] == ',' # strip comma matched by \S
+      case pos_part
+      when 'ש"נ'
+        return 'שם עצם (נקבה)'
+      when 'ש"ז'
+        return 'שם עצם (זכר)'
+      when 'שת"ז' || 'ת"ז'
+        return 'שם תואר (זכר)'
+      when 'שת"נ' || 'ת"נ'
+        return 'שם תואר (נקבה)'
+      when 'פ"י'
+        return 'פועל יוצא'
+      when 'פ"ע'
+        return 'פועל עומד'
+      else 
+        return pos_part
+      end
+    else
+      return '?'
+    end
   end
 end

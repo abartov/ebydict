@@ -9,6 +9,7 @@ Ebydict::Application.routes.draw do
   get "definition/reproof"
 
   match 'definition/view/:id' => 'definition#view'
+  match 'definition/render_tei/:id' => 'definition#render_tei'
 
   get "problem/list"
 

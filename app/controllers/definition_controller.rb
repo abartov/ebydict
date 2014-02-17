@@ -1,3 +1,5 @@
+require "rexml/document"
+
 class DefinitionController < ApplicationController
   def list
     # @defs = EbyDef.where(:status => 'Published').order("defhead asc").page(params[:page]) # naive, alphabetical sort by defhead --  this won't do!
@@ -40,6 +42,14 @@ class DefinitionController < ApplicationController
     @defhead = d.defhead or ''
     @page_title = "#{@defhead} - #{I18n.t(:definition_from_eby)}"
     (@defbody,@footnotes) = d.render_body_as_html
+  end
+  def render_tei
+    d = EbyDef.find(params[:id])
+    #doc = Nokogiri.XML(d.render_tei) do |config|
+    #@tei = doc.to_xml(:indent => 2)
+    doc = REXML::Document.new(d.render_tei)
+    @tei = ''
+    doc.write(@tei, 1)
   end
 
   private

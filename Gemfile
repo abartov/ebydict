@@ -8,6 +8,7 @@ gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
 gem 'mysql2' 
 gem 'json', '>=1.7.7'
+gem 'nokogiri'
 
 #gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 #gem 'mongrel_cluster'
