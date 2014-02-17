@@ -190,7 +190,12 @@ class EbyDef < ActiveRecord::Base
     return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
   end
   def render_tei
-    return "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp><def>#{deftext}</def></entry>"
+    buf = "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp>"
+    split_senses.each {|s|
+      buf += "<def>#{s}</def>"
+    }
+    buf += '</entry>'
+    return buf
   end
   protected
   
@@ -231,5 +236,9 @@ class EbyDef < ActiveRecord::Base
     else
       return '?'
     end
+  end
+  def split_senses
+    parts = deftext.split /\s\S\(/
+    return parts
   end
 end
