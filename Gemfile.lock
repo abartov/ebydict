@@ -33,7 +33,6 @@ GEM
       builder
       json
     app_constants (1.0.4)
-    archive-tar-minitar (0.5.2)
     arel (3.0.2)
     builder (3.0.4)
     coffee-rails (3.2.2)
@@ -45,6 +44,12 @@ GEM
     coffee-script-source (1.4.0)
     columnize (0.3.6)
     daemons (1.1.9)
+    debugger (1.6.2)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.3)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.4)
     erubis (2.7.0)
     eventmachine (1.0.0)
     execjs (1.4.0)
@@ -59,8 +64,6 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.7.7)
     libv8 (3.11.8.13)
-    linecache19 (0.5.13)
-      ruby_core_source (>= 0.1.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -97,16 +100,6 @@ GEM
     ref (1.0.2)
     rmagick (2.13.2)
     rpeg-multimarkdown (0.1.1)
-    ruby-debug-base19 (0.11.26)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
     sass (3.2.6)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -147,6 +140,7 @@ DEPENDENCIES
   airbrake
   app_constants
   coffee-rails (~> 3.2.1)
+  debugger
   haml
   jquery-rails
   json (>= 1.7.7)
@@ -154,7 +148,6 @@ DEPENDENCIES
   rails (>= 3.2.11)
   rmagick
   rpeg-multimarkdown
-  ruby-debug19
   sass-rails (~> 3.2.3)
   sqlite3
   therubyracer
