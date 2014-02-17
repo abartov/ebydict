@@ -55,6 +55,6 @@ class DefinitionController < ApplicationController
   private
   
   def secure?
-    return (params[:action] != 'view')
+    return (not ['view','render_tei'].include?(params[:action]))
   end
 end
