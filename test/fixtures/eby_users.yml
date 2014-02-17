@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
+proofer:
   login: 'test'
   password: 'test'
   fullname: 'משתמש בדיקה'
@@ -16,7 +16,7 @@ one:
   does_greek: true
   does_extra: false
 
-two:
+admin:
   login: 'admin'
   password: 'admin'
   fullname: 'מנהל בדיקה'
