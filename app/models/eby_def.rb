@@ -219,17 +219,19 @@ class EbyDef < ActiveRecord::Base
       pos_part = pos_part[0..-2] if pos_part[-1] == ',' # strip comma matched by \S
       case pos_part
       when 'ש"נ'
-        return 'שם עצם (נקבה)'
+        return 'שם עצם (נקבה) (noun, fem.)'
       when 'ש"ז'
-        return 'שם עצם (זכר)'
+        return 'שם עצם (זכר) (noun, masc.)'
       when 'שת"ז' || 'ת"ז'
-        return 'שם תואר (זכר)'
+        return 'שם תואר (זכר) (adjective, masc.)'
       when 'שת"נ' || 'ת"נ'
-        return 'שם תואר (נקבה)'
+        return 'שם תואר (נקבה) (adjective, fem.)'
       when 'פ"י'
-        return 'פועל יוצא'
+        return 'פועל יוצא (transitive verb)'
       when 'פ"ע'
-        return 'פועל עומד'
+        return 'פועל עומד (intransitive verb)'
+      when 'מ"ר' # sometimes EBY doesn't specify the noun
+        return 'שם עצם (noun)'
       else 
         return pos_part
       end
