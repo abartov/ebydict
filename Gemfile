@@ -16,6 +16,8 @@ gem 'nokogiri'
 #gem 'daemons', '~> 1.0.10' # for mongrel
 gem 'thin'
 gem 'haml'
+gem 'htmlentities'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

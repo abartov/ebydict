@@ -197,8 +197,43 @@ class EbyDef < ActiveRecord::Base
     buf += '</entry>'
     return buf
   end
+  def render_heb_wiktionary
+    # NOTE: actual article name should be stripped of nikkud
+    # headword (with nikkud) and infobox template
+    buf = "==#{pure_headword}==\n{{ניתוח דקדוקי|\n|כתיב מלא=\n|הגייה=\n|חלק דיבר=#{part_of_speech}\n|מין=#{gender}\n|שורש=\n|דרך תצורה=\n|נטיות=\n}}"
+    # body
+    buf += ""
+    # translations
+    tr = translations
+    unless tr.nil?
+      buf +=""
+    end
+    # categories
+    buf += ""
+    return buf
+  end
+
   protected
-  
+  def gender
+    return '?' # TODO: implement
+  end
+  def stripped_deftext
+    ret = ActionView::Base.full_sanitizer.sanitize(deftext)
+    ret = html_entities_coder.decode(ret)
+  end
+  public
+  def translations
+    # fugly way of locating the translations bit, toward the beginning of the def body.
+    buf = stripped_deftext
+    pos = buf.index /[a-z]/
+    return nil if pos.nil?
+    pos = [0, pos - 10].max # presumably, the first 7-bit Latin character is no more than 10 characters after the beginning of the Latin text. 
+    endpos = [buf.length, pos + 100].min
+    buf = buf[pos..endpos]
+    # now that we have that bit, parse it some more to get the actual translations
+    ret = {}
+    # TODO: finish implementing   
+  end 
   def mass_replace_html(buf)
     buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
@@ -209,12 +244,17 @@ class EbyDef < ActiveRecord::Base
     return buf
   end
   def pure_headword
-    return defhead # eventually handle homonym prefixes
+    ret = defhead
+    # remove homonym prefixes
+    if ret =~ /\S\.\s/
+      ret = $'.strip
+    end
+    return ret
   end
   def part_of_speech
     # this is just a fugly hack, for now
     buf = deftext[0..100] # grab definitely-enough characters to include the PoS
-    if buf =~ /\S+\"\S+/
+    if buf =~ /\S+\"\S+/ # first acronym is the PoS
       pos_part = $&
       pos_part = pos_part[0..-2] if pos_part[-1] == ',' # strip comma matched by \S
       case pos_part
@@ -230,7 +270,7 @@ class EbyDef < ActiveRecord::Base
         return 'פועל יוצא (transitive verb)'
       when 'פ"ע'
         return 'פועל עומד (intransitive verb)'
-      when 'מ"ר' # sometimes EBY doesn't specify the noun
+      when 'מ"ר' # sometimes EBY doesn't specify the gender(?)
         return 'שם עצם (noun)'
       else 
         return pos_part

@@ -72,6 +72,7 @@ protect_from_forgery
   def secure?
     true # by default, everything requires a login
   end
+
   private
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale

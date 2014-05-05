@@ -1,8 +1,7 @@
 To-Do
 -----
-
 ==high priority==
-- add instructions page
++ add instructions page
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
 - handle WIDE footnotes
 
@@ -24,7 +23,7 @@ To-Do
 - design and implement a clever search mechanism (precise with nikkud, stripping nikkud, perhaps matching partial nikkud, perhaps even with errors?)
 
 ==low priority==
-- run 'rake notes' and handle code annotated issues
+- run 'bundle exec rake notes' and handle code annotated issues
 - update deployment instructions, document canonical deployment set-up
 - Improve partitioning views
 - keyboard-based scrolling?

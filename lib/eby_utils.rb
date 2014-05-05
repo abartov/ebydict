@@ -66,4 +66,7 @@ module EbyUtils
       d = d.successor_def
     end
   end
+  def html_entities_coder
+    @html_entities_coder ||= HTMLEntities.new
+  end
 end
