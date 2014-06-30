@@ -21,24 +21,27 @@ module EbyUtils
     "יוא'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%99%D7%95%D7%90%D7%9C_",
     "עמ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A2%D7%9E%D7%95%D7%A1_",
     "עו'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%94_",
-    "יונ'" => "",
-    "מי'" => "",
-    "נח'" => "",
-    "חב'" => "",
-    "צפ'" => "",
-    "זכ'" => "",
-    "מלא'" => "",
-    "תה'" => "",
+    "יונ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%99%D7%95%D7%A0%D7%94_",
+    "מי'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%9E%D7%99%D7%9B%D7%94_",
+    "נח'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A0%D7%97%D7%95%D7%9D_",
+    "חבק'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%97%D7%91%D7%A7%D7%95%D7%A7_",
+    "צפ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A6%D7%A4%D7%A0%D7%99%D7%94_",
+    "חגי" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%97%D7%92%D7%99_",
+    "זכ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%96%D7%9B%D7%A8%D7%99%D7%94_",
+    "מלא'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%9E%D7%9C%D7%90%D7%9B%D7%99_",
+    "תה'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%AA%D7%94%D7%9C%D7%99%D7%9D_",
     "משל'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%9E%D7%A9%D7%9C%D7%99_",
-    "שה\"ש" => "",
-    "איכ'" => "",
-    "קה'" => "",
-    "אס'" => "",
-    "דנ'" => "",
-    "עז'" => "",
-    "נח'" => "",
-    "דה\"א" => "",
-    "דה\"ב" => ""
+    "איוב" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%90%D7%99%D7%95%D7%91_",
+    "שה\"ש" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A9%D7%99%D7%A8_%D7%94%D7%A9%D7%99%D7%A8%D7%99%D7%9D_",
+    "רות" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A8%D7%95%D7%AA_",
+    "איכ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%90%D7%99%D7%9B%D7%94_",
+    "קה'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A7%D7%94%D7%9C%D7%AA_",
+    "אס'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%90%D7%A1%D7%AA%D7%A8_",
+    "דנ'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%93%D7%A0%D7%99%D7%90%D7%9C_",
+    "עז'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A2%D7%96%D7%A8%D7%90_",
+    "נח'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A0%D7%97%D7%9E%D7%99%D7%94_",
+    "דה\"א" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%93%D7%91%D7%A8%D7%99_%D7%94%D7%99%D7%9E%D7%99%D7%9D_%D7%90_",
+    "דה\"ב" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%93%D7%91%D7%A8%D7%99_%D7%94%D7%99%D7%9E%D7%99%D7%9D_%D7%91_"
   }
 
   # determine whether a volume of scans is _completely_ partitioned (i.e. all pages, all columns, all defs within columns)
@@ -122,8 +125,8 @@ module EbyUtils
   def bible_link(s)
     parts = s.scan /\S+/
     puts parts
-    debugger
     link = BIBLE_LINKS[parts[0]]
+    File.open('missing_bible_links.txt','a') {|f| f.puts "No link found for: #{parts[0]}" } # TODO: remove when done calibrating
     return '' if link.nil?
     verse = parts[2] 
     if verse =~ /-/ # if a verse range, pick the beginning
