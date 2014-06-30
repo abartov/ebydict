@@ -1,4 +1,12 @@
 module EbyUtils
+
+  # constants
+  BIBLE_BOOKS = ['בראשית', 'שמות', 'ויקרא', 'במדבר', 'דברים', 'יהושע', 'שופטים', "שמואל א'", "שמואל ב'", "מלכים א'", "מלכים ב'", 'ישעיהו', 'ירמיהו', 'יחזקאל', 'הושע', 'יואל', 'עמוס', 'עובדיה', 'יונה', 'מיכה', 'נחום', 'חבקוק', 'צפניה', 'חגי', 'זכריה', 'מלאכי', 'תהילים', 'משלי', 'איוב', 'שיר השירים', 'רות', 'איכה', 'קהלת', 'אסתר', 'דניאל', 'עזרא', 'נחמיה', "דברי הימים א'", "דברי הימים ב'","בר'","שמ'", "ויק'", "במד'", "דבר'", "יהו'","שופ'", "ש\"א", "ש\"ב", "שמ\"א", "שמ\"ב", "מ\"א", "מ\"ב", "מל\"א", "מל\"ב", "יש'", "יר'", "יח'", "הוש'", "יו'", "עמ'", "עו'", "יונ'", "מי'", "נח'", "חב'", "צפ'", "זכ'", "מלא'", "תה'", "משל'", "שה\"ש", "איכ'", "קה'", "אס'", "דנ'", "עז'", "נח'", "דה\"א", "דה\"ב"]
+  BIBLE_LINKS = { 
+    "ברא'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%91%D7%A8%D7%90%D7%A9%D7%99%D7%AA_",
+    "משל'" => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%9E%D7%A9%D7%9C%D7%99_"
+  }
+
   # determine whether a volume of scans is _completely_ partitioned (i.e. all pages, all columns, all defs within columns)
   # this is crucial for generating the dictionary view, determining with certainty whether defs are first/last, etc.
   def is_volume_partitioned(vol)
@@ -68,5 +76,36 @@ module EbyUtils
   end
   def html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
+  end
+  def is_bible(s)
+    parts = s.scan /\S+/
+    puts "parts[0]: #{parts[0]}"
+    return BIBLE_BOOKS.include?(parts[0])
+  end
+  def is_gmara(s)
+  
+  end
+  def bible_link(s)
+    parts = s.scan /\S+/
+    puts parts
+    debugger
+    link = BIBLE_LINKS[parts[0]]
+    return '' if link.nil?
+    verse = parts[2] 
+    if verse =~ /-/ # if a verse range, pick the beginning
+      verse = verse[0..verse.index('-')-1]
+    end
+    link += parts[1] + '_' + verse
+    return link
+  end
+  def gmara_link(s)
+  
+  end
+  def link_for_source(s)
+    ret = ''
+    return ret if s[0..1] == 'שם' # TODO: implement handling for ibid
+    return bible_link(s) if is_bible(s)
+    return gmara_link(s) if is_gmara(s)
+    return ret # give up
   end
 end

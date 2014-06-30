@@ -20,7 +20,10 @@ namespace :sources do
         next if matches.nil?
         # export to CSV
         matches.each { |m|
-          f.puts([d.id, srcno, m.captures[0].strip].to_csv)
+          src = m.captures[0].strip
+          srclink = link_for_source(src)
+          puts "BIBLE: #{src} --> #{srclink}" unless srclink.empty?
+          f.puts([d.id, srcno, src, srclink].to_csv)
           srcno += 1
         }
       }
