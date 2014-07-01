@@ -126,8 +126,10 @@ module EbyUtils
     parts = s.scan /\S+/
     puts parts
     link = BIBLE_LINKS[parts[0]]
-    File.open('missing_bible_links.txt','a') {|f| f.puts "No link found for: #{parts[0]}" } # TODO: remove when done calibrating
-    return '' if link.nil?
+    if link.nil?
+      File.open('missing_bible_links.txt','a') {|f| f.puts "No link found for: #{parts[0]}" } # TODO: remove when done calibrating
+      return ''
+    end
     verse = parts[2] 
     if verse =~ /-/ # if a verse range, pick the beginning
       verse = verse[0..verse.index('-')-1]
