@@ -116,8 +116,9 @@ module EbyUtils
   end
   def is_bible(s)
     parts = s.scan /\S+/
-    puts "parts[0]: #{parts[0]}"
-    return BIBLE_BOOKS.include?(parts[0])
+    ret = BIBLE_BOOKS.include?(parts[0])
+    puts "parts[0]: #{parts[0]} --> #{ret}" # TODO: remove when calibrated
+    return ret
   end
   def is_gmara(s)
   
