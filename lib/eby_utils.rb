@@ -143,10 +143,10 @@ module EbyUtils
   
   end
   def link_for_source(s)
-    ret = ''
+    ret = s
     return ret if s[0..1] == 'שם' # TODO: implement handling for ibid
-    return bible_link(s) if is_bible(s)
-    return gmara_link(s) if is_gmara(s)
+    return "<a href=\"#{bible_link(s)}\">#{s}</a>" if is_bible(s)
+    return "<a href=\"#{gmara_link(s)}\">#{s}</a>" if is_gmara(s)
     return ret # give up
   end
 end
