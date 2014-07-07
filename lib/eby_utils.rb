@@ -126,9 +126,9 @@ module EbyUtils
   def bible_link(s)
     parts = s.scan /\S+/
     puts parts
-    debugger
-    link = BIBLE_LINKS[BIBLE_BOOKS[parts[0]] - 1]
+    link = BIBLE_LINKS[BIBLE_BOOKS[parts[0]]]
     if link.nil? or (parts.length < 3) # either an "Ibid." situation or some other unexpected issue
+      #debugger
       File.open('missing_bible_links.txt','a') {|f| f.puts "No link found for: #{parts[0]} OR can't parse #{s}" } # TODO: remove when done calibrating
       return ''
     end
