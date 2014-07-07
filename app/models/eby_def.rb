@@ -96,6 +96,8 @@ class EbyDef < ActiveRecord::Base
     # first, mass-replace source, comment, and problem markup.
     buf = (deftext.nil? ? '' : deftext)
     buf = mass_replace_html(buf)
+    # auto-linkify sources
+    buf = linkify_sources(buf)
 
     # renumber footnote references, starting with 1
     newbuf = ''
@@ -118,7 +120,8 @@ class EbyDef < ActiveRecord::Base
     ret_body = buf
     # prepare footnotes
     buf = (footnotes.nil? ? '' : footnotes)
-    buf = mass_replace_html(buf)
+    buf = mass_replace_html(buf) # this time for footnotes
+    buf = linkify_sources(buf)
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do
@@ -235,12 +238,11 @@ class EbyDef < ActiveRecord::Base
     # TODO: finish implementing   
   end 
   def mass_replace_html(buf)
-    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, "<span class=\"source\">"+link_for_source('\1')+"</span>")
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_redirect)}:\s*([^\]]+?)\]\]/, '<span class="redirect">\1</span>') # TODO: replace with actual redirecting logic?
     buf.gsub!(/<p>&nbsp;<\/p>/,'') # remove empty paragraphs
-    
     return buf
   end
   def pure_headword
@@ -282,5 +284,14 @@ class EbyDef < ActiveRecord::Base
   def split_senses
     parts = deftext.split /\s\S\(/
     return parts
+  end
+  def linkify_sources(buf)
+    newbuf = ''
+    while buf =~ /<span class="source">(.*?)<\/span>/ do
+      newbuf += $` + '<span class="source">' + link_for_source($1) + '</span>'
+      buf = $'
+    end
+    newbuf += buf # append remaining bit 
+    return newbuf
   end
 end
