@@ -146,7 +146,7 @@ module EbyUtils
     ret = s
     return ret if s[0..1] == 'שם' # TODO: implement handling for ibid
     return "<a href=\"#{bible_link(s)}\">#{s}</a>" if is_bible(s)
-    return "<a href=\"#{gmara_link(s)}\">#{s}</a>" if is_gmara(s)
+    return "<a href=\"#{gmara_link(s)}\">#{s}</a>" if is_talmud(s)
     return ret # give up
   end
 end
