@@ -25,6 +25,7 @@
               = "#{d.defhead} (#{action_label_for_status(d.status)})"
             = raw "&nbsp;&nbsp;&nbsp;&nbsp;"
         %td= '...'
+= will_paginate @users
 
 %a{ :href => user_index_path }
   = t(:user_back)
