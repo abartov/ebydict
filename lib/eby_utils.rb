@@ -117,7 +117,7 @@ module EbyUtils
   def is_bible(s)
     parts = s.scan /\S+/
     ret = BIBLE_BOOKS.keys.include?(parts[0])
-    puts "parts[0]: #{parts[0]} --> #{ret}" # TODO: remove when calibrated
+    #puts "parts[0]: #{parts[0]} --> #{ret}" # TODO: remove when calibrated
     return ret
   end
   def is_talmud(s)
@@ -125,7 +125,7 @@ module EbyUtils
   end
   def bible_link(s)
     parts = s.scan /\S+/
-    puts parts
+    # puts parts # DBG
     link = BIBLE_LINKS[BIBLE_BOOKS[parts[0]]]
     if link.nil? or (parts.length < 3) # either an "Ibid." situation or some other unexpected issue
       #debugger
