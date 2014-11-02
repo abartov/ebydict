@@ -149,4 +149,14 @@ module EbyUtils
     return "<a href=\"#{gmara_link(s)}\">#{s}</a>" if is_talmud(s)
     return ret # give up
   end
+  # used in partitioning (scan controller)
+  def makedef(col, jpeg, defno, is_complete)
+    newdef = EbyDef.new(:defhead => t(:type_unknown), :reject_count => 0, :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'), :volume => col.volume)
+    newdef.save!
+    defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'].id)
+    defev.save!
+    newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
+    newdefpart.save!
+    return newdef
+  end
 end
