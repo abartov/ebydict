@@ -15,5 +15,6 @@
 /tmp
 /config/database.yml
 /config/constants.yml
+/config/s3.yml
 /public/assets/*
 *.swp
