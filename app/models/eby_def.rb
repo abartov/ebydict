@@ -294,4 +294,13 @@ class EbyDef < ActiveRecord::Base
     newbuf += buf # append remaining bit 
     return newbuf
   end
+  # the following method is dangerous!  It will insert a new EbyDef after the current EbyDef.
+  # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one, 
+  # during the DefPartition stage.  It is assumed this would only happen for defparts that begin AND
+  # end a headword.
+  # It also doesn't handle the partitioning itself for you.  Pass it a filename of the correctly cut 
+  # NEW headword, that you have cut off from the group image, and placed in the same directory.
+  def insert_after(def_part_img)
+    newdef = makedef(part_defs.last.colimg, def_part_img, self.defno + 1, true) # assuming is_complete == true!
+  end
 end
