@@ -8,7 +8,11 @@ class UserController < ApplicationController
     @page_title = I18n.t(:admin_userlist)
     @users = EbyUser.page(params[:page])
   end
-
+  def active_emails
+    redirect_to :controller => 'user' unless check_role('publisher')
+    @page_title = I18n.t(:admin_emailusers)
+    @emails = EbyUser.where("last_login > ?", 3.months.ago).pluck(:email)
+  end
   def show_work
     @page_title = t(:user_maintitle)
     @user = EbyUser.find(session["user"])

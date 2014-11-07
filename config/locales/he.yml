@@ -246,6 +246,7 @@ he:
   admin_user_roles: תפקידים
   admin_user_login_count: מספר כניסות אי פעם
   admin_user_last_login: כניסה אחרונה
+  admin_emailusers: רשימת משתמשים פעילים
   table_actions: פעולות
 
 ## distance in time (from https://gist.github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml)
