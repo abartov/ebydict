@@ -11,7 +11,10 @@ class UserController < ApplicationController
   def active_emails
     redirect_to :controller => 'user' unless check_role('publisher')
     @page_title = I18n.t(:admin_emailusers)
-    @emails = EbyUser.where("last_login > ?", 3.months.ago).pluck(:email).join(',')
+    @emails = EbyUser.where("last_login > ?", 3.months.ago).pluck(:email).join(', ') # gather recent logins
+    # but also anyone who's completed work in past 3 months, even if they've maintained a single login for more than 3 month! :)
+    active_users = EbyDef.where("updated_at > ?", 3.months.ago).pluck(:assignedto)
+    @emails += ', '+EbyUser.find(active_users).pluck(:email).join(', ')
   end
   def show_work
     @page_title = t(:user_maintitle)
