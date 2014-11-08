@@ -14,7 +14,7 @@ class UserController < ApplicationController
     emails = EbyUser.where("last_login > ?", 3.months.ago).pluck(:email) # gather recent logins
     # but also anyone who's completed work in past 3 months, even if they've maintained a single login for more than 3 month! :)
     active_users = EbyDef.where("updated_at > ?", 3.months.ago).pluck(:assignedto)
-    emails += ', '+EbyUser.find(active_users).map(&:email)
+    emails += EbyUser.find(active_users).map(&:email)
     @emails = emails.uniq.join(', ')
   end
   def show_work
