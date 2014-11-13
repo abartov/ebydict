@@ -324,7 +324,7 @@ class ScanController < ApplicationController
           flash[:notice] = @msg.html_safe
           if params[:save_and_next]
             # find a new available scanimg, and redirect back to partition
-            newpagenum = @sc.firstpagenum.to_i+2
+            newpagenum = @sc.secondpagenum.nil? ? @sc.firstpagenum.to_i+1 : @sc.firstpagenum.to_i+2
             @sc = EbyScanImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
             if @sc.nil?
               flash[:notice] = t(:scan_nomorescans)
