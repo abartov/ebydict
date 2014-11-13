@@ -277,7 +277,7 @@ class ScanController < ApplicationController
       elsif params[:pagenos].nil? or params[:pagenos].empty?
         @smallimg = url_from_file(@sc.smalljpeg) || "error!"
         @origimg = url_from_file(@sc.origjpeg) || "error!"
-
+        @height, @width = get_dimensions_from_img(@sc.smalljpeg)
         flash[:error] = t(:scan_no_pagenums)
         render :action => 'partition'
       else
@@ -293,6 +293,7 @@ class ScanController < ApplicationController
           flash[:error] = t(:scan_no_cols)
           @smallimg = url_from_file(@sc.smalljpeg) || "error!"
           @origimg = url_from_file(@sc.origjpeg) || "error!"
+          @height, @width = get_dimensions_from_img(@sc.smalljpeg)
           render :action => 'partition'
         else
           @msg += t(:scan_got_seps_html, :seps => (seps.length-1).to_s) + "<br/>"

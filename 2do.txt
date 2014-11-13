@@ -5,6 +5,8 @@ To-Do
 - monthly e-mail to (only active?) volunteers
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
 - handle WIDE footnotes
+- add omniauth and Google/Twitter auths
+- implement user#edit to give users (esp. after omniauth!) specific permissions
 
 ==medium priority==
 - BUG: handle footnotes within markup.  E.g. http://ebydict.benyehuda.org/definition/view/3741
