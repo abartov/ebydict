@@ -4,6 +4,7 @@
     %tr
       %th= t(:admin_adduser_login)
       %th= t(:admin_adduser_fullname)
+      %th= t(:admin_proof_level)
       %th= t(:admin_adduser_email)
       %th= t(:admin_user_login_count)
       %th= t(:admin_user_last_login)
@@ -14,6 +15,7 @@
       %tr
         %td= u.login
         %td= link_to u.fullname, :controller => :user, :action => :show, :id => u
+        %td= u.max_proof_level.to_s
         %td= u.email
         %td= u.login_count.to_s
         %td= u.last_login.nil? ? t(:never) : time_ago_in_words(u.last_login)
