@@ -300,9 +300,10 @@ class ScanController < ApplicationController
           @seps = seps
           cur_right = origimg.columns - 1 # first partition begins at X=width-1 
           seps.each_index { |colno|
+            margin_x = params[:double_margin] == 'on' ? MARGINX*2 : MARGINX
             realsep = (seps[colno] * (1 / ZOOM_FACTOR)).ceil # calculate real x coordinate according to factor
             # cut up orig jpeg
-            colimg = origimg.crop([0,realsep - MARGINX].max, 0, cur_right - realsep + 2*MARGINX, origimg.rows)
+            colimg = origimg.crop([0,realsep - margin_x].max, 0, cur_right - realsep + 2*margin_x, origimg.rows)
             colimgname = fname_for_part(@sc.origjpeg, 'col'+(colno+1).to_s+'_')
             colimg.write(colimgname)
             # create appropriate number of column-image objects initialized to the new column jpegs

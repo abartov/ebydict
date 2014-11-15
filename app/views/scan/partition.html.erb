@@ -72,14 +72,15 @@ $(document).ready(function() {
 
 </head>
 
-<body> <b>Partitioning scan: <%= @origimg %></b>
-<%= form_tag '/scan/dopartition/'+@sc.id.to_s %> <div id="part_tools"><%= submit_tag "Save Partitions and Get Another Image", :name => 'save_and_next' %> || <%= submit_tag "Save Partitions", :name => 'commit' %> || <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %> <a href="" onclick="cancel_seps()">Cancel and Start Over</a> <p/>
-<span style="color:green">Please enter the Page Numbers in this image (Examples: <b>3</b> or <b>4-5</b>):</span><input name="pagenos" size="10" value="<%= @prefilled_pagenums %>"/>
-<a href="<%= @origimg %>" target="_new">Click to see original (large) image in new window</a><br/>
-Column separators marked so far: <span id="col_seps"></span>
+<body> <b><%= t(:scan_partitioning) %>: <%= @origimg %></b>
+<%= form_tag '/scan/dopartition/'+@sc.id.to_s %> <div id="part_tools"><%= submit_tag t(:scan_save_and_get_another_img), :name => 'save_and_next' %> || <%= submit_tag t(:scan_save_partitions), :name => 'commit' %> || <%= submit_tag t(:scan_abandon_this_image), :name => 'abandon' %> <a href="" onclick="cancel_seps()"><%= t(:scan_cancel_and_start_over) %></a> <p/>
+  <span style="color:green"><%= t(:scan_enter_page_numbers) %>:</span><input name="pagenos" size="10" value="<%= @prefilled_pagenums %>"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="<%= @origimg %>" target="_new"><%= t(:scan_show_original)%></a><br/>
+  <input type="checkbox" name="double_margin"/><%= t(:scan_double_margins) %> || 
+  <%= t(:scan_seps_so_far) %>: <span id="col_seps"></span>
 <input type="hidden" name="seps" id="final_seps"/>
 </form> 
 </div>
-Small Image: <div id="smallimg_container" style="position:relative"><canvas id="myCanvas" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></div>
+<div id="smallimg_container" style="position:relative"><canvas id="myCanvas" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></div>
 <p/>
 </body>

@@ -46,6 +46,16 @@ he:
   scan_col_created: יצרתי טור מס' %{colno} ושמרתיו כקובץ %{fname}
   scan_parted_scan_html: סיימתי להפריד את הסריקה המלאה %{fname} מתוך כרך %{vol}, עמוד/ים %{pages}<br/>
   scan_nomorescans: אין עוד סריקות מלאות להפריד לטורים! הידד! אפשר לעבוד על משהו אחר!
+  scan_double_margins: השאר שוליים רחבים סביב החיתוך
+  scan_save_and_get_another_img: שמור הפרדות והצג הסריקה הבאה
+  scan_cancel_and_start_over: ביטול הפרדות בסריקה זו
+  scan_abandon_this_image: זנח הפרדת סריקה זו
+  scan_save_partitions: שמור הפרדות
+  scan_partitioning: מפריד טורים בסריקה
+  scan_enter_page_numbers: נא להזין את מספרי העמודים המקוריים לדוגמה 3 או 4-5
+
+  scan_show_original: הצג את הקובץ בגודל מלא בחלון נפרד
+  scan_seps_so_far: הפרדות שסומנו עד כה
 
 ## typing controller
   type_arabic: ערבית
