@@ -27,7 +27,7 @@ class EbyDef < ActiveRecord::Base
         round_part = round.nil? ? '' : " and proof_round_passed = #{(round-1).to_s}"
         status = "NeedProof"
         action = "proof"
-        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+round_part+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed " # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
+        wherecond = " and proof_round_passed < "+to_user.max_proof_level.to_s+round_part+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed DESC" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
@@ -58,7 +58,7 @@ class EbyDef < ActiveRecord::Base
       sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
       rset = EbyDef.find_by_sql(sql+" limit 1")  
       if rset.nil? or rset[0].nil?
-        return nil if round.nil?
+        return nil if round.nil? 
         round -= 1 
       else
         thedef = rset[0]
