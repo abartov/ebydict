@@ -69,6 +69,13 @@ class UserController < ApplicationController
   def prefs
     @user = EbyUser.find(session["user"])
   end
+  def edit # admin action
+    if check_role('publisher')
+      @user = EbyUser.find(params[:id])
+    else
+      redirect_to :controller => :user
+    end
+  end
   def chpwd
     p = params[:password]
     if p.nil? or p.empty?
