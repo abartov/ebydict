@@ -22,12 +22,13 @@ tinyMCE.init({
         toolbar: "bold undo redo charmap | makor problem comment redirect | talmud post_xazal neologism",
         directionality : "rtl",
         /*language : 'he',*/
+        menubar: false,
         content_css : "/assets/application.css",
         setup: function(editor) { 
           // Add our custom buttons
           editor.addButton('makor', {
             /*text: '<%= t(:type_source) %>',*/
-            icon: '/assets/source.png',
+            image: '/assets/source.png',
             onclick: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_source_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
@@ -35,7 +36,7 @@ tinyMCE.init({
           });
           editor.addButton('problem', {
             //text: '<%= t(:type_problem_btn) %>',
-            icon: '/assets/problem.png',
+            image: '/assets/problem.png',
             onclick: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_problem_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
@@ -43,7 +44,7 @@ tinyMCE.init({
           });
           editor.addButton('comment', {
             //text: '<%= t(:type_comment) %>',
-            icon: '/assets/comment.png',
+            image: '/assets/comment.png',
             onclick: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_comment_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
@@ -51,7 +52,7 @@ tinyMCE.init({
           });
           editor.addButton('redirect', {
             //text: '<%= t(:type_redirect) %>',
-            icon: '/assets/vide.png',
+            image: '/assets/vide.png',
             onclick: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_redirect_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
@@ -59,7 +60,7 @@ tinyMCE.init({
           });
           editor.addButton('talmud', {
             //text: '<%= t(:type_talmud) %>',
-            icon: '/assets/talmud.png',
+            image: '/assets/talmud.png',
             onclick: function() { 
               editor.focus();
               editor.selection.setContent('* '+editor.selection.getContent());
@@ -67,7 +68,7 @@ tinyMCE.init({
           });
           editor.addButton('post_xazal', {
             //text: '<%= t(:type_post_xazal) %>',
-            icon: '/assets/post_xazal.png',
+            image: '/assets/post_xazal.png',
             onclick : function() {
               editor.focus();
               editor.selection.setContent('&deg;'+editor.selection.getContent());
@@ -75,21 +76,19 @@ tinyMCE.init({
           });
           editor.addButton('neologism', {
             //text: '<%= t(:type_neologism) %>',
-            icon: '/assets/neologism.png',
+            image: '/assets/neologism.png',
             onclick : function() {
               editor.focus();
               editor.selection.setContent('&sect;'+editor.selection.getContent());
             }
           });
-        },
-    onchange_callback : function(ed){
-      var tinymce_placeholder = $('#' + ed.id).attr("placeholder");     
-      setTimeout(function () {
-        var content = ed.getContent().replace(/<p>|<\/p>/g, '');
-        if (content == '') {
-          ed.setContent(tinymce_placeholder);
-        }
-      }, 200);
+        /*  editor.on('change', {
+            var tinymce_placeholder = $('#' + editor.id).attr("placeholder");  
+            var content = ed.getContent().replace(/<p>|<\/p>/g, '');
+            if (content == '') {
+              ed.setContent(tinymce_placeholder);
+            });
+          }*/
     },
 /*  setup : function(ed) {
     // Set placeholder
