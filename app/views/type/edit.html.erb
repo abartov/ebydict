@@ -18,82 +18,80 @@ var extra_foots = <%= raw @extra_foots %>;
 $(document).ready(function() {
 // TinyMCE stuff
 tinyMCE.init({
-        mode : "specific_textareas",
-        editor_selector : "mceEditor",
-        theme : "advanced",
-  theme_advanced_buttons1 : "bold,undo,redo,charmap,separator,makor,problem,comment,redirect,talmud,post_xazal,neologism",
-  theme_advanced_buttons2 : "",
-  theme_advanced_buttons3 : "",
+        selector : "textarea.mceEditor",
+        toolbar: "bold undo redo charmap | makor problem comment redirect | talmud post_xazal neologism",
         directionality : "rtl",
-        language : 'he',
+        /*language : 'he',*/
         content_css : "/assets/application.css",
-  onchange_callback : function(ed){
-    var tinymce_placeholder = $('#' + ed.id).attr("placeholder");     
-    setTimeout(function () {
-      var content = ed.getContent().replace(/<p>|<\/p>/g, '');
-      if (content == '') {
-        ed.setContent(tinymce_placeholder);
-      }
-    }, 200);
-  },
-  setup : function(ed) {
-    // Add our custom buttons
-    ed.addButton('makor', {
-    title : '<%= t(:type_source) %>',
-                image : '/assets/source.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_source_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-    }
-    });
-    ed.addButton('problem', {
-    title : '<%= t(:type_problem_btn) %>',
-                image : '/assets/problem.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-    }
-    });
-    ed.addButton('comment', {
-    title : '<%= t(:type_comment) %>',
-                image : '/assets/comment.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-      }
-    });
-    ed.addButton('redirect', {
-    title : '<%= t(:type_redirect) %>',
-                image : '/assets/vide.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_redirect_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-      }
-    });
-    ed.addButton('talmud', {
-    title : '<%= t(:type_talmud) %>',
-                image : '/assets/talmud.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('* '+ed.selection.getContent());
-      }
-    });
-    ed.addButton('post_xazal', {
-    title : '<%= t(:type_post_xazal) %>',
-                image : '/assets/post_xazal.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('&deg;'+ed.selection.getContent());
-      }
-    });
-    ed.addButton('neologism', {
-    title : '<%= t(:type_neologism) %>',
-                image : '/assets/neologism.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('&sect;'+ed.selection.getContent());
-      }
-    });
+        setup: function(editor) { 
+          // Add our custom buttons
+          editor.addButton('makor', {
+            /*text: '<%= t(:type_source) %>',*/
+            icon: '/assets/source.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_source_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('problem', {
+            //text: '<%= t(:type_problem_btn) %>',
+            icon: '/assets/problem.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_problem_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('comment', {
+            //text: '<%= t(:type_comment) %>',
+            icon: '/assets/comment.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_comment_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('redirect', {
+            //text: '<%= t(:type_redirect) %>',
+            icon: '/assets/vide.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_redirect_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('talmud', {
+            //text: '<%= t(:type_talmud) %>',
+            icon: '/assets/talmud.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('* '+editor.selection.getContent());
+            }
+          });
+          editor.addButton('post_xazal', {
+            //text: '<%= t(:type_post_xazal) %>',
+            icon: '/assets/post_xazal.png',
+            onclick : function() {
+              editor.focus();
+              editor.selection.setContent('&deg;'+editor.selection.getContent());
+            }
+          });
+          editor.addButton('neologism', {
+            //text: '<%= t(:type_neologism) %>',
+            icon: '/assets/neologism.png',
+            onclick : function() {
+              editor.focus();
+              editor.selection.setContent('&sect;'+editor.selection.getContent());
+            }
+          });
+        },
+    onchange_callback : function(ed){
+      var tinymce_placeholder = $('#' + ed.id).attr("placeholder");     
+      setTimeout(function () {
+        var content = ed.getContent().replace(/<p>|<\/p>/g, '');
+        if (content == '') {
+          ed.setContent(tinymce_placeholder);
+        }
+      }, 200);
+    },
+/*  setup : function(ed) {
     // Set placeholder
     var tinymce_placeholder = $('#' + ed.id);
     if (tinymce_placeholder.length) {
@@ -110,8 +108,9 @@ tinyMCE.init({
         }
       });
     }
-  }
-  });
+    }*/
+    }
+  );
   chimg(0);
   $(".dialog").hide();
   
