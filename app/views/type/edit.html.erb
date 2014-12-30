@@ -114,7 +114,12 @@ tinyMCE.init({
     }*/
     }
   );
-  chimg(0);
+  <% if @d.marker.nil? %>
+    chimg(0);
+  <% else %>
+    chimg(<%= @d.marker.partnum - 1 %>); // partnums start at one
+    drawMarker(<%= @d.marker.marker_y %>);
+  <% end %>    
   $(".dialog").hide();
   
   $("#instructions").dialog({
@@ -315,7 +320,9 @@ function chimg(delta) {
     actual_chimg(delta);
   }, 300);
 }
-
+function drawMarker(y) {
+  // TODO: draw marker on canvas
+}
 function actual_chimg(delta) {
   curpart += delta;
   curfoot += delta;

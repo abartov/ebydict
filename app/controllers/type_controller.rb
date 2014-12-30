@@ -9,6 +9,17 @@ class TypeController < ApplicationController
   def list # TODO: what does this mean for this controller?
     #edit
   end
+  def set_marker
+    @d = EbyDef.find(params[:id])
+    if @d.marker.nil?
+      @d.marker = EbyMarker.new
+    end
+    @d.marker.parnum = params[:partnum]
+    @d.marker.marker_y = params[:marker_y]
+    @d.marker.save!
+    @d.save!
+    render :nothing
+  end
   def get_fixup
     unless(check_role('fixer'))
       flash[:error] = t(:type_notfixer)
@@ -194,6 +205,7 @@ class TypeController < ApplicationController
       @d.assignee = nil
       defev.new_status = (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status)
       defev.save
+      @d.marker.delete unless @d.marker.nil? # delete place marker when def done
       @d.save!
       flash[:notice] = t(:type_saved_with_status, :status => newstat)
     elsif params[:problem]
@@ -202,6 +214,7 @@ class TypeController < ApplicationController
       defev.save
       @d.status = 'Problem'
       @d.assignee = nil
+      @d.marker.delete unless @d.marker.nil? # delete place marker when def done
       @d.save
       flash[:notice] = t(:type_problematic)
     else
@@ -251,6 +264,7 @@ class TypeController < ApplicationController
     d.assignee = nil
     d.reject_count = 0 if d.reject_count.nil?
     d.reject_count += 1
+    d.marker.delete unless d.marker.nil? # forget place marker when abandoning a def
     d.save
     flash[:notice] = t(:type_abandoned)
   end
