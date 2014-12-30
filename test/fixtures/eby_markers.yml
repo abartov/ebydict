@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 1
+  thedef: 1
+  partnum: 1
+  marker_y: 1
+
+two:
+  user: 1
+  thedef: 1
+  partnum: 1
+  marker_y: 1

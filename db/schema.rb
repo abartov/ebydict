@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708043954) do
+ActiveRecord::Schema.define(:version => 20141230053722) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -67,6 +67,15 @@ ActiveRecord::Schema.define(:version => 20130708043954) do
     t.integer  "reject_count"
     t.integer  "ordinal"
     t.integer  "volume"
+  end
+
+  create_table "eby_markers", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "def_id"
+    t.integer  "partnum"
+    t.integer  "marker_y"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "eby_scan_images", :force => true do |t|

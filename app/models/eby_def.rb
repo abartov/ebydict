@@ -6,6 +6,7 @@ class EbyDef < ActiveRecord::Base
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
+  has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 
   # validations
   validates :status, inclusion: { :in => %w( Problem Partial GotOrphans NeedTyping NeedProof NeedFixup NeedPublish Published ) }, presence: true
