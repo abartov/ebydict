@@ -18,91 +18,92 @@ var extra_foots = <%= raw @extra_foots %>;
 $(document).ready(function() {
 // TinyMCE stuff
 tinyMCE.init({
-        mode : "specific_textareas",
-        editor_selector : "mceEditor",
-        theme : "advanced",
-  theme_advanced_buttons1 : "bold,undo,redo,charmap,separator,makor,problem,comment,redirect,talmud,post_xazal,neologism",
-  theme_advanced_buttons2 : "",
-  theme_advanced_buttons3 : "",
+        selector : "textarea.mceEditor",
+        toolbar: "bold undo redo charmap | makor problem comment redirect | talmud post_xazal neologism",
         directionality : "rtl",
-        language : 'he',
+        /*language : 'he',*/
+        menubar: false,
         content_css : "/assets/application.css",
-  onchange_callback : function(ed){
-    var tinymce_placeholder = $('#' + ed.id).attr("placeholder");     
-    setTimeout(function () {
-      var content = ed.getContent().replace(/<p>|<\/p>/g, '');
-      if (content == '') {
-        ed.setContent(tinymce_placeholder);
-      }
-    }, 200);
-  },
-  setup : function(ed) {
-    // Add our custom buttons
-    ed.addButton('makor', {
-    title : '<%= t(:type_source) %>',
-                image : '/assets/source.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_source_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-    }
-    });
-    ed.addButton('problem', {
-    title : '<%= t(:type_problem_btn) %>',
-                image : '/assets/problem.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_problem_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-    }
-    });
-    ed.addButton('comment', {
-    title : '<%= t(:type_comment) %>',
-                image : '/assets/comment.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_comment_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-      }
-    });
-    ed.addButton('redirect', {
-    title : '<%= t(:type_redirect) %>',
-                image : '/assets/vide.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('<%= t(:type_redirect_markup) %>'+ed.selection.getContent()+'&#93;&#93;');
-      }
-    });
-    ed.addButton('talmud', {
-    title : '<%= t(:type_talmud) %>',
-                image : '/assets/talmud.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('* '+ed.selection.getContent());
-      }
-    });
-    ed.addButton('post_xazal', {
-    title : '<%= t(:type_post_xazal) %>',
-                image : '/assets/post_xazal.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('&deg;'+ed.selection.getContent());
-      }
-    });
-    ed.addButton('neologism', {
-    title : '<%= t(:type_neologism) %>',
-                image : '/assets/neologism.png',
-    onclick : function() {
-      ed.focus();
-      ed.selection.setContent('&sect;'+ed.selection.getContent());
-      }
-    });
+        setup: function(editor) { 
+          // Add our custom buttons
+          editor.addButton('makor', {
+            /*text: '<%= t(:type_source) %>',*/
+            image: '/assets/source.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_source_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('problem', {
+            //text: '<%= t(:type_problem_btn) %>',
+            image: '/assets/problem.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_problem_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('comment', {
+            //text: '<%= t(:type_comment) %>',
+            image: '/assets/comment.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_comment_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('redirect', {
+            //text: '<%= t(:type_redirect) %>',
+            image: '/assets/vide.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('<%= t(:type_redirect_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
+            }
+          });
+          editor.addButton('talmud', {
+            //text: '<%= t(:type_talmud) %>',
+            image: '/assets/talmud.png',
+            onclick: function() { 
+              editor.focus();
+              editor.selection.setContent('* '+editor.selection.getContent());
+            }
+          });
+          editor.addButton('post_xazal', {
+            //text: '<%= t(:type_post_xazal) %>',
+            image: '/assets/post_xazal.png',
+            onclick : function() {
+              editor.focus();
+              editor.selection.setContent('&deg;'+editor.selection.getContent());
+            }
+          });
+          editor.addButton('neologism', {
+            //text: '<%= t(:type_neologism) %>',
+            image: '/assets/neologism.png',
+            onclick : function() {
+              editor.focus();
+              editor.selection.setContent('&sect;'+editor.selection.getContent());
+            }
+          });
+          editor.on('change', function(e) {
+            var content = tinymce.activeEditor.getContent().replace(/<p>|<\/p>/g, '');
+            if (content == '') {
+              tinymce.activeEditor.setContent($('#' + editor.id).attr("placeholder"));
+            }  
+          });
+          // set initial placeholder if empty
+          var placeholder = $('#' + editor.id).attr("placeholder");
+          if(placeholder.length) {
+            editor.on('init', function(e) {
+              var cont = editor.getContent();
+              if (cont.length == 0) {
+                editor.setContent(placeholder);
+              }
+            });
+          }
+    },
+// remnants of TinyMCE 3.x code below -- remove when sure no longer needed
+/*  setup : function(ed) {
     // Set placeholder
     var tinymce_placeholder = $('#' + ed.id);
     if (tinymce_placeholder.length) {
-      ed.onInit.add(function (ed) {
-        var cont = ed.getContent();
-        if (cont.length == 0) {
-          ed.setContent(tinymce_placeholder.attr("placeholder"));
-        }
-      });
       ed.onMouseDown.add(function (ed, e) {
         var content = ed.getContent().replace(/<p>|<\/p>/g, '');
         if (content == tinymce_placeholder.attr("placeholder")) {
@@ -110,8 +111,9 @@ tinyMCE.init({
         }
       });
     }
-  }
-  });
+    }*/
+    }
+  );
   chimg(0);
   $(".dialog").hide();
   
@@ -217,6 +219,7 @@ tinyMCE.init({
   padding-right:2px;
   border-right:4px gray solid;
   overflow-y:auto;
+  height:100vh;
 }
 .scans {
   /*float:right;*/
@@ -254,10 +257,10 @@ tinyMCE.init({
   <!-- TinyMCE goes here -->
     <div>
 <span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
-      <textarea class="mceEditor" id="deftext" name="deftext" rows="15" cols="40" placeholder="<%= t(:type_text) %>"><%= h(@thedef.deftext) %></textarea> 
+      <textarea class="mceEditor" id="deftext" name="deftext" rows="10" cols="30" placeholder="<%= t(:type_text) %>"><%= h(@thedef.deftext) %></textarea> 
       <hr/>
       <hr id="helper_hr" style="display: none"/>
-      <textarea class="mceEditor" id="footnotes" name="footnotes" rows="10" cols="40" placeholder="<%= t(:type_footnotes) %>"><%= h(@thedef.footnotes) %></textarea>
+      <textarea class="mceEditor" id="footnotes" name="footnotes" rows="7" cols="30" placeholder="<%= t(:type_footnotes) %>"><%= h(@thedef.footnotes) %></textarea>
       <table>
 	<tr><th><%= t(:type_arabic) %></th><th><%= t(:type_greek) %></th><th><%= t(:type_russian) %></th><th><%= t(:type_extra) %></th></tr>
         <tr>

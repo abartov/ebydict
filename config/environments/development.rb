@@ -36,4 +36,6 @@ Ebydict::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.delivery_method = :sendmail
+
+  config.serve_static_assets = true
 end
