@@ -82,24 +82,28 @@ tinyMCE.init({
               editor.selection.setContent('&sect;'+editor.selection.getContent());
             }
           });
-        /*  editor.on('change', {
-            var tinymce_placeholder = $('#' + editor.id).attr("placeholder");  
-            var content = ed.getContent().replace(/<p>|<\/p>/g, '');
+          editor.on('change', function(e) {
+            var content = tinymce.activeEditor.getContent().replace(/<p>|<\/p>/g, '');
             if (content == '') {
-              ed.setContent(tinymce_placeholder);
+              tinymce.activeEditor.setContent($('#' + editor.id).attr("placeholder"));
+            }  
+          });
+          // set initial placeholder if empty
+          var placeholder = $('#' + editor.id).attr("placeholder");
+          if(placeholder.length) {
+            editor.on('init', function(e) {
+              var cont = editor.getContent();
+              if (cont.length == 0) {
+                editor.setContent(placeholder);
+              }
             });
-          }*/
+          }
     },
+// remnants of TinyMCE 3.x code below -- remove when sure no longer needed
 /*  setup : function(ed) {
     // Set placeholder
     var tinymce_placeholder = $('#' + ed.id);
     if (tinymce_placeholder.length) {
-      ed.onInit.add(function (ed) {
-        var cont = ed.getContent();
-        if (cont.length == 0) {
-          ed.setContent(tinymce_placeholder.attr("placeholder"));
-        }
-      });
       ed.onMouseDown.add(function (ed, e) {
         var content = ed.getContent().replace(/<p>|<\/p>/g, '');
         if (content == tinymce_placeholder.attr("placeholder")) {
