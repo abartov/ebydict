@@ -215,6 +215,7 @@ tinyMCE.init({
   padding-right:2px;
   border-right:4px gray solid;
   overflow-y:auto;
+  height:100vh;
 }
 .scans {
   /*float:right;*/
@@ -252,10 +253,10 @@ tinyMCE.init({
   <!-- TinyMCE goes here -->
     <div>
 <span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
-      <textarea class="mceEditor" id="deftext" name="deftext" rows="15" cols="40" placeholder="<%= t(:type_text) %>"><%= h(@thedef.deftext) %></textarea> 
+      <textarea class="mceEditor" id="deftext" name="deftext" rows="10" cols="30" placeholder="<%= t(:type_text) %>"><%= h(@thedef.deftext) %></textarea> 
       <hr/>
       <hr id="helper_hr" style="display: none"/>
-      <textarea class="mceEditor" id="footnotes" name="footnotes" rows="10" cols="40" placeholder="<%= t(:type_footnotes) %>"><%= h(@thedef.footnotes) %></textarea>
+      <textarea class="mceEditor" id="footnotes" name="footnotes" rows="7" cols="30" placeholder="<%= t(:type_footnotes) %>"><%= h(@thedef.footnotes) %></textarea>
       <table>
 	<tr><th><%= t(:type_arabic) %></th><th><%= t(:type_greek) %></th><th><%= t(:type_russian) %></th><th><%= t(:type_extra) %></th></tr>
         <tr>
