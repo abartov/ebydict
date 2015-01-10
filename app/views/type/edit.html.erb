@@ -151,7 +151,7 @@ tinyMCE.init({
   imageObj = new Image();
 
   imageObj.onload = function() {
-    resizeCanvas();
+    resizeCanvas(imageObj);
     context.drawImage(imageObj, 0,0);  
   }
   $('#myCanvas').click(updateMarker);
@@ -355,9 +355,9 @@ function chfoot_loading() {
   $('#footimg').attr('src', '');
   $('#footimg').attr('src', '/assets/loading.png');
 }
-function resizeCanvas() {
-  canvas.height = this.height;
-  canvas.width = this.width;
+function resizeCanvas(img) {
+  canvas.height = img.height;
+  canvas.width = img.width;
   return true;
 }
 function chimg_loading() {
