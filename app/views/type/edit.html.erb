@@ -153,6 +153,7 @@ tinyMCE.init({
   imageObj.onload = function() {
     resizeCanvas(imageObj);
     context.drawImage(imageObj, 0,0);  
+    drawMarker();
   }
   $('#myCanvas').click(updateMarker);
   line = new Line(context);
