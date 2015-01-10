@@ -162,7 +162,7 @@ tinyMCE.init({
   <% if @thedef.marker.nil? %>
     chimg(0);
   <% else %>
-    chimg(<%= @thedef.marker.partnum - 1 %>); // partnums start at one
+    chimg(<%= @thedef.marker.partnum %>); // partnums start at one in the DB, but at zero here in JS
     marker = <%= @thedef.marker.marker_y %>;
     drawMarker();
   <% end %>    
@@ -379,6 +379,8 @@ function actual_chimg(delta) {
     curpart = maxpart;
   if(curpart < 0)
     curpart = 0;
+  if(curfoot < 0)
+    curfoot = 0;
   curimg = parts[curpart];
   curfootimg = foots[curfoot];
   humanpart = curpart + 1;
