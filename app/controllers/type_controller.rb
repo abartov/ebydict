@@ -14,7 +14,7 @@ class TypeController < ApplicationController
     if @d.marker.nil?
       @d.marker = EbyMarker.new
     end
-    @d.marker.parnum = params[:partnum]
+    @d.marker.partnum = params[:partnum]
     @d.marker.marker_y = params[:marker_y]
     @d.marker.save!
     @d.save!
