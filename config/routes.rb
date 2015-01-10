@@ -40,6 +40,7 @@ Ebydict::Application.routes.draw do
   match 'type/edit/:id' => 'type#edit'
   match 'type/proof/:id' => 'type#proof'
   match 'type/processtype/:id' => 'type#processtype'
+  match 'type/set_marker/:id' => 'type#set_marker'
   get 'problem/list'
   match 'problem/tackle/:id' => 'problem#tackle'
   get 'scan/part_col'
