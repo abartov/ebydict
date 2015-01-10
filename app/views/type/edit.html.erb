@@ -22,7 +22,7 @@ function updateMarker(e) {
   marker = e.pageY - offset.top;
   drawMarker();
   // update server
-  $.ajax('<%= @marker_ajax_url %>'+"?marker_y="+marker.toString()+"&partnum="+curpart.toString()); 
+  $.ajax("<%= @marker_ajax_url %>"+"?marker_y="+Math.round(marker).toString()+"&partnum="+curpart.toString()); 
 }
 
 function drawMarker() {
