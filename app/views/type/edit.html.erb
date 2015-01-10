@@ -26,10 +26,12 @@ function updateMarker(e) {
 }
 
 function drawMarker() {
-  context.beginPath();
-  context.moveTo(0, marker);
-  context.lineTo($('#myCanvas').width(),marker);
-  context.stroke();
+  if marker != null {
+    context.beginPath();
+    context.moveTo(0, marker);
+    context.lineTo($('#myCanvas').width(),marker);
+    context.stroke();
+  }
 }
 
 function updateLine(e) {
@@ -148,7 +150,8 @@ tinyMCE.init({
   context = canvas.getContext("2d");
   imageObj = new Image();
 
-  imageObj.onload = function() { 
+  imageObj.onload = function() {
+    resizeCanvas();
     context.drawImage(imageObj, 0,0);  
   }
   $('#myCanvas').click(updateMarker);
@@ -352,6 +355,11 @@ function chfoot_loading() {
   $('#footimg').attr('src', '');
   $('#footimg').attr('src', '/assets/loading.png');
 }
+function resizeCanvas() {
+  canvas.height = this.height;
+  canvas.width = this.width;
+  return true;
+}
 function chimg_loading() {
   imageObj.src = '/assets/loading.png';
   chfoot_loading();
@@ -433,9 +441,11 @@ function actual_chfoot(delta) {
 }
 
 function gonext(e) {
+  marker = null;
   chimg(1);
 }
 function goprev(e) {
+  marker = null;
   chimg(-1);
 }
 
