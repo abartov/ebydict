@@ -3,7 +3,9 @@
 
 // the following is a bit of generated JS prepared by the typing controller
 <%= raw @parts_js %>
-
+var canvas;
+var context;
+var marker;
 var curpart = 0;
 var curfoot = 0;
 var reached_end = false;
@@ -14,6 +16,32 @@ var humanmaxpart = <%= raw @partcount %>;
 var maxpart = humanmaxpart - 1;
 var humanfoot;
 var extra_foots = <%= raw @extra_foots %>;
+
+function updateMarker(e) {
+  var offset = $(this).offset();
+  marker = e.pageY - offset.top;
+  drawMarker();
+}
+
+function drawMarker() {
+  context.beginPath();
+  context.moveTo(0, marker);
+  context.lineTo($('#myCanvas').width(),sep);
+  context.stroke();
+}
+
+function updateLine(e) {
+    var r = canvas.getBoundingClientRect(),
+        y = e.clientY - r.top;
+    
+    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+    line.x1 = 0;
+    line.y1 = y;
+    line.x2 = canvas.width;
+    line.y2 = y;
+    line.draw();
+    drawMarker();
+}
 
 $(document).ready(function() {
 // TinyMCE stuff
@@ -114,11 +142,23 @@ tinyMCE.init({
     }*/
     }
   );
-  <% if @d.marker.nil? %>
+  canvas = document.getElementById("myCanvas");
+  context = canvas.getContext("2d");
+  imageObj = new Image();
+
+  imageObj.onload = function() { 
+    context.drawImage(imageObj, 0,0);  
+  }
+  $('#myCanvas').click(updateMarker);
+  line = new Line(context);
+  canvas.onmousemove = updateLine;
+ 
+  <% if @thedef.marker.nil? %>
     chimg(0);
   <% else %>
-    chimg(<%= @d.marker.partnum - 1 %>); // partnums start at one
-    drawMarker(<%= @d.marker.marker_y %>);
+    chimg(<%= @thedef.marker.partnum - 1 %>); // partnums start at one
+    marker = <%= @thedef.marker.marker_y %>;
+    drawMarker();
   <% end %>    
   $(".dialog").hide();
   
@@ -251,7 +291,8 @@ tinyMCE.init({
 <td>-->
 <div class="scans">
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a><span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
-    <img id="defpartimg" border="1" src="/assets/loading.png"/><p/>
+    <canvas id="myCanvas"></canvas>
+    <!--<img id="defpartimg" border="1" src="/assets/loading.png"/> --> <p/>
     <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
@@ -310,8 +351,7 @@ function chfoot_loading() {
   $('#footimg').attr('src', '/assets/loading.png');
 }
 function chimg_loading() {
-  $('#defpartimg').attr('src', ''); // first make any existing image (when paging) disappear
-  $('#defpartimg').attr('src', '/assets/loading.png');
+  imageObj.src = '/assets/loading.png';
   chfoot_loading();
 }
 function chimg(delta) {
@@ -320,9 +360,7 @@ function chimg(delta) {
     actual_chimg(delta);
   }, 300);
 }
-function drawMarker(y) {
-  // TODO: draw marker on canvas
-}
+
 function actual_chimg(delta) {
   curpart += delta;
   curfoot += delta;
@@ -338,7 +376,9 @@ function actual_chimg(delta) {
   $('#curpos2').html(curpos);
 
   $('#defpartlink').attr('href', curimg);
-  $('#defpartimg').attr('src', curimg);
+  //$('#defpartimg').attr('src', curimg);
+  imageObj.src = curimg;
+
   $('#footimg').attr('src', curfootimg);
   $('#foot_prev').hide();
   if(curpart == 0) {
