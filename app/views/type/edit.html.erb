@@ -21,6 +21,8 @@ function updateMarker(e) {
   var offset = $(this).offset();
   marker = e.pageY - offset.top;
   drawMarker();
+  // update server
+  $.ajax('<%= @marker_ajax_url %>'+"?marker_y="+marker.toString()+"&partnum="+curpart.toString()); 
 }
 
 function drawMarker() {

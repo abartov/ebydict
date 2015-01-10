@@ -137,6 +137,7 @@ class TypeController < ApplicationController
         @selects += '</select></td>'
       }
       @page_title = @thedef.defhead
+      @marker_ajax_url = url_for(action: :set_marker, id: @thedef.id)
       render :action => 'edit' 
     end
   end
