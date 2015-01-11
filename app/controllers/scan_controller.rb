@@ -403,6 +403,9 @@ class ScanController < ApplicationController
       end
       # we're in luck -- the prev col may have orphans, but it DID manage to create a def at its bottom, so we can just latch onto it!
       thedef = last_defpart.thedef
+      if thedef.nil?
+        raise Exception.new
+      end
       # create a new defpart with appropriate def seqno
       seqno = last_defpart.partnum+1
       defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :coldefimg_id => col.id, :partnum => seqno, :defno => 0)
