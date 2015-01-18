@@ -34,7 +34,7 @@ class AdminController < ApplicationController
   end
   # pure logic
   def query_changes(pageno)
-    evts = EbyDefEvent.page(pageno).order('created_at DESC')
+    evts = EbyDefEvent.limit(1000).page(pageno).order('created_at DESC')
     return evts
   end
 end
