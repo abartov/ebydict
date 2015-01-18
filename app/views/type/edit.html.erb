@@ -53,13 +53,20 @@ $(document).ready(function() {
 tinyMCE.init({
         selector : "textarea.mceEditor",
         plugins: "charmap",
-        toolbar: "bold undo redo charmap | makor problem comment redirect | talmud post_xazal neologism",
+        toolbar: "bold undo redo charmap mafrid | makor problem comment redirect | talmud post_xazal neologism",
         directionality : "rtl",
         /*language : 'he',*/
         menubar: false,
         content_css : "/assets/application.css",
         setup: function(editor) { 
-          // Add our custom buttons
+        // Add our custom buttons
+          editor.addButton('mafrid', {
+            image: '/assets/mafrid.png',
+            onclick: function() {
+              editor.focus();
+              editor.selection.setContent('— '+editor.selection.getContent());
+            }
+          });
           editor.addButton('makor', {
             /*text: '<%= t(:type_source) %>',*/
             image: '/assets/source.png',
