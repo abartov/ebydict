@@ -36,7 +36,8 @@ function updateLine(e) {
     var r = canvas.getBoundingClientRect(),
         y = e.clientY - r.top;
     
-    context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+    context.drawImage(imageObj, 0, 0);
+    //context.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
     line.x1 = 0;
     line.y1 = y;
     line.x2 = canvas.width;
