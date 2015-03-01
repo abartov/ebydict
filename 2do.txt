@@ -7,6 +7,9 @@ To-Do
 - handle WIDE footnotes
 - add omniauth and Google/Twitter auths
 - implement user#edit to give users (esp. after omniauth!) specific permissions
+- add call to volunteer in fulldict
+- implement referrals as links if possible.  anchor mode for fulldict, direct link otherwise.
+- render comments as colored asterisks (or something) with tooltips or floating boxes when clicked
 
 ==medium priority==
 - BUG: handle footnotes within markup.  E.g. http://ebydict.benyehuda.org/definition/view/3741
