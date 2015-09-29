@@ -26,7 +26,10 @@ private
 
 def collect_published_defs_for_vol(vol)
   ret = []
-  return ret unless is_volume_partitioned(vol)
+  unless is_volume_partitioned(vol)
+    puts "skipping definitions from volume #{vol} as it's not fully partitioned yet"
+    return ret
+  end
   # index the volume if we haven't yet
   if last_def_for_vol(vol).ordinal.nil?
     print "Enumerating volume ##{vol}... (one-time process) -- "
