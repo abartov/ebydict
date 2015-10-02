@@ -291,7 +291,13 @@ class EbyDef < ActiveRecord::Base
   def linkify_redirects(buf)
     newbuf = ''
     while buf =~ /<span class="redirect">(.*?)<\/span>/ do
-      newbuf += $` + '<span class="redirect">' + link_for_redirect($1) + '</span>'
+      newbuf += $`
+      link = link_for_redirect($1)
+      if link == $1
+        newbuf += '<span class="redirect">' + $1 + '</span>'
+      else
+        newbuf += link 
+      end
       buf = $'
     end
     newbuf += buf
