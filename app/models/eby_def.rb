@@ -99,6 +99,7 @@ class EbyDef < ActiveRecord::Base
     buf = mass_replace_html(buf)
     # auto-linkify sources
     buf = linkify_sources(buf)
+    buf = linkify_redirects(buf)
 
     # renumber footnote references, starting with 1
     newbuf = ''
@@ -123,6 +124,7 @@ class EbyDef < ActiveRecord::Base
     buf = (footnotes.nil? ? '' : footnotes)
     buf = mass_replace_html(buf) # this time for footnotes
     buf = linkify_sources(buf)
+    buf = linkify_redirects(buf)
     newbuf = ''
     prefix = ''
     while buf =~ /\[(\d+)\]/ do
