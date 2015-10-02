@@ -286,6 +286,15 @@ class EbyDef < ActiveRecord::Base
     parts = deftext.split /\s\S\(/
     return parts
   end
+  def linkify_redirects(buf)
+    newbuf = ''
+    while buf =~ /<span class="redirect">(.*?)<\/span>/ do
+      newbuf += $` + '<span class="redirect">' + link_for_redirect($1) + '</span>'
+      buf = $'
+    end
+    newbuf += buf
+    return newbuf
+  end
   def linkify_sources(buf)
     newbuf = ''
     while buf =~ /<span class="source">(.*?)<\/span>/ do
