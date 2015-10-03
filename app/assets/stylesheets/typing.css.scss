@@ -9,9 +9,9 @@ body {
         direction: rtl;
 }
 #editors.p {
-  font-family: David, David CLM, Frankruehl, Narkisim, Times New Roman, Times, serif;
-  font-size: 16px;
-  line-height: 16px;
+  font-family: David, David CLM, Frankruehl, Narkisim, Times New Roman, Times, serif !important;
+  font-size: 16px !important;
+  line-height: 16px !important;
   text-align: right;
   direction: rtl;
 }

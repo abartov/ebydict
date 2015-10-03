@@ -3,14 +3,14 @@ source 'https://rubygems.org'
 gem 'rails', '>=3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+#gem 'rake', '=0.9.2.2'
 gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
 gem 'mysql2' 
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
-
+gem 'hebrew'
 #gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 #gem 'mongrel_cluster'
 #gem 'dispatcher'
