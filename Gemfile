@@ -6,7 +6,7 @@ gem 'rails', '>=3.2.11'
 #gem 'rake', '=0.9.2.2'
 gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
-gem 'mysql2' 
+gem 'mysql2', '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
