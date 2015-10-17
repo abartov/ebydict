@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141230053722) do
+ActiveRecord::Schema.define(:version => 20151017025445) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -68,6 +68,10 @@ ActiveRecord::Schema.define(:version => 20141230053722) do
     t.integer  "ordinal"
     t.integer  "volume"
   end
+
+  add_index "eby_defs", ["defhead"], :name => "index_eby_defs_on_defhead"
+  add_index "eby_defs", ["proof_round_passed"], :name => "index_eby_defs_on_proof_round_passed"
+  add_index "eby_defs", ["status"], :name => "index_eby_defs_on_status"
 
   create_table "eby_markers", :force => true do |t|
     t.integer  "user_id"
