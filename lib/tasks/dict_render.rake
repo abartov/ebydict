@@ -14,7 +14,7 @@ namespace :dict do
       print "done!\nDone collecting defs from volume #{vol} of #{maxvol}.\n"
     end
     print "done!\n  Rendering all defs... "
-    template = File.read("#{Rails.root}/app/views/definition/list.html.erb")
+    template = File.read("#{Rails.root}/app/views/definition/list.html.erb") # TODO: this prints a number counting the ellipses -- fix it
     renderer = ERB.new(template)
     result = renderer.result(binding) # pass the current context, to give access to @defs
     print "done!\n  Writing file... "
