@@ -11,7 +11,7 @@
       %th= t(:history_proofed)
       %th= t(:history_fixed)
     %tr
-      - [@user.typed_defs, @user.proofed_defs, @user.fixed_defs].each do |defs|
+      - [@user.typed_defs.uniq, @user.proofed_defs.uniq, @user.fixed_defs.uniq].each do |defs|
         %td 
           - unless (defs.nil? or defs.empty?)
             %b
