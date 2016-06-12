@@ -7,7 +7,7 @@
       %th= t(:admin_proof_level)
       %th= t(:admin_adduser_email)
       %th= t(:admin_user_login_count)
-      %th= t(:admin_user_last_login)
+      %th= t(:admin_user_last_action)
       %th= t(:admin_user_roles)
       %th= t(:user_assigned_defs)
       %th= t(:table_actions)
@@ -18,7 +18,7 @@
         %td= u.max_proof_level.to_s
         %td= u.email
         %td= u.login_count.to_s
-        %td= u.last_login.nil? ? t(:never) : time_ago_in_words(u.last_login)
+        %td= u.eby_def_events.empty? ? t(:never) : time_ago_in_words(u.eby_def_events.last.created_at)
         %td= 'list_roles'
         / %td= u.list_roles
         %td
