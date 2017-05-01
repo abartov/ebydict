@@ -55,5 +55,6 @@ gem 'rmagick'
 gem 'will_paginate'
 gem 'tinymce-rails'
 gem 'tinymce-rails-langs'
-gem 'rpeg-multimarkdown'
+gem 'rmultimarkdown'
+#gem 'rpeg-multimarkdown'
 
