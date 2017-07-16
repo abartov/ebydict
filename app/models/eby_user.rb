@@ -41,11 +41,11 @@ class EbyUser < ActiveRecord::Base
 
   def list_roles
     ret = []
-    ret << I18n.t(:user_partitioner) if u.role_partitioner
-    ret << I18n.t(:user_typist) if u.role_typist
-    ret << I18n.t(:user_proofer)+' '+I18n.t(:user_proofs_up_to)+u.max_proof_level.to_s if u.role_proofer
-    ret << I18n.t(:user_fixer) if u.role_fixer
-    ret << I18n.t(:user_publisher) if u.role_publisher
+    ret << I18n.t(:user_partitioner) if role_partitioner
+    ret << I18n.t(:user_typist) if role_typist
+    ret << I18n.t(:user_proofer)+' '+I18n.t(:user_proofs_up_to)+max_proof_level.to_s if role_proofer
+    ret << I18n.t(:user_fixer) if role_fixer
+    ret << I18n.t(:user_publisher) if role_publisher
     return ret.join('; ')
   end
   protected
