@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+
   def index
     show_work
     render :action => 'show_work'

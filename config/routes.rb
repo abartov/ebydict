@@ -7,6 +7,7 @@ Ebydict::Application.routes.draw do
   get "definition/publish"
 
   get "definition/reproof"
+  match 'definition/unassign/:id' => 'definition#unassign'
 
   match 'definition/view/:id' => 'definition#view'
   match 'definition/render_tei/:id' => 'definition#render_tei'

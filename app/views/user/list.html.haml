@@ -19,12 +19,15 @@
         %td= u.email
         %td= u.login_count.to_s
         %td= u.eby_def_events.empty? ? t(:never) : time_ago_in_words(u.eby_def_events.last.created_at)
-        %td= 'list_roles'
-        / %td= u.list_roles
+        / %td= 'list_roles'
+        %td= u.list_roles
         %td
           - u.assigned_defs.each do |d| 
             %a{ :href=> url_for(:controller => :definition, :action => :view, :id => d.id) } 
-              = "#{d.defhead} (#{action_label_for_status(d.status)})"
+              = "#{d.defhead} (#{action_label_for_status(d.status)}) "
+            %a{ :href=> url_for(:controller => :definition, :action => :unassign, :id => d.id)}
+              %small
+              = t(:definition_unassign)
             = raw "&nbsp;&nbsp;&nbsp;&nbsp;"
         %td= '...'
 = will_paginate @users

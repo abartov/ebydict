@@ -168,6 +168,7 @@ he:
   definition_executing: מבצע...
   definition_waiting_since: ממתינה לפרסום מאז 
   definition_defs_to_publish: הגדרות ממתינות לפרסום במילון
+  definition_unassign: בטל הקצאה
 
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p>
@@ -205,6 +206,12 @@ he:
   user_tofix: הגדרות בעייתיות
   user_details: "פרטי המשתמש/ת "
   user_your_contributions: דף התרומות שלך
+  user_typist: מקליד/ה
+  user_proofer: מגיה/ה
+  user_publisher: מאשר/ת לפרסום
+  user_proofs_up_to: עד רמה
+  user_fixer: משלים/ה
+  user_partitioner: מפצל/ת סריקות
 
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'

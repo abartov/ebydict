@@ -15,10 +15,11 @@ class DefinitionController < ApplicationController
       @pubdefs = EbyDef.where(:status => @status).page(params[:page])
     else
       flash[:error] = t(:definition_not_publisher)
-      redirect_to :action => 'listpub'
+      redirect_to '/'
     end
   end
   def publish
+    redirect_to '/' unless check_role('publisher')
     @d = EbyDef.find(params[:id])
     defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => session['user'].id, :new_status => 'Published')
     defev.save
@@ -29,13 +30,20 @@ class DefinitionController < ApplicationController
   end
 
   def reproof
+    redirect_to '/' unless check_role('publisher')
     @d = EbyDef.find(params[:id])
     @d.status = 'NeedProof'
     @d.save
     flash[:notice] = t(:definition_sent_to_reproof_html, :defhead => @d.defhead).html_safe
     redirect_to :action => 'listpub'
   end
-
+  def unassign
+    redirect_to '/' unless check_role('publisher')
+    @d = EbyDef.find(params[:id])
+    @d.assignee = nil
+    @d.save
+    redirect_to controller: 'user', action: 'list'
+  end
   # process a definition and render it in preview/final mode
   def view
     d = EbyDef.find(params[:id])
