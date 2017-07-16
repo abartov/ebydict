@@ -27,7 +27,7 @@
               = "#{d.defhead} (#{action_label_for_status(d.status)}) "
             %a{ :href=> url_for(:controller => :definition, :action => :unassign, :id => d.id)}
               %small
-              = t(:definition_unassign)
+                = t(:definition_unassign)
             = raw "&nbsp;&nbsp;&nbsp;&nbsp;"
         %td= '...'
 = will_paginate @users

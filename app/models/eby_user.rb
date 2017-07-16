@@ -43,7 +43,7 @@ class EbyUser < ActiveRecord::Base
     ret = []
     ret << I18n.t(:user_partitioner) if role_partitioner
     ret << I18n.t(:user_typist) if role_typist
-    ret << I18n.t(:user_proofer)+' '+I18n.t(:user_proofs_up_to)+max_proof_level.to_s if role_proofer
+    ret << I18n.t(:user_proofer)+' '+I18n.t(:user_proofs_up_to)+' '+max_proof_level.to_s if role_proofer
     ret << I18n.t(:user_fixer) if role_fixer
     ret << I18n.t(:user_publisher) if role_publisher
     return ret.join('; ')
