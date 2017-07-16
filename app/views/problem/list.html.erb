@@ -4,8 +4,9 @@
 <% for probs in [@my_probs, @probs] %>
 	<table border=1 cellpadding=5>
 	<tr><th><%= t(:changes_defhead)%></th><th><%= t(:problem_since) %></th><th><%= t(:assignee) %></th><th><%= t(:table_actions) %></th></tr>
-	<% for d in probs 
-	  since = d.events.where(:new_status => 'Problem')[0].created_at %>
+	<% for d in probs
+    ev = d.events.where(:new_status => 'Problem')
+	  since = ev[0].nil? ? '?' : ev[0].created_at %>
 	  <tr><td><%=h d.defhead %></td><td><%=h since %></td><td><%=h d.assignee ? d.assignee.fullname : ""%></td><td><%= link_to 'Review', :action => 'tackle', :id => d %></td></tr>
 	<% end %>
 	</table>
