@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151017025445) do
+ActiveRecord::Schema.define(:version => 20170704002955) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20151017025445) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "eby_def_events", ["thedef", "new_status"], :name => "index_eby_def_events_on_thedef_and_new_status"
+
   create_table "eby_def_part_images", :force => true do |t|
     t.integer  "thedef"
     t.integer  "partnum"
@@ -50,9 +52,11 @@ ActiveRecord::Schema.define(:version => 20151017025445) do
     t.datetime "updated_at",   :null => false
   end
 
+  add_index "eby_def_part_images", ["thedef"], :name => "index_eby_def_part_images_on_thedef"
+
   create_table "eby_defs", :force => true do |t|
     t.string   "defhead"
-    t.text     "deftext"
+    t.text     "deftext",                     :limit => 16777215
     t.integer  "assignedto"
     t.string   "status"
     t.integer  "proof_round_passed"
@@ -61,16 +65,20 @@ ActiveRecord::Schema.define(:version => 20151017025445) do
     t.string   "russian"
     t.string   "extra"
     t.text     "footnotes"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
     t.string   "prob_desc"
     t.integer  "reject_count"
     t.integer  "ordinal"
     t.integer  "volume"
+    t.integer  "proof_round_passed_negative"
   end
 
+  add_index "eby_defs", ["assignedto"], :name => "index_eby_defs_on_assignedto"
   add_index "eby_defs", ["defhead"], :name => "index_eby_defs_on_defhead"
+  add_index "eby_defs", ["id", "assignedto"], :name => "index_eby_defs_on_id_and_assignedto"
   add_index "eby_defs", ["proof_round_passed"], :name => "index_eby_defs_on_proof_round_passed"
+  add_index "eby_defs", ["reject_count", "proof_round_passed"], :name => "index_eby_defs_on_reject_count_and_proof_round_passed"
   add_index "eby_defs", ["status"], :name => "index_eby_defs_on_status"
 
   create_table "eby_markers", :force => true do |t|

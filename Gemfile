@@ -48,7 +48,7 @@ gem 'jquery-ui-rails'
 
 # To use debugger
 #gem 'ruby-debug19', :require => 'ruby-debug'
-gem 'debugger'
+#gem 'debugger'
 
 gem 'app_constants'
 gem 'rmagick'
@@ -56,5 +56,5 @@ gem 'will_paginate'
 gem 'tinymce-rails'
 gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
-#gem 'rpeg-multimarkdown'
-
+#gem 'rpeg-multimarkdown' # older Markdown gem
+gem 'test-unit'
