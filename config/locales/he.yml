@@ -155,7 +155,7 @@ he:
 ## definitions controller
   definition_published_html: ההגדרה <b>%{defhead}</b> עברה למילון הפומבי!
   definition_sent_to_reproof_html: ההגדרה <b>%{defhead}</b> נשלחה להגהה נוספת.
-  definition_preview_from_ebydict_html: לפניך תצוגה מקדימה של הגדרה מ<b>מילון העברית הישנה והחדשה</b> מאת אליעזר בן-יהודה,<br/> שהוכנה בידי מתנדבי <a href="http://benyehuda.org/">פרויקט בן-יהודה</a><p/>
+  definition_preview_from_ebydict_html: לפניך תצוגה מקדימה של הגדרה מ<b>מילון העברית הישנה והחדשה</b> מאת אליעזר בן-יהודה,<br/><br/> שהוכנה בידי מתנדבי <a href="https://bybe.benyehuda.org/">פרויקט בן-יהודה</a><p/><p>רוצים לעזור? <a href="mailto:editor@benyehuda.org?subject=מילון%20בן-יהודה">כתבו אלינו</a>!</p>
   definition_permalink: קישורית קבועה
   definition_made_by_volunteers: "המילון הוא קנין הציבור, והוא מוגש לציבור בחינם: מהדורה דיגיטלית זו היא פרי עמלם של מתנדבי פרויקט בן-יהודה באינטרנט, שעושים את מלאכתם על טהרת ההתנדבות."  
   definition_return_to_proof: החזר להגהה נוספת

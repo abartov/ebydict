@@ -1,5 +1,7 @@
 To-Do
 -----
+Upgrade rails to at least 4.x (security)
+
 ==high priority==
 + add instructions page
 - the GotOrphans status never gets part_def'd (!) (enough to just include it in part_def work assignment?)
