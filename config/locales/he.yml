@@ -73,7 +73,7 @@ he:
   type_save: שמור 
   type_save_and_exit: שמור וצא
   type_saveanddone: שמור וסמן סוף %{action}
-  type_problem: <-תאר בעיה ושמור
+  type_problem: <- סמן כבעייתי והפסק טיפול
   type_problem_action: בעיה
   type_problem_btn: בעיה מקומית
   type_text: הקלידו את גוף הערך כאן
