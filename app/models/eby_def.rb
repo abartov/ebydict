@@ -2,9 +2,9 @@ class EbyDef < ActiveRecord::Base
   include EbyUtils
   include Rails.application.routes.url_helpers
 
-  attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count, :volume, :ordinal
+  # attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count, :volume, :ordinal
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
-  has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef', :order => 'partnum asc'
+  has_many :part_images, -> {order(partnum: :asc)}, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 
@@ -20,16 +20,16 @@ class EbyDef < ActiveRecord::Base
     sizecond = ""
     wherecond = "" # what to add to the WHERE clause
     case action
-      when AppConstants.type 
+      when AppConstants.type
         status = "NeedTyping"
         action = "type"
         wherecond = "ORDER BY reject_count ASC"
-      when AppConstants.proof 
+      when AppConstants.proof
         round_part = round.nil? ? '' : " and proof_round_passed = #{(round-1).to_s}"
         status = "NeedProof"
         action = "proof"
         wherecond = (round_part == '' ? " and proof_round_passed < #{to_user.max_proof_level.to_s}" : '')+round_part+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed DESC" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
-      when AppConstants.fixup 
+      when AppConstants.fixup
         status = "NeedFixup"
         action = "fix-up"
         wherecond = " and (false "
@@ -51,16 +51,16 @@ class EbyDef < ActiveRecord::Base
       else # assume 'small'
         sizecond = " = 1"
     end
-    return " from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and eby_defs.status = '#{status}' #{wherecond}" 
+    return " from eby_defs inner join (select thedef from eby_def_part_images group by thedef having count(*) #{sizecond}) as temp on eby_defs.id = temp.thedef where assignedto is NULL and eby_defs.status = '#{status}' #{wherecond}"
 
   end
   def self.assign_def_by_size(to_user, size, action, round)
     while round == nil or round > 0
       sql = 'select eby_defs.* '+self.query_by_user_size_and_action(to_user, size, action, round)
-      rset = EbyDef.find_by_sql(sql+" limit 1")  
+      rset = EbyDef.find_by_sql(sql+" limit 1")
       if rset.nil? or rset[0].nil?
-        return nil if round.nil? 
-        round -= 1 
+        return nil if round.nil?
+        round -= 1
       else
         thedef = rset[0]
         thedef.assignedto = to_user.id
@@ -105,14 +105,14 @@ class EbyDef < ActiveRecord::Base
     newbuf = ''
     footnote_num = 1
     foots = {}
-    while buf =~ /\[(\d+)\]/ do  
-      unless foots[$1].nil? # EBY's dictionary sometimes contains _multiple_ references to the same footnote 
+    while buf =~ /\[(\d+)\]/ do
+      unless foots[$1].nil? # EBY's dictionary sometimes contains _multiple_ references to the same footnote
         thenum = foots[$1]
       else
         thenum = footnote_num
         footnote_num += 1
       end
-      newbuf += $` + "[#{thenum.to_s}]" 
+      newbuf += $` + "[#{thenum.to_s}]"
       foots[$1] = thenum.to_s
       buf = $'
     end
@@ -148,24 +148,24 @@ class EbyDef < ActiveRecord::Base
    end
    return false if part_images.first.defno > 0
    prevcol = col_from_col(part_images.first.colimg, PREV)
-    
-  end 
+
+  end
   def last?
-  end 
+  end
   def predecessor_def
     unless is_volume_partitioned(volume)
       raise VolumeNotCompletelyPartitioned.new
     end
     if part_images.first.defno > 0 # easy case
       # the prev def must be the one ending on this same colimg with defno-1
-      return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef 
+      return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef
     else
       # we'd have to find the last def of the previous column, which may be on a different page
       prevcol = col_from_col(part_images.first.colimg, PREV)
       return nil if prevcol.nil? or prevcol.status != 'Partitioned'
       return prevcol.last_def_part.thedef
     end
-  end 
+  end
   def successor_def
     unless is_volume_partitioned(volume)
       raise VolumeNotCompletelyPartitioned.new
@@ -186,14 +186,14 @@ class EbyDef < ActiveRecord::Base
     until d.nil?
       return d if d.published?
       d = d.successor_def
-    end 
+    end
     return d
   end
   def published?
     return status == 'Published'
   end
   def permalink
-    return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
+    return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true)
   end
   def render_tei
     buf = "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp>"
@@ -233,13 +233,13 @@ class EbyDef < ActiveRecord::Base
     buf = stripped_deftext
     pos = buf.index /[a-z]/
     return nil if pos.nil?
-    pos = [0, pos - 10].max # presumably, the first 7-bit Latin character is no more than 10 characters after the beginning of the Latin text. 
+    pos = [0, pos - 10].max # presumably, the first 7-bit Latin character is no more than 10 characters after the beginning of the Latin text.
     endpos = [buf.length, pos + 100].min
     buf = buf[pos..endpos]
     # now that we have that bit, parse it some more to get the actual translations
     ret = {}
-    # TODO: finish implementing   
-  end 
+    # TODO: finish implementing
+  end
   def mass_replace_html(buf)
     buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
@@ -277,7 +277,7 @@ class EbyDef < ActiveRecord::Base
         return 'פועל עומד (intransitive verb)'
       when 'מ"ר' # sometimes EBY doesn't specify the gender(?)
         return 'שם עצם (noun)'
-      else 
+      else
         return pos_part
       end
     else
@@ -296,7 +296,7 @@ class EbyDef < ActiveRecord::Base
       if link == $1
         newbuf += '<span class="redirect">' + $1 + '</span>'
       else
-        newbuf += link 
+        newbuf += link
       end
       buf = $'
     end
@@ -309,14 +309,14 @@ class EbyDef < ActiveRecord::Base
       newbuf += $` + '<span class="source">' + link_for_source($1) + '</span>'
       buf = $'
     end
-    newbuf += buf # append remaining bit 
+    newbuf += buf # append remaining bit
     return newbuf
   end
   # the following method is dangerous!  It will insert a new EbyDef after the current EbyDef.
-  # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one, 
+  # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one,
   # during the DefPartition stage.  It is assumed this would only happen for defparts that begin AND
   # end a headword.
-  # It also doesn't handle the partitioning itself for you.  Pass it a filename of the correctly cut 
+  # It also doesn't handle the partitioning itself for you.  Pass it a filename of the correctly cut
   # NEW headword, that you have cut off from the group image, and placed in the same directory.
   def insert_after(def_part_img)
     newdef = makedef(part_defs.last.colimg, def_part_img, self.defno + 1, true) # assuming is_complete == true!

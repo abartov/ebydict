@@ -9,9 +9,9 @@ class ScanController < ApplicationController
   PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts'
   DEV_PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts_dev'
 
-  before_filter :check_the_roles
+  before_action :check_the_roles
 
-  def index    
+  def index
     list
     render :action => 'list'
   end
@@ -145,7 +145,7 @@ class ScanController < ApplicationController
     if @sc.smalljpeg.nil?
       # generate a scaled-down image for partitioning
       img = ImageList.new(@sc.origjpeg)
-      small = img.scale(ZOOM_FACTOR) 
+      small = img.scale(ZOOM_FACTOR)
       @sc.smalljpeg = fname_for_part(@sc.origjpeg, 'small')
       small.write(@sc.smalljpeg)
     end
@@ -213,7 +213,7 @@ class ScanController < ApplicationController
       else
         last_def = nil
         colimg = ImageList.new(@col.coldefjpeg)
-        seps = parse_seps(params[:seps]) 
+        seps = parse_seps(params[:seps])
         if seps.nil?
           # no partitions at all (i.e. the entire coldef is one definition (or continuation of one!)
           if params[:first_cont] == 'yes'
@@ -242,7 +242,7 @@ class ScanController < ApplicationController
         end
         if @col.status == 'NeedDefPartition' # only mark as partition if status wasn't changed (e.g. to GotOrphans by add_to_prev_def)
           @col.status = 'Partitioned'
-        end 
+        end
         @col.defpartitioner = session['user']
         @col.assignee = nil
         @col.save
@@ -266,7 +266,7 @@ class ScanController < ApplicationController
   end
   def dopartition
     @sc = EbyScanImage.find_by_id(params[:id])
-    
+
     # check submit type
     begin
       if params[:abandon]
@@ -285,7 +285,7 @@ class ScanController < ApplicationController
         params[:pagenos].match(/([0-9]*)-?([0-9]*)/)
         @sc.secondpagenum = $2 # nil is ok
         @sc.firstpagenum = $1
-        
+
         @msg = ''
         origimg = ImageList.new(@sc.origjpeg)
         seps = parse_seps(params[:seps])
@@ -298,7 +298,7 @@ class ScanController < ApplicationController
         else
           @msg += t(:scan_got_seps_html, :seps => (seps.length-1).to_s) + "<br/>"
           @seps = seps
-          cur_right = origimg.columns - 1 # first partition begins at X=width-1 
+          cur_right = origimg.columns - 1 # first partition begins at X=width-1
           seps.each_index { |colno|
             margin_x = params[:double_margin] == 'on' ? MARGINX*2 : MARGINX
             realsep = (seps[colno] * (1 / ZOOM_FACTOR)).ceil # calculate real x coordinate according to factor
@@ -354,31 +354,31 @@ class ScanController < ApplicationController
     last_slash = fname.rindex('/')
     filename = fname.slice(last_slash+1, fname.length - last_slash - 1)
     # TODO: optimize this to some app-level variable instead of a conditional here
-    partdir = (Rails.env == 'production' ? PART_JPEGS_DIR : DEV_PART_JPEGS_DIR)   
+    partdir = (Rails.env == 'production' ? PART_JPEGS_DIR : DEV_PART_JPEGS_DIR)
     partname = partdir+'/'+prefix+filename
     return partname
   end
   def parse_seps(s)
     return nil if(s == '')
-    
+
     seps = s.split('|')
     seps.map! { |sep| sep.to_i }
     seps.push(0) # make the implicit leftmost partition explicit
-    seps.sort!.reverse! 
+    seps.sort!.reverse!
     return seps
   end
   def is_newdef_at_nextcol(col)
     return false unless (nextcol = col_from_col(col, NEXT))
     return false unless nextcol.status == 'Partitioned'
-    firstdef = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{nextcol.id}", :order => 'defno asc')
+    firstdef = EbyDefPartImage.where(coldefimg_id: nextcol.id).order(defno: :asc).limit(1)[0]
     return (firstdef.partnum == 1) # if partnum == 0, then it's a continuation of this col's last def, we'll pick it up in the orphan collection
   end
   def mark_prev_col_def_complete(col)
     prevcol = col_from_col(col, PREV)
     return if prevcol.nil?
-    last_defpart = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{prevcol.id}", :order => 'defno desc') # find LAST defpart of prevcol
-    return if last_defpart.nil?
-    thedef = last_defpart.thedef
+    last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc).limit(1) # find LAST defpart of prevcol
+    return if last_defpart.empty?
+    thedef = last_defpart[0].thedef
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
       thedef.save
@@ -389,7 +389,7 @@ class ScanController < ApplicationController
   def add_to_prev_def(col, imgname,defno, is_complete)
     # find prev column (possibly in prev scanimg!
     prevcol = col_from_col(col, PREV) #or raise Exception.new
-    if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.find(:first, :conditions => 'coldefimg_id = '+prevcol.id.to_s, :order => 'defno desc')).nil? or last_defpart.thedef.nil?)) # find LAST def of column
+    if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc)).empty? or last_defpart[0].thedef.nil?)) # find LAST def of column
         # oh boy... this is the HARD case: we've got to stash this defpart as an orphan for now, and resolve it later!
         defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :coldefimg_id => col.id, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
         defpart.save
@@ -397,10 +397,11 @@ class ScanController < ApplicationController
         col.save
         return nil
     else
-      last_defpart = EbyDefPartImage.find(:first, :conditions => 'coldefimg_id = '+prevcol.id.to_s, :order => 'defno desc')
-      if last_defpart.nil?
+      last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc).limit(1)
+      if last_defpart.empty?
         raise Exception.new
       end
+      last_defpart = last_defpart[0]
       # we're in luck -- the prev col may have orphans, but it DID manage to create a def at its bottom, so we can just latch onto it!
       thedef = last_defpart.thedef
       if thedef.nil?
@@ -411,7 +412,7 @@ class ScanController < ApplicationController
       defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :coldefimg_id => col.id, :partnum => seqno, :defno => 0)
       defpart.save
       # save
-      if (is_complete or is_newdef_at_nextcol(col)) 
+      if (is_complete or is_newdef_at_nextcol(col))
         defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
         thedef.status = 'NeedTyping'
         defev.save
@@ -424,16 +425,16 @@ class ScanController < ApplicationController
     # if all scans and all columns of the volume have been partitioned, we should mark the very last def NeedTyping rather than Partial
     if is_volume_partitioned(col.scan.volume)
       # for safety, look up the very last def manually rather than assume it's this exact column
-      last_col = EbyColumnImage.find(:first, :order => "pagenum desc, colnum desc")
+      last_col = EbyColumnImage.order([pagenum: :desc, colnum: :desc]).limit(1)[0]
       last_def = last_col.def_part_images.order("defno desc").first.thedef # find last defpartimage for col and get its def
-      last_def.status = "NeedTyping" 
+      last_def.status = "NeedTyping"
       last_def.save! # whee!
     end
   end
   def collect_orphan_partdefs_for_col(col, lastdef)
     curcol = col
     curdef = lastdef
-    begin 
+    begin
       nextcol = col_from_col(curcol, NEXT)
       if nextcol.nil?
         check_for_end_of_volume(curcol)
@@ -441,28 +442,29 @@ class ScanController < ApplicationController
       end
       if(nextcol.status == 'GotOrphans')
         # orphan defparts have defno and partnum both 0
-        orphan_part = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{nextcol.id} and defno = 0 and partnum = 0")
-        unless orphan_part.nil?
+        orphan_part = EbyDefPartImage.where(coldefimg_id: nextcol.id, defno: 0, partnum: 0).limit(1)
+        unless orphan_part.empty?
+          orphan_part = orphan_part[0]
           orphan_part.thedef = curdef
-          lastpart = EbyDefPartImage.find(:first, :conditions => "thedef = #{curdef.id}", :order => 'partnum desc') # find LAST part of def
+          lastpart = EbyDefPartImage.where(thedef: curdef.id).order(partnum: :desc).first # find LAST part of def
           orphan_part.partnum = lastpart.partnum+1
           orphan_part.save # saved an orphan! :)
           nextcol.status = 'Partitioned' # whee!
           nextcol.save
-          nextpart = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{nextcol.id} and defno = 1") # look for another def on this col, to be able to mark THIS def NeedTyping!
-          if (not nextpart.nil?) or is_newdef_at_nextcol(curcol)
+          nextpart = EbyDefPartImage.where(coldefimg_id: nextcol.id, defno: 1).limit(1) # look for another def on this col, to be able to mark THIS def NeedTyping!
+          if (not nextpart.empty?) or is_newdef_at_nextcol(curcol)
             curdef.status = 'NeedTyping' # Whee!
             curdef.save
             orphan_part = nil # exit loop
-	        elsif nextpart.nil?
+	        elsif nextpart.empty?
             curcol = nextcol
-            last_defpart = EbyDefPartImage.find(:first, :conditions => "coldefimg_id = #{curcol.id}", :order => 'defno desc') # find LAST def of next column
+            last_defpart = EbyDefPartImage.where(coldefimg_id: curcol.id).order(defno: :desc).first # find LAST def of next column
             curdef = last_defpart.thedef
           end
         end
       else
         orphan_part = nil
       end
-    end until orphan_part.nil?
+    end until orphan_part.nil? or orphan_part.empty?
   end
 end

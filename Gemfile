@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>=3.2.11'
+gem 'rails' # , '>=3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
 gem 'airbrake'
 gem 'sqlite3' # enable for dev, if you like
-gem 'mysql2', '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
-gem 'json', '>=1.7.7'
+gem 'mysql2' # , '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
+gem 'json' # , '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
 gem 'hebrew'
@@ -22,8 +22,8 @@ gem 'htmlentities'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails' # ,   '~> 3.2.3'
+  gem 'coffee-rails' # , '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
@@ -58,3 +58,9 @@ gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
 #gem 'rpeg-multimarkdown' # older Markdown gem
 gem 'test-unit'
+gem 'activerecord-session_store'
+
+group :development do
+  gem 'byebug'
+  gem 'listen'
+end

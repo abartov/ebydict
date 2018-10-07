@@ -1,15 +1,15 @@
 require 'digest/sha1'
 class EbyUser < ActiveRecord::Base
-  attr_accessible :does_arabic, :does_extra, :does_greek, :does_russian, :email, :fullname, :login, :max_proof_level, :password, :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist
+  # attr_accessible :does_arabic, :does_extra, :does_greek, :does_russian, :email, :fullname, :login, :max_proof_level, :password, :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist
 
   has_many :eby_def_events, :foreign_key => "who"
   has_many :eby_defs, :through => :eby_def_events, :source => :thedef
   has_many :assigned_defs, :class_name => "EbyDef", :foreign_key => "assignedto"
-  has_many :typed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedTyping'", :source => :thedef
-  has_many :proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status LIKE 'NeedProof%'", :source => :thedef
-  has_many :first_proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedProof1'", :source => :thedef
-  has_many :second_proofed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedProof2'", :source => :thedef
-  has_many :fixed_defs, :class_name => "EbyDef", :through => :eby_def_events, :conditions => "old_status = 'NeedFixup'", :source => :thedef
+  has_many :typed_defs, -> {where(old_status: 'NeedTyping')}, :class_name => "EbyDef", :through => :eby_def_events, :source => :thedef
+  has_many :proofed_defs, -> {where('old_status like \"NeedProof%\"')}, :class_name => "EbyDef", :through => :eby_def_events, :source => :thedef
+  has_many :first_proofed_defs, -> {where(old_status: 'NeedProof1')}, :class_name => "EbyDef", :through => :eby_def_events, :source => :thedef
+  has_many :second_proofed_defs, -> {where(old_status: 'NeedProof2')}, :class_name => "EbyDef", :through => :eby_def_events, :source => :thedef
+  has_many :fixed_defs, -> {where(old_status: 'NeedFixup')}, :class_name => "EbyDef", :through => :eby_def_events, :source => :thedef
 
   validates :does_arabic, :does_extra, :does_greek, :does_russian, inclusion: { in: [true, false] }, allow_nil: true
   validates :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist, inclusion: { in: [true, false] }, allow_nil: true
@@ -20,7 +20,7 @@ class EbyUser < ActiveRecord::Base
   validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
   validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
   validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
-   
+
   def self.authenticate(login, pass)
     begin
       u = find_by_login(login)

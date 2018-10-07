@@ -12,7 +12,7 @@ protect_from_forgery
   # Uncomment the :secret if you're not using the cookie session store
 #  protect_from_forgery # :secret => '41d135963f34bdf8585e0669d6f4e890'
 
-  after_filter :set_charset
+  after_action :set_charset
 
   #  # TODO: return to charset=utf-8 once the Excel import iconvs properly
   # @headers["Content-Type"] = "text/html; charset=WINDOWS-1255"
@@ -22,7 +22,7 @@ protect_from_forgery
   def set_charset
 #    content_type = @headers["Content-Type"] || 'text/html'
 #    if /^text\//.match(content_type)
-#      @headers["Content-Type"] = "#{content_type}; charset=utf-8" 
+#      @headers["Content-Type"] = "#{content_type}; charset=utf-8"
      headers["Content-Type"] = "text/html; charset=utf-8"
   end
 
@@ -42,7 +42,7 @@ protect_from_forgery
     return url
   end
 
-  before_filter :login_required
+  before_action :login_required
   #before_filter [:set_locale, :login_required]
 
   protected
@@ -76,7 +76,7 @@ protect_from_forgery
   private
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
-  end 
+  end
   def login_required
     if secure? && session["user"].nil?
       session["return_to"] = request.original_url # save intended uri for after successful login

@@ -2,7 +2,7 @@ module EbyUtils
 
   # constants
   BIBLE_BOOKS = { 'בראשית' => 1, 'שמות' => 2, 'ויקרא' => 3, 'במדבר' => 4, 'דברים' => 5, 'יהושע' => 6, 'שופטים' => 7, "שמואל א'" => 8, "שמואל ב'" => 9, "מלכים א'" => 10, "מלכים ב'" => 11, 'ישעיהו' => 12, 'ירמיהו' => 13, 'יחזקאל' => 14, 'הושע' => 15, 'יואל' => 16, 'עמוס' => 17, 'עובדיה' => 18, 'יונה' => 19, 'מיכה' => 20, 'נחום' => 21, 'חבקוק' => 22, 'צפניה' => 23, 'חגי' => 24, 'זכריה' => 25, 'מלאכי' => 26, 'תהילים' => 27, "תהלים" => 27, 'משלי' => 28, 'איוב' => 29, 'שיר השירים' => 30, 'רות' => 31, 'איכה' => 32, 'קהלת' => 33, 'אסתר' => 34, 'דניאל' => 35, 'עזרא' => 36, 'נחמיה' => 37, "דברי הימים א'" => 38, "דברי הימים ב'" => 39,"בראש'" => 1, "ברא'" => 1, "שמ'" => 2, "שמו'" => 2, "ויק'" => 3, "ויקר'" => 3, "במד'" => 4, "במדב'" => 4, "דבר'" => 5, "יהו'" => 6, "יהוש'" => 6, "שופ'" => 7, "שופט'" => 7, "ש\"א" => 8, "ש\"ב" => 9, "שמ\"א" => 8, "שמ\"ב" => 9, "מ\"א" => 10, "מ\"ב" => 11, "מל\"א" => 10, "מל\"ב" => 11, "יש'" => 12, "ישע'" => 12, "ישעי'" => 12, "יר'" => 13, "ירמ'" => 13, "יח'" => 14, "יחז'" => 14, "יחזק'" => 14, "הוש'" => 15, "יו'" => 16, "עמ'" => 17, "עמו'" => 17, "עו'" => 18, "יונ'" => 19, "מי'" => 20, "מיכ'" => 20, "נח'" => 21, "חב'" => 22, "חבק'" => 22, "צפ'" => 23, "צפנ'" => 23, "חגי" => 24, "זכ'" => 25, "זכר'" => 25, "מלא'" => 26, "תה'" => 27, "תהל'" => 27, "תהלי'" => 27, "משל'" => 28, "איו'" => 29, "שה\"ש" => 30, "רות" => 31, "איכ'" => 32, "קהל'" => 33, "אס'" => 34, "דנ'" => 35, "דני'" => 35, "עז'" => 36, "נחמי'" => 37, "נח'" => 37, "נחמ'" => 37, "דה\"א" => 38, "דה\"ב" => 39, "דהי\"א" => 38, "דהי\"ב" => 39}
-  BIBLE_LINKS = { 
+  BIBLE_LINKS = {
     1 => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%91%D7%A8%D7%90%D7%A9%D7%99%D7%AA_",
     2 => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%A9%D7%9E%D7%95%D7%AA_",
     3 => "https://he.wikisource.org/wiki/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%94:%D7%95%D7%99%D7%A7%D7%A8%D7%90_",
@@ -61,34 +61,36 @@ module EbyUtils
     retcolnum = col.colnum + delta
     if retcolnum < 1 # look for prev scanimg
       page = col.pagenum-1
-      prevscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
-      return nil if prevscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+prevscan.id.to_s, :order => 'colnum desc') # find LAST column of scan
+      prevscan = EbyScanImage.where('firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s).limit(1)
+      return nil if prevscan.empty?
+      prevscan = prevscan[0]
+      retcol = EbyColumnImage.where(eby_scan_image_id: prevscan.id).order(colnum: :desc).limit(1)[0] # find LAST column of scan
     elsif retcolnum > col.scan.columns # look for next scanimg
       page = col.pagenum+1
-      nextscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
-      return nil if nextscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+nextscan.id.to_s, :order => 'colnum asc') # find FIRST column of scan
+      nextscan = EbyScanImage.where('firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s).limit(1)
+      return nil if nextscan.empty?
+      nextscan = nextscan[0]
+      retcol = EbyColumnImage.where(eby_scan_image_id: nextscan.id).order(colnum: :asc).limit(1)[0] # find FIRST column of scan
     else # simple case - same scan, different col
-      retcol = EbyColumnImage.find(:first, :conditions => "eby_scan_image_id = "+col.scan.id.to_s+" and colnum = #{retcolnum}")
+      retcol = EbyColumnImage.where(eby_scan_image_id: col.scan.id, colnum: retcolnum).limit(1)[0]
     end
     return retcol
   end
   def first_def_for_vol(vol)
     raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
-   
+
     minpage = EbyScanImage.where(volume: vol).minimum(:firstpagenum)
     sc = EbyScanImage.where(firstpagenum: minpage, volume: vol).first # first scan of first volume
     c = sc.col_images.where(colnum: 1).first # first col
     return c.def_by_defno(0) # first def
- 
+
   end
   def last_def_for_vol(vol)
     raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
-    
+
     maxfirstpage = EbyScanImage.where(volume: vol).maximum(:firstpagenum)
     maxsecondpage = EbyScanImage.where(volume: vol).maximum(:secondpagenum)
-    if maxsecondpage > maxfirstpage 
+    if maxsecondpage > maxfirstpage
       maxpage = EbyScanImage.where(secondpagenum: maxsecondpage, volume: vol).first
     else
       maxpage = EbyScanImage.where(firstpagenum: maxfirstpage, volume: vol).first
@@ -121,7 +123,7 @@ module EbyUtils
     return ret
   end
   def is_talmud(s)
-    
+
   end
   def bible_link(s)
     parts = s.scan /\S+/
@@ -140,7 +142,7 @@ module EbyUtils
     return link
   end
   def gmara_link(s)
-  
+
   end
   def link_for_source(s)
     ret = s.strip

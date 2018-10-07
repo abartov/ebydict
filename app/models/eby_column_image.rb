@@ -1,5 +1,5 @@
 class EbyColumnImage < ActiveRecord::Base
-  attr_accessible :assignedto, :coldefjpeg, :colfootjpeg, :coljpeg, :colnum, :defpartitioner_id, :eby_scan_image_id, :pagenum, :partitioned_by, :smalljpeg, :status, :volume
+  #attr_accessible :assignedto, :coldefjpeg, :colfootjpeg, :coljpeg, :colnum, :defpartitioner_id, :eby_scan_image_id, :pagenum, :partitioned_by, :smalljpeg, :status, :volume
 
   belongs_to :scan, :class_name => 'EbyScanImage', :foreign_key => 'eby_scan_image_id'
   #has_many :EbyDefPartImage
@@ -8,13 +8,13 @@ class EbyColumnImage < ActiveRecord::Base
   belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by'
   belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id'
   belongs_to :coldefimg, :class_name => 'EbyColumnImage', :foreign_key => 'coldefimg_id' # TODO: this looks bogus; verify and remove
- 
+
   validates :coljpeg, uniqueness: true, presence: true
   validates :coldefjpeg, :colfootjpeg, :smalljpeg, uniqueness: true, allow_nil: true
   validates :pagenum, :colnum, presence: true, numericality: true
   validates :status, presence: true, inclusion: { in: %w(NeedPartition NeedDefPartition Partitioned GotOrphans) }
   validates :scan, presence: true # mandatory association
-   
+
   def def_part_by_defno(defno)
     return def_part_images.where(defno: defno).first
   end
