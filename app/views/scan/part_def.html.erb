@@ -24,7 +24,7 @@ function markSep(e) {
   seqno++;
   var offset = $(this).offset();
   var rely = e.pageY - offset.top;
-  $('#col_seps').html($('#col_seps').html()+ seqno+": "+rely+"; ");
+  $('#col_seps').html($('#col_seps').html()+ seqno+": "+rely.toFixed(0)+"; ");
   if(thesep !== '')
     thesep += '|';
   thesep += rely;
@@ -72,12 +72,12 @@ $(document).ready(function() {
 
 </script>
 
-<table><tr><td valign="top">
 <%= form_tag '/scan/dopartdef/'+@coldef.id.to_s %>
-<div id="part_tools" align="left" dir="ltr"><div align="left" dir="ltr" style="position:fixed; top:15px; left:10px; width:30%"><%= submit_tag "Save Partitions and Get Another Column", :name => 'save_and_next' %> <br/><br/> <%= submit_tag "Save Partition", :name => 'commit' %> <br/><br/> <%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %><br/> <br/><a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
-<font size="+2"><b>Is the first line <br/>a <u>continuation</u> of an entry?</b></font><br/><label>No<%= radio_button_tag "first_cont", "no", :id => 'iscont' %></label><label>Yes<%= radio_button_tag "first_cont", "yes", :checked => 'true', :id => 'iscont' %></label>
-<br/>Separations between definitions: <br/><span id="col_seps"></span>
+<font size="+2"><b>האם השורה הראשונה <br/><u>ממשיכה</u> הגדרה?</b></font><br/><label>לא<%= radio_button_tag "first_cont", "no", :id => 'iscont' %></label><label>כן<%= radio_button_tag "first_cont", "yes", :checked => 'true', :id => 'iscont' %></label>
+<br/>הפרדות: <br/><span id="col_seps"></span>
 <input type="hidden" name="seps" id="final_seps"/>
+<canvas id="myCanvas" align="center" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas>
+<div id="part_tools" align="right" dir="rtl"><%= submit_tag "בצע חלוקה והבא בתור", :name => 'save_and_next' %> <br/><br/> <%= submit_tag "שמור חלוקה והפסק", :name => 'commit' %> <br/><br/> <%= submit_tag "צא בלי לחלק", :name => 'abandon' %><br/> <br/><a href="#" onclick="cancel_sep()">ביטול חלוקה</a> <p/>
 </div>
-</form> <br/></div></td><td><canvas id="myCanvas" align="center" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></td></tr></table>
+</form> 
 </body>
