@@ -44,7 +44,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.4)
     daemons (1.2.3)
     erubis (2.7.0)
     eventmachine (1.0.8)
@@ -54,7 +54,7 @@ GEM
     hebrew (0.1.8)
     hike (1.2.3)
     htmlentities (4.3.4)
-    i18n (0.9.1)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     journey (1.0.4)
     jquery-rails (3.1.4)
@@ -168,4 +168,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
