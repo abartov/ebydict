@@ -33,6 +33,8 @@ Ebydict::Application.routes.draw do
   match 'user/show/:id' => 'user#show'
   get 'admin/adduser'
   post 'admin/doadduser'
+  get 'user/edit' => 'user#edit'
+  put 'user/edit' => 'user#update'
   get 'admin/changes'
   get 'scan/partition'
   match 'scan/dopartition/:id' => 'scan#dopartition'

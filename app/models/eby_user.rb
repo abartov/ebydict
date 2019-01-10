@@ -1,6 +1,6 @@
 require 'digest/sha1'
 class EbyUser < ActiveRecord::Base
-  attr_accessible :does_arabic, :does_extra, :does_greek, :does_russian, :email, :fullname, :login, :max_proof_level, :password, :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist
+  attr_accessible :does_arabic, :does_extra, :does_greek, :does_russian, :email, :fullname, :login, :max_proof_level, :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist
 
   has_many :eby_def_events, :foreign_key => "who"
   has_many :eby_defs, :through => :eby_def_events, :source => :thedef
@@ -20,7 +20,7 @@ class EbyUser < ActiveRecord::Base
   validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
   validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
   validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
-   
+
   def self.authenticate(login, pass)
     begin
       u = find_by_login(login)

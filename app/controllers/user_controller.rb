@@ -21,7 +21,7 @@ class UserController < ApplicationController
   def show_work
     @page_title = t(:user_maintitle)
     @user = EbyUser.find(session["user"])
-    
+
     # calculate available work bits according to user's role
     if @user.role_partitioner == true
       @avail_scanimgs = EbyScanImage.count(:conditions => "assignedto IS NULL AND status = 'NeedPartition'")
@@ -76,6 +76,21 @@ class UserController < ApplicationController
     else
       redirect_to :controller => :user
     end
+  end
+  def update # admin action
+    if check_role('publisher')
+      begin
+        u = EbyUser.find(params[:id])
+        u.update_attributes(params['eby_user'])
+        u.password = EbyUser.hashfunc(params['new_password']) unless params['new_password'].empty?
+        u.save!
+
+        flash[:notice] = "User #{u.login} successfully edited!"
+      rescue
+        flash[:error] = "Failed to update user!"
+      end
+    end
+    redirect_to :controller => 'user'
   end
   def chpwd
     p = params[:password]
