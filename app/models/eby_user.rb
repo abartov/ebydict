@@ -14,12 +14,12 @@ class EbyUser < ActiveRecord::Base
   validates :does_arabic, :does_extra, :does_greek, :does_russian, inclusion: { in: [true, false] }, allow_nil: true
   validates :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist, inclusion: { in: [true, false] }, allow_nil: true
   validates :max_proof_level, numericality: true, allow_nil: true
-  validates :password, presence: true, length: { minimum: 4 }
+#  validates :password, presence: true, length: { minimum: 4 }
   validates :fullname, presence: true, length: { minimum: 3 }
   validates :email, presence: true, length: { minimum: 5 }
-  validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
-  validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
-  validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
+#  validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
+#  validates_length_of :login, :within => 3..40, :message => I18n.t(:user_login_bad_length)
+#  validates_presence_of :login, :message => I18n.t(:user_login_cant_be_blank)
 
   def self.authenticate(login, pass)
     begin
