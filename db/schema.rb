@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170704002955) do
+ActiveRecord::Schema.define(:version => 20190720020637) do
 
   create_table "eby_column_images", :force => true do |t|
     t.integer  "eby_scan_image_id"
@@ -118,10 +118,16 @@ ActiveRecord::Schema.define(:version => 20170704002955) do
     t.boolean  "does_arabic"
     t.boolean  "does_greek"
     t.boolean  "does_extra"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.datetime "last_login"
     t.integer  "login_count"
+    t.string   "google_token"
+    t.string   "google_refresh_token"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "oauth_token"
+    t.datetime "oauth_expires_at"
   end
 
   create_table "sessions", :force => true do |t|

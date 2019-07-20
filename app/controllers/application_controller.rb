@@ -22,7 +22,7 @@ protect_from_forgery
   def set_charset
 #    content_type = @headers["Content-Type"] || 'text/html'
 #    if /^text\//.match(content_type)
-#      @headers["Content-Type"] = "#{content_type}; charset=utf-8" 
+#      @headers["Content-Type"] = "#{content_type}; charset=utf-8"
      headers["Content-Type"] = "text/html; charset=utf-8"
   end
 
@@ -72,11 +72,14 @@ protect_from_forgery
   def secure?
     true # by default, everything requires a login
   end
+  def current_user
+    @current_user ||= EbyUser.find(session[:user_id]) if session[:user_id]
+  end
 
   private
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
-  end 
+  end
   def login_required
     if secure? && session["user"].nil?
       session["return_to"] = request.original_url # save intended uri for after successful login

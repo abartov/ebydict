@@ -269,7 +269,7 @@ he:
   table_actions: פעולות
   update: עדכן
   edit_user: עריכת משתמש
-
+  alternatively_login_with_google: לחילופין היכנס בעזרת חשבון גוגל/ג'ימייל
 ## distance in time (from https://gist.github.com/rails/rails/blob/master/actionpack/lib/action_view/locale/en.yml)
   datetime:
     distance_in_words:
