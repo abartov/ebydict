@@ -103,8 +103,9 @@ he:
   type_source: מקור
   type_comment: הערה
   type_redirect: הפניה
+  type_mafrid: קו מפריד
   type_talmud: משנה, תלמוד ובן סירא
-  type_post_xazal: 'לאחר תקופת חז"ל'
+  type_post_xazal_html: 'לאחר תקופת חז"ל'
   type_neologism: חידושים
   type_source_markup: '[[מקור: '
   type_problem_markup: '[[בעיה: '
