@@ -1,7 +1,29 @@
 require 'eby_utils'
 include EbyUtils
 
-TEI_HEADER = '<body><div><head>Eliezer Ben-Yehuda''s Hebrew Dictionary</head>'
+TEI_HEADER = <<END
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-stylesheet type="text/xsl" href="tei-dictionary.xsl"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Eliezer Ben-Yehuda''s Hebrew Dictionary</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>In-progress dump, August 2019, prepared by Asaf Bartov, editor@benyehuda.org</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Transcribed from the 1980 facsimile edition of the dictionary, by Project Ben-Yehuda volunteers. See ebydict.benyehuda.org </p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+     <body>
+END
+TEI_FOOTER = '</body></text></TEI>'
 
 namespace :dict do
   desc "Dump the entire set of published definitions of the dictionary into a TEI file"
@@ -18,7 +40,13 @@ namespace :dict do
     end
     print "done!\n  Rendering all defs into TEI... "
     result = TEI_HEADER
-    @defs.each {|d| result += "\n#{d.render_tei}"}
+    @defs.each {|d| if d.nil?
+                      result += "\n <!-- missing definitions -->"
+                    else
+                      result += "\n#{d.render_tei}"
+                    end
+               }
+    result += "\n"+TEI_FOOTER
     print "done!\n  Writing file... "
     File.open("#{Rails.root}/public/full_dict.tei.xml","wb") {|f| f.write(result) }
   end
