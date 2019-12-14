@@ -93,13 +93,13 @@ class TypeController < ApplicationController
       }
       index = lastpart.partnum
       ncol = lastpart.colimg
-      4.times { |i| 
+      4.times { |i|
         ncol = col_from_col(ncol, NEXT) or break
         break if ncol.colfootjpeg.nil?
         @parts_js += "foots[#{index+i}] = '#{url_from_file(ncol.colfootjpeg)}';\n"
         @extra_foots += 1
       }
-      
+
       # set up convenience vars
       case @thedef.status
         when 'NeedTyping'
@@ -138,7 +138,7 @@ class TypeController < ApplicationController
       }
       @page_title = @thedef.defhead
       @marker_ajax_url = url_for(action: :set_marker, id: @thedef.id)
-      render :action => 'edit' 
+      render :action => 'edit'
     end
   end
   def abandon
@@ -148,7 +148,7 @@ class TypeController < ApplicationController
   end
   def processtype
     @d = EbyDef.find_by_id(params[:id])
-    unless @d 
+    unless @d
       flash[:error] = t(:type_defnotfound)
       redirect_to :controller => 'user'
       return
@@ -258,7 +258,7 @@ class TypeController < ApplicationController
   def call_assign_def_by_size(size, action, round)
     @thedef = EbyDef.assign_def_by_size(session['user'], size, action, round)
     if @thedef.nil?
-      flash[:error] = t(:type_no_appropriate_def) 
+      flash[:error] = t(:type_no_appropriate_def)
       redirect_to :controller => 'user'
     else
       # edit
@@ -274,4 +274,3 @@ class TypeController < ApplicationController
     flash[:notice] = t(:type_abandoned)
   end
 end
-
