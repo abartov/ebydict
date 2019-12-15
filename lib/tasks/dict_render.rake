@@ -1,4 +1,4 @@
-require 'eby_utils'
+require "eby_utils"
 include EbyUtils
 namespace :dict do
   desc "Render the entire set of published definitions of the dictionary into a static HTML file"
@@ -22,7 +22,7 @@ namespace :dict do
   end
 end
 
-private 
+private
 
 def collect_published_defs_for_vol(vol)
   ret = []
@@ -47,7 +47,7 @@ def collect_published_defs_for_vol(vol)
         ret << nil # add a nil member to the array, to signify any number of intervening headwords -- this may be output as ellipsis in HTML
       end
     end
-  }  
+  }
   return ret
 end
 

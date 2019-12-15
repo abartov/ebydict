@@ -13,8 +13,7 @@ class EbyDefEventValidator < ActiveModel::Validator
 end
 class EbyDefEvent < ActiveRecord::Base
   include ActiveModel::Validations
-  # attr_accessible :new_status, :old_status, :thedef, :who
-  belongs_to :thedef, :class_name => 'EbyDef', :foreign_key => 'thedef'
+  belongs_to :definition, :class_name => 'EbyDef', :foreign_key => 'thedef'
   belongs_to :user, :class_name => 'EbyUser', :foreign_key => 'who'
 
   validates_with EbyDefEventValidator

@@ -103,12 +103,8 @@
             / show proofs in progress
             - if not (@inprog_proofs.nil? or @inprog_proofs.empty?)
               - @inprog_proofs.each do |inp|
-                - byebug
-                - dbg1 = link_to(t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp)
-                - dbg2 = link_to(t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp)
                 %br/
-                != "&nbsp;&nbsp;&nbsp;&nbsp;#{t(:or)}  #{dbg1}, #{t(:or)}  #{dbg2}"
-                / != "&nbsp;&nbsp;&nbsp;&nbsp;#{t(:or)}  #{link_to(t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp)}, #{t(:or)}  #{link_to(t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp)}"
+                != "&nbsp;&nbsp;&nbsp;&nbsp;#{t(:or)}  #{link_to(t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'proof', :id => inp)}, #{t(:or)}  #{link_to(t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp)}"
                 %br/
               %br/
       - if @user.role_publisher
