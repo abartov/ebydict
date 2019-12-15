@@ -1,4 +1,11 @@
 Ebydict::Application.routes.draw do
+  get "sessions/new"
+
+  get "sessions/create"
+
+  get "sessions/failure"
+  get "sessions/destroy"
+
   get "definition/list"
   get "definition/listpub"
 
@@ -33,6 +40,8 @@ Ebydict::Application.routes.draw do
   match 'user/show/:id' => 'user#show', via: [:get, :post]
   get 'admin/adduser'
   post 'admin/doadduser'
+  get 'user/edit' => 'user#edit'
+  put 'user/edit' => 'user#update'
   get 'admin/changes'
   get 'scan/partition'
   match 'scan/dopartition/:id' => 'scan#dopartition', via: [:get, :post]
@@ -66,38 +75,13 @@ Ebydict::Application.routes.draw do
   #   resources :products
   resources :eby_users
 
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+# Routes for Google authentication
 
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+# Direct the user a login form where they click the link to authenticate
+get   '/login', :to => 'sessions#new', :as => :login
+# Once we get the callback data from the provider we start a session
+get 'auth/:provider/callback', to: 'sessions#create'
+get 'auth/failure', to: redirect('/')
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.

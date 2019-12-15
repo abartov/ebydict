@@ -1,0 +1,55 @@
+%h1= t(:user_details) + @user.fullname
+= form_for(@user, url: { controller: :user, action: :update, id: @user.id}) do |f|
+  %p
+    %b= t(:admin_adduser_login)
+    %br
+    = f.text_field :login
+  %p
+    %b= t(:new_password)
+    %br
+    = text_field_tag :new_password
+  %p
+    %b= t(:admin_adduser_fullname)
+    = f.text_field :fullname
+  %p
+    %b= t(:admin_adduser_email)
+    = f.text_field :email
+
+  = f.check_box( :role_partitioner )
+  = t(:admin_adduser_role_partitioner)+"?"
+  %br
+  = f.check_box(  :role_typist )
+  = t(:admin_adduser_role_typist)+'?'
+  %br
+  = f.check_box(  :role_proofer )
+  = t(:admin_adduser_role_proofer)+'?'
+  != "&nbsp;&nbsp;&nbsp; "
+  = t(:admin_adduser_max_proof_level)+" (1-5): "
+  = f.text_field :max_proof_level
+  %br
+  = f.check_box( :role_fixer )
+  = t(:admin_adduser_role_fixer)+'?'
+  %br
+  = f.check_box( :role_publisher )
+  = t(:admin_adduser_role_publisher)+'?'
+  %br
+
+  = f.check_box( :does_arabic )
+  = t(:admin_adduser_does_arabic)+'?'
+  %br
+  = f.check_box( :does_greek )
+  = t(:admin_adduser_does_greek)+'?'
+  %br
+  = f.check_box( :does_extra )
+  = t(:admin_adduser_does_extra)+'?'
+  %br
+  = f.check_box( :does_russian )
+  = t(:admin_adduser_does_russian)+'?'
+  %br
+  %p
+    = f.submit t(:update)
+
+%p
+%a{ :href => user_index_path }
+  = t(:user_back)
+

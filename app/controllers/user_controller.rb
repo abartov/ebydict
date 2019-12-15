@@ -77,6 +77,21 @@ class UserController < ApplicationController
       redirect_to :controller => :user
     end
   end
+  def update # admin action
+    if check_role('publisher')
+      begin
+        u = EbyUser.find(params[:id])
+        u.update_attributes(params['eby_user'])
+        u.password = EbyUser.hashfunc(params['new_password']) unless params['new_password'].empty?
+        u.save!
+
+        flash[:notice] = "User #{u.login} successfully edited!"
+      rescue
+        flash[:error] = "Failed to update user!"
+      end
+    end
+    redirect_to :controller => 'user'
+  end
   def chpwd
     p = params[:password]
     if p.nil? or p.empty?

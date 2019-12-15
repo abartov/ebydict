@@ -5,6 +5,8 @@ gem 'rails', '~> 5.2'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
 gem 'airbrake'
+gem 'omniauth-google-oauth2'
+
 gem 'sqlite3' # enable for dev, if you like
 gem 'mysql2' # , '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
 gem 'json' # , '>=1.7.7'
@@ -49,9 +51,12 @@ gem 'jquery-ui-rails'
 # To use debugger
 #gem 'ruby-debug19', :require => 'ruby-debug'
 #gem 'debugger'
+group :development do
+  gem 'byebug'
+end
 
 gem 'app_constants'
-gem 'rmagick'
+gem 'rmagick', '~> 4.0'
 gem 'will_paginate'
 gem 'tinymce-rails', '=4.2.6' # 4.8.x didn't work, perhaps the way to implement custom buttons had changed
 gem 'tinymce-rails-langs'

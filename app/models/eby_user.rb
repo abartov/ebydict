@@ -14,7 +14,7 @@ class EbyUser < ActiveRecord::Base
   validates :does_arabic, :does_extra, :does_greek, :does_russian, inclusion: { in: [true, false] }, allow_nil: true
   validates :role_fixer, :role_partitioner, :role_proofer, :role_publisher, :role_typist, inclusion: { in: [true, false] }, allow_nil: true
   validates :max_proof_level, numericality: true, allow_nil: true
-  validates :password, presence: true, length: { minimum: 4 }
+#  validates :password, presence: true, length: { minimum: 4 }
   validates :fullname, presence: true, length: { minimum: 3 }
   validates :email, presence: true, length: { minimum: 5 }
   validates_uniqueness_of :login, :on => :create, :message => I18n.t(:user_login_not_unique)
@@ -37,6 +37,29 @@ class EbyUser < ActiveRecord::Base
 
   def self.hashfunc(str)
     return Digest::SHA1.hexdigest("Moose2402--#{str}--")[0..39]
+  end
+
+  def self.populate_from_omniauth(auth, user)
+    user.provider = auth.provider
+    user.uid = auth.uid
+    user.fullname = auth.info.name
+    user.email = auth.info.email
+    user.oauth_token = auth.credentials.token
+    user.oauth_expires_at = Time.at(auth.credentials.expires_at) unless auth.credentials.expires_at.nil?
+    user.save!
+    return user
+  end
+  # new, Omniauth-based authentication
+  def self.from_omniauth(auth)
+    existing = where(email: auth.info.email) # merge into existing account if email matches!
+    unless existing.empty?
+      user = existing[0]
+      user = populate_from_omniauth(auth, user)
+    else
+      where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
+        user = populate_from_omniauth(auth, user)
+      end
+    end
   end
 
   def list_roles

@@ -160,6 +160,16 @@ module EbyUtils
     ret = "<a href=\"#{d.permalink}\">#{s}</a>"
     return ret
   end
+
+  def cleanup_parens(s)
+    if s =~ /\[\[מקור:\s*\((.*?)\)\]\]/
+      puts "found [[מקור: \(#{$1}\)]] ---> ([[מקור: #{$1}]])"
+      return s.gsub(/\[\[מקור:\s*\((.*?)\)\]\]/,"([[מקור: #{$1}]])")
+    else
+      return s
+    end
+  end
+
   # used in partitioning (scan controller)
   def makedef(col, jpeg, defno, is_complete)
     newdef = EbyDef.new(:defhead => t(:type_unknown), :reject_count => 0, :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'), :volume => col.volume)

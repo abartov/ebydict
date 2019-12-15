@@ -72,6 +72,9 @@ protect_from_forgery
   def secure?
     true # by default, everything requires a login
   end
+  def current_user
+    @current_user ||= EbyUser.find(session[:user_id]) if session[:user_id]
+  end
 
   private
   def set_locale

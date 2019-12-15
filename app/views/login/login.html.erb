@@ -7,8 +7,8 @@
 <%= t(:login_username) %>: <input name="username" /> <br/>
 <%= t(:login_password) %>: <input type="password" name="password" /><br/>
 <%= submit_tag t(:login_submit) %>
-<p/>
-<%= t(:login_apply_html) %><br/>
+<p>
+<b><a href="/auth/google_oauth2"><%= t(:alternatively_login_with_google) %></a></b>
 
 </form>
 </body>

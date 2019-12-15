@@ -161,27 +161,21 @@ class TypeController < ApplicationController
       flash[:notice] = t(:type_saved_kept)
     elsif params[:save_and_done]
       populate(@d)
-      newstat = ''
+      @newstat = ''
       defev = EbyDefEvent.new(:old_status => (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status), :thedef => @d, :who => session['user'].id)
       act = params[:act].to_i
       if act == AppConstants.type
         @d.status = 'NeedProof' # but override to fixup below if needed
-        newstat = t(:type_await_proof_round, :round => '1')
+        @newstat = t(:type_await_proof_round, :round => '1')
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
           if(@d.read_attribute(which) == 'todo')
             @d.status = 'NeedFixup'
-            newstat = t(:type_await_fixups)
+            @newstat = t(:type_await_fixups)
           end
         }
         @d.proof_round_passed = 0
       elsif act == AppConstants.proof
-        @d.proof_round_passed += 1
-        if @d.proof_round_passed >= LAST_PROOF_ROUND # >= because reproofing could take it beyond the limit
-          newstat = t(:type_proofing_done)
-          @d.status = 'NeedPublish'
-        else
-          newstat = t(:type_await_proof_round, :round => (@d.proof_round_passed+1).to_s)
-        end
+        increase_proof
       elsif act == AppConstants.fixup
         still_todo = false
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
@@ -190,16 +184,16 @@ class TypeController < ApplicationController
           end
         }
         if(still_todo)
-          newstat = t(:type_await_fixups)
+          @newstat = t(:type_await_fixups)
         else
           @d.status = 'NeedProof'
           @d.proof_round_passed = 0 # start over in any case
-          newstat = t(:type_await_proof_round, :round => '1')
+          @newstat = t(:type_await_proof_round, :round => '1')
         end
       elsif act == AppConstants.problem
         @d.status = params[:resolve_to]
-        @d.proof_round_passed += 1 if params['increase_proof'] == '1'
-        newstat = @d.status_label
+        increase_proof if params['increase_proof'] == '1'
+        @newstat = @d.status_label
       else
         throw Exception.new
       end
@@ -208,7 +202,7 @@ class TypeController < ApplicationController
       defev.save
       @d.marker.delete unless @d.marker.nil? # delete place marker when def done
       @d.save!
-      flash[:notice] = t(:type_saved_with_status, :status => newstat)
+      flash[:notice] = t(:type_saved_with_status, :status => @newstat)
     elsif params[:problem]
       populate(@d)
       defev = EbyDefEvent.new(:old_status => @d.status, :new_status => 'Problem', :thedef => @d, :who => session['user'].id)
@@ -234,6 +228,16 @@ class TypeController < ApplicationController
   def check_the_roles
     return check_role('typist')
   end
+  def increase_proof
+    @d.proof_round_passed += 1
+    if @d.proof_round_passed >= LAST_PROOF_ROUND # >= because reproofing could take it beyond the limit
+      @newstat = t(:type_proofing_done)
+      @d.status = 'NeedPublish'
+    else
+      @newstat = t(:type_await_proof_round, :round => (@d.proof_round_passed+1).to_s)
+    end
+  end
+
   def is_assignee(thedef)
     if(thedef.assignee != session['user'])
       flash[:error] = t(:type_defnotyours)
@@ -270,4 +274,3 @@ class TypeController < ApplicationController
     flash[:notice] = t(:type_abandoned)
   end
 end
-

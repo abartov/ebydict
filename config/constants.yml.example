@@ -7,6 +7,9 @@ development: &default
   problem: 4
   scanurlbase: "http://example.com/scans"
   puburlbase: "http://example.com" # app root
+  google_oauth_client_id: 'blah'
+  google_oauth_client_secret: 'blah'
+
 
 production:
   <<: *default

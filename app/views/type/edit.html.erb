@@ -62,6 +62,7 @@ tinyMCE.init({
         setup: function(editor) { 
         // Add our custom buttons
           editor.addButton('mafrid', {
+            tooltip: '<%= t(:type_mafrid) %>',
             image: '/assets/mafrid.png',
             onclick: function() {
               editor.focus();
@@ -69,7 +70,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('makor', {
-            /*text: '<%= t(:type_source) %>',*/
+            tooltip: '<%= t(:type_source) %>',
             image: '/assets/source.png',
             onclick: function() { 
               editor.focus();
@@ -77,7 +78,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('problem', {
-            //text: '<%= t(:type_problem_btn) %>',
+            tooltip: '<%= t(:type_problem_btn) %>',
             image: '/assets/problem.png',
             onclick: function() { 
               editor.focus();
@@ -85,7 +86,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('comment', {
-            //text: '<%= t(:type_comment) %>',
+            tooltip: '<%= t(:type_comment) %>',
             image: '/assets/comment.png',
             onclick: function() { 
               editor.focus();
@@ -93,7 +94,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('redirect', {
-            //text: '<%= t(:type_redirect) %>',
+            tooltip: '<%= t(:type_redirect) %>',
             image: '/assets/vide.png',
             onclick: function() { 
               editor.focus();
@@ -101,7 +102,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('talmud', {
-            //text: '<%= t(:type_talmud) %>',
+            tooltip: '<%= t(:type_talmud) %>',
             image: '/assets/talmud.png',
             onclick: function() { 
               editor.focus();
@@ -109,7 +110,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('post_xazal', {
-            //text: '<%= t(:type_post_xazal) %>',
+            tooltip: '<%= t(:type_post_xazal_html) %>',
             image: '/assets/post_xazal.png',
             onclick : function() {
               editor.focus();
@@ -117,7 +118,7 @@ tinyMCE.init({
             }
           });
           editor.addButton('neologism', {
-            //text: '<%= t(:type_neologism) %>',
+            tooltip: '<%= t(:type_neologism) %>',
             image: '/assets/neologism.png',
             onclick : function() {
               editor.focus();
