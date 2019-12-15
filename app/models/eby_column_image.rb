@@ -4,7 +4,7 @@ class EbyColumnImage < ActiveRecord::Base
   belongs_to :scan, :class_name => 'EbyScanImage', :foreign_key => 'eby_scan_image_id'
   #has_many :EbyDefPartImage
   has_many :def_part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'coldefimg_id'
-  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
+  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
   belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by'
   belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id'
   belongs_to :coldefimg, :class_name => 'EbyColumnImage', :foreign_key => 'coldefimg_id' # TODO: this looks bogus; verify and remove

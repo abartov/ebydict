@@ -3,7 +3,7 @@ class EbyDef < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   # attr_accessible :arabic, :assignedto, :defhead, :deftext, :extra, :footnotes, :greek, :proof_round_passed, :russian, :status, :reject_count, :volume, :ordinal
-  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
+  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
   has_many :part_images, -> { order(partnum: :asc) }, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'

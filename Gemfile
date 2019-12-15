@@ -53,7 +53,7 @@ gem 'jquery-ui-rails'
 gem 'app_constants'
 gem 'rmagick'
 gem 'will_paginate'
-gem 'tinymce-rails'
+gem 'tinymce-rails', '=4.2.6' # 4.8.x didn't work, perhaps the way to implement custom buttons had changed
 gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
 #gem 'rpeg-multimarkdown' # older Markdown gem
