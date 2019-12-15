@@ -378,7 +378,7 @@ class ScanController < ApplicationController
     return if prevcol.nil?
     last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc).limit(1) # find LAST defpart of prevcol
     return if last_defpart.empty?
-    thedef = last_defpart[0].thedef
+    thedef = last_defpart[0].definition
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
       thedef.save
@@ -389,7 +389,7 @@ class ScanController < ApplicationController
   def add_to_prev_def(col, imgname,defno, is_complete)
     # find prev column (possibly in prev scanimg!
     prevcol = col_from_col(col, PREV) #or raise Exception.new
-    if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc)).empty? or last_defpart[0].thedef.nil?)) # find LAST def of column
+    if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order(defno: :desc)).empty? or last_defpart[0].definition.nil?)) # find LAST def of column
         # oh boy... this is the HARD case: we've got to stash this defpart as an orphan for now, and resolve it later!
         defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :coldefimg_id => col.id, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
         defpart.save
@@ -403,7 +403,7 @@ class ScanController < ApplicationController
       end
       last_defpart = last_defpart[0]
       # we're in luck -- the prev col may have orphans, but it DID manage to create a def at its bottom, so we can just latch onto it!
-      thedef = last_defpart.thedef
+      thedef = last_defpart.definition
       if thedef.nil?
         raise Exception.new
       end
@@ -426,7 +426,7 @@ class ScanController < ApplicationController
     if is_volume_partitioned(col.scan.volume)
       # for safety, look up the very last def manually rather than assume it's this exact column
       last_col = EbyColumnImage.order([pagenum: :desc, colnum: :desc]).limit(1)[0]
-      last_def = last_col.def_part_images.order("defno desc").first.thedef # find last defpartimage for col and get its def
+      last_def = last_col.def_part_images.order("defno desc").first.definition # find last defpartimage for col and get its def
       last_def.status = "NeedTyping"
       last_def.save! # whee!
     end
@@ -445,7 +445,7 @@ class ScanController < ApplicationController
         orphan_part = EbyDefPartImage.where(coldefimg_id: nextcol.id, defno: 0, partnum: 0).limit(1)
         unless orphan_part.empty?
           orphan_part = orphan_part[0]
-          orphan_part.thedef = curdef
+          orphan_part.definition = curdef
           lastpart = EbyDefPartImage.where(thedef: curdef.id).order(partnum: :desc).first # find LAST part of def
           orphan_part.partnum = lastpart.partnum+1
           orphan_part.save # saved an orphan! :)
@@ -459,7 +459,7 @@ class ScanController < ApplicationController
 	        elsif nextpart.empty?
             curcol = nextcol
             last_defpart = EbyDefPartImage.where(coldefimg_id: curcol.id).order(defno: :desc).first # find LAST def of next column
-            curdef = last_defpart.thedef
+            curdef = last_defpart.definition
           end
         end
       else
