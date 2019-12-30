@@ -160,12 +160,11 @@ module EbyUtils
   end
 
   def cleanup_parens(s)
-    if s =~ /\[\[מקור:\s*\((.*?)\)\]\]/
+    while s =~ /\[\[מקור:\s*\((.*?)\)\]\]/
       puts "found [[מקור: \(#{$1}\)]] ---> ([[מקור: #{$1}]])"
-      return s.gsub(/\[\[מקור:\s*\((.*?)\)\]\]/,"([[מקור: #{$1}]])")
-    else
-      return s
+      s.sub!(/\[\[מקור:\s*\((.*?)\)\]\]/,"([[מקור: #{$1}]])")
     end
+    return s
   end
 
   # used in partitioning (scan controller)
