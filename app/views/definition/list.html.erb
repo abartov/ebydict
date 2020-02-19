@@ -1,10 +1,10 @@
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="http://benyehuda.org/ebydict.css">
+<link rel="stylesheet" href="https://benyehuda.org/ebydict.css">
 <div align="right" dir="rtl">
   <div class="dictionary_title"><h1>מילון העברית הישנה והחדשה מאת אליעזר בן-יהודה (<%= @defs.length %> ערכים)</h1></div>
-  <h2>מוגש בעמל מתנדבי <a href="http://benyehuda.org/">פרויקט בן-יהודה</a></h2>
-<% 
+  <h2>מוגש בעמל מתנדבי <a href="https://benyehuda.org/">פרויקט בן-יהודה</a></h2>
+<%
   # NOTE: not meant to be called from the Web.  This view is only used by a Rake task.
   # assumes @defs is already dictionary-sorted according to original publication.  Assumes nil elements in array are definitions not yet published. %>
 <%
@@ -13,7 +13,7 @@
     if d.nil? %>
       <div class="ellipsis">.<br/>.<br/>.</div>
       <hr/>
-    <% 
+    <%
     else
       (rendered_body, rendered_footnotes) = d.render_body_as_html
       %>
