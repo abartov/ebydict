@@ -1,6 +1,5 @@
 %h1= t(:definition_defs_to_publish)
 - for d in @pubdefs
-  - since = d.events.where(:new_status => @status)[0].created_at
   = render partial: 'def', locals: {thedef: d}
   %hr
 = will_paginate @pubdefs
