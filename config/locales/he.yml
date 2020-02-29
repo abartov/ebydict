@@ -170,6 +170,7 @@ he:
   definition_waiting_since: ממתינה לפרסום מאז
   definition_defs_to_publish: הגדרות ממתינות לפרסום במילון
   definition_unassign: בטל הקצאה
+  definition_split_footnotes: הפרד הערות שוליים
 
 ## user controller
   user_hello_html: <p>שלום, %{user}!</p>

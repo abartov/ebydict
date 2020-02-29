@@ -18,6 +18,7 @@ Ebydict::Application.routes.draw do
 
   match 'definition/view/:id' => 'definition#view'
   match 'definition/render_tei/:id' => 'definition#render_tei'
+  match 'definition/split_footnotes/:id' => 'definition#split_footnotes'
 
   get "problem/list"
 
