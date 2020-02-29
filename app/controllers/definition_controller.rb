@@ -62,7 +62,7 @@ class DefinitionController < ApplicationController
   def split_footnotes
     redirect_to '/' unless check_role('publisher')
     @d = EbyDef.find(params[:id])
-    redirect_to '/' if d.nil?
+    redirect_to '/' if @d.nil?
     @newbuf = ''
     first = true
     @d.footnotes.split(/(\[\d+\] )/).each do |part|
