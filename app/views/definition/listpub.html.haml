@@ -2,7 +2,7 @@
 - for d in @pubdefs
   - since = d.events.where(:new_status => @status)[0].created_at
   = render partial: 'def', locals: {thedef: d}
-    %hr
+  %hr
 = will_paginate @pubdefs
 %p
 = link_to t(:user_back),  :controller => :user, :action => 'index'
