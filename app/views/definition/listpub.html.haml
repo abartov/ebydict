@@ -1,6 +1,6 @@
 %h1= t(:definition_defs_to_publish)
 - for d in @pubdefs
-  = render partial: 'def', locals: {thedef: d}
+  = render partial: 'one_def', locals: {thedef: d}
   %hr
 = will_paginate @pubdefs
 %p

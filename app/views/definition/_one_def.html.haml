@@ -1,6 +1,6 @@
 .wholedef{id: "def#{thedef.id}"}
   / render the def's current status, then AJAXy controls
-  - since = d.events.where(:new_status => d.status)[0].created_at
+  - since = thedef.events.where(:new_status => thedef.status)[0].created_at
   .defhead
     = thedef.defhead
   .defbody
