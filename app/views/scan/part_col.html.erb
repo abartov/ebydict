@@ -61,7 +61,9 @@ $(document).ready(function() {
   $('#myCanvas').click(markSep);
   line = new Line(context);
   canvas.onmousemove = updateLine;
-
+  $('#myCanvas').click(function(e) {
+    $('#part_tools').css('position:relative;top:'+$(this).offset().top.toString());
+  });
 });
 </script>
 </head>
