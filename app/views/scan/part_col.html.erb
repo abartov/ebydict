@@ -62,7 +62,7 @@ $(document).ready(function() {
   line = new Line(context);
   canvas.onmousemove = updateLine;
   $('#myCanvas').click(function(e) {
-    $('#part_tools').css('position:relative;top:'+$(this).offset().top.toString());
+    $('#part_tools').css('position', 'absolute').css('top', e.pageY);
   });
 });
 </script>
