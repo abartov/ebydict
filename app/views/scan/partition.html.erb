@@ -73,7 +73,6 @@ $(document).ready(function() {
 </head>
 
 <body> <b><%= t(:scan_partitioning) %>: <%= @origimg %></b>
-<%= form_tag '/scan/dopartition/'+@sc.id.to_s %> <div id="part_tools"><%= submit_tag t(:scan_save_and_get_another_img), :name => 'save_and_next' %> || <%= submit_tag t(:scan_save_partitions), :name => 'commit' %> || <%= submit_tag t(:scan_abandon_this_image), :name => 'abandon' %> <a href="" onclick="cancel_seps()"><%= t(:scan_cancel_and_start_over) %></a> <p/>
   <span style="color:green"><%= t(:scan_enter_page_numbers) %>:</span><input name="pagenos" size="10" value="<%= @prefilled_pagenums %>"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="<%= @origimg %>" target="_new"><%= t(:scan_show_original)%></a><br/>
   <input type="checkbox" name="double_margin"/><%= t(:scan_double_margins) %> || 
@@ -82,5 +81,7 @@ $(document).ready(function() {
 </form> 
 </div>
 <div id="smallimg_container" style="position:relative"><canvas id="myCanvas" width="<%= @width + 1 %>" height="<%= @height + 1 %>"></canvas></div>
+<%= form_tag '/scan/dopartition/'+@sc.id.to_s %> <div id="part_tools"><%= submit_tag t(:scan_save_and_get_another_img), :name => 'save_and_next' %> || <%= submit_tag t(:scan_save_partitions), :name => 'commit' %> || <%= submit_tag t(:scan_abandon_this_image), :name => 'abandon' %> <a href="" onclick="cancel_seps()"><%= t(:scan_cancel_and_start_over) %></a> <p/>
+
 <p/>
 </body>
