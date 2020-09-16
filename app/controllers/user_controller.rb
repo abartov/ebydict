@@ -22,7 +22,7 @@ class UserController < ApplicationController
   def show_work
     @page_title = t(:user_maintitle)
     @user = session['user']
-
+    byebug
     # calculate available work bits according to user's role
     if @user.role_partitioner == true
       @avail_scanimgs = EbyScanImage.where(assignedto: nil, status: 'NeedPartition').count
@@ -44,6 +44,7 @@ class UserController < ApplicationController
       @avail_defs_large = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'large', nil)
     end
     if @user.role_proofer == true
+      byebug
       @avail_proofs = {}
       ['small', 'medium', 'large'].each do |size|
         @avail_proofs[size] = ''

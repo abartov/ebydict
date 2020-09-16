@@ -28,6 +28,6 @@ class EbyColumnImage < ApplicationRecord
   def def_by_defno(defno)
     d = def_part_by_defno(defno)
     return nil if d.nil?
-    return d.thedef
+    return d.eby_def
   end
 end

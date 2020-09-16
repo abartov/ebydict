@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
     @user.login_count += 1
     @user.last_login = Time.now.to_datetime
     @user.save!
-    session['user_id'] = @user.id
+    session['user_id'] = @user.attributes['id']
     @current_user = @user
     redirect_to '/'
   end

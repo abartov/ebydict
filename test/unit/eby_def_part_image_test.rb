@@ -13,7 +13,7 @@ class EbyDefPartImageTest < ActiveSupport::TestCase
     assert !dp.save
     dp.partnum = 1
     assert dp.save # should succeed
-    dp.thedef = EbyDef.first
+    dp.eby_def = EbyDef.first
     dp.save # should also succeed
   end
 end

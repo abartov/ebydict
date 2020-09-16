@@ -3,7 +3,7 @@ class EbyDef < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
-  has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
+  has_many :part_images, -> { order('partnum asc') }, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 
@@ -27,7 +27,7 @@ class EbyDef < ApplicationRecord
         round_part = round.nil? ? '' : " and proof_round_passed = #{(round-1).to_s}"
         status = "NeedProof"
         action = "proof"
-        wherecond = (round_part == '' ? " and proof_round_passed < #{to_user.max_proof_level.to_s}" : '')+round_part+" and #{to_user.id} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed DESC" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
+        wherecond = (round_part == '' ? " and proof_round_passed < #{to_user.max_proof_level.to_s}" : '')+round_part+" and #{to_user.attributes['id']} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed DESC" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
       when AppConstants.fixup 
         status = "NeedFixup"
         action = "fix-up"
@@ -157,12 +157,12 @@ class EbyDef < ApplicationRecord
     end
     if part_images.first.defno > 0 # easy case
       # the prev def must be the one ending on this same colimg with defno-1
-      return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).thedef 
+      return part_images.first.colimg.def_part_by_defno(part_images.first.defno - 1).eby_def 
     else
       # we'd have to find the last def of the previous column, which may be on a different page
       prevcol = col_from_col(part_images.first.colimg, PREV)
       return nil if prevcol.nil? or prevcol.status != 'Partitioned'
-      return prevcol.last_def_part.thedef
+      return prevcol.last_def_part.eby_def
     end
   end 
   def successor_def

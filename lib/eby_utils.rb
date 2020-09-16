@@ -94,7 +94,7 @@ module EbyUtils
       maxpage = EbyScanImage.where(firstpagenum: maxfirstpage, volume: vol).first
     end
     c = maxpage.col_images.where(colnum: maxpage.col_images.maximum(:colnum)).first
-    return c.def_part_images.last.thedef
+    return c.def_part_images.last.eby_def
   end
   def first_def
     return first_def_for_vol(1)
