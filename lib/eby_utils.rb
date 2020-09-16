@@ -61,16 +61,16 @@ module EbyUtils
     retcolnum = col.colnum + delta
     if retcolnum < 1 # look for prev scanimg
       page = col.pagenum-1
-      prevscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
+      prevscan = EbyScanImage.where('firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s).first
       return nil if prevscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+prevscan.id.to_s, :order => 'colnum desc') # find LAST column of scan
+      retcol = EbyColumnImage.where(eby_scan_image_id: prevscan.id).order('colnum desc').first # find LAST column of scan
     elsif retcolnum > col.scan.columns # look for next scanimg
       page = col.pagenum+1
-      nextscan = EbyScanImage.find(:first, :conditions => 'firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s)
+      nextscan = EbyScanImage.where('firstpagenum = '+page.to_s+' or secondpagenum = '+page.to_s).first
       return nil if nextscan.nil?
-      retcol = EbyColumnImage.find(:first, :conditions => 'eby_scan_image_id = '+nextscan.id.to_s, :order => 'colnum asc') # find FIRST column of scan
+      retcol = EbyColumnImage.where(eby_scan_image_id: nextscan.id).order('colnum asc').first # find FIRST column of scan
     else # simple case - same scan, different col
-      retcol = EbyColumnImage.find(:first, :conditions => "eby_scan_image_id = "+col.scan.id.to_s+" and colnum = #{retcolnum}")
+      retcol = EbyColumnImage.where(eby_scan_image_id: col.scan.id, colnum: retcolnum).first
     end
     return retcol
   end

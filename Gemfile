@@ -1,14 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '>=3.2.11'
+gem 'rails', '~>4.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
-gem 'airbrake'
 gem 'omniauth-google-oauth2'
-
+gem 'activerecord-session_store'
 gem 'sqlite3' # enable for dev, if you like
-gem 'mysql2', '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
+gem 'mysql2' # , '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
@@ -20,22 +19,11 @@ gem 'hebrew'
 gem 'thin'
 gem 'haml'
 gem 'htmlentities'
-
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', :platforms => :ruby
-
-  gem 'uglifier', '>= 1.0.3'
-end
-
+gem 'sass-rails'
+gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-
+gem 'therubyracer'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -49,10 +37,9 @@ gem 'jquery-ui-rails'
 # gem 'capistrano'
 
 # To use debugger
-#gem 'ruby-debug19', :require => 'ruby-debug'
-#gem 'debugger'
 group :development do
   gem 'byebug'
+  gem 'web-console', '~> 2.0'
 end
 
 gem 'app_constants'

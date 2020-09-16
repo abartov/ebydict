@@ -1,5 +1,4 @@
 class EbyColumnImage < ActiveRecord::Base
-  attr_accessible :assignedto, :coldefjpeg, :colfootjpeg, :coljpeg, :colnum, :defpartitioner_id, :eby_scan_image_id, :pagenum, :partitioned_by, :smalljpeg, :status, :volume
 
   belongs_to :scan, :class_name => 'EbyScanImage', :foreign_key => 'eby_scan_image_id'
   #has_many :EbyDefPartImage

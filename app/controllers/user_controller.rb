@@ -24,20 +24,20 @@ class UserController < ApplicationController
 
     # calculate available work bits according to user's role
     if @user.role_partitioner == true
-      @avail_scanimgs = EbyScanImage.count(:conditions => "assignedto IS NULL AND status = 'NeedPartition'")
-      @inprog_scanimgs = EbyScanImage.find(:all, :conditions => "assignedto = #{@user.id}")
-      @avail_colimgs = EbyColumnImage.count(:conditions => "assignedto IS NULL AND status = 'NeedPartition'")
-      @inprog_colimgs = EbyColumnImage.find(:all, :conditions => "status = 'NeedPartition' and assignedto = #{@user.id}")
+      @avail_scanimgs = EbyScanImage.where(assignedto: nil, status: 'NeedPartition').count
+      @inprog_scanimgs = EbyScanImage.where(assignedto: @user.id)
+      @avail_colimgs = EbyColumnImage.where(assignedto: nil, status: 'NeedPartition').count
+      @inprog_colimgs = EbyColumnImage.where(status: 'NeedPartition', assignedto: @user.id)
 
       # TODO: calculate which volumes are COMPLETELY PARTITIONED INTO COLUMNS and ready for def partitioning
       #parted_vols = EbyColumnImage.find
       # TODO: change query below to only include coldefimgs from COMPLETELY PARTITIONED volumes
-      @avail_coldefimgs = EbyColumnImage.count(:conditions => "assignedto IS NULL AND status = 'NeedDefPartition'")
-      @inprog_coldefimgs = EbyColumnImage.find(:all, :conditions => "status = 'NeedDefPartition' and assignedto = #{@user.id}")
+      @avail_coldefimgs = EbyColumnImage.where(assignedto: nil, status: 'NeedDefPartition').count
+      @inprog_coldefimgs = EbyColumnImage.where(status: 'NeedDefPartition', assignedto: @user.id)
     end
     if @user.role_typist == true
-      @avail_defs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedTyping'")
-      @inprog_defs = EbyDef.find(:all, :conditions => "status = 'NeedTyping' and assignedto = #{@user.id}")
+      @avail_defs = EbyDef.where(assignedto: nil, status: 'NeedTyping').count
+      @inprog_defs = EbyDef.where(status: 'NeedTyping', assignedto: @user.id)
       @avail_defs_small = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'small', nil)
       @avail_defs_medium = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'medium', nil)
       @avail_defs_large = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'large', nil)
@@ -52,19 +52,19 @@ class UserController < ApplicationController
       end
       #@avail_proofs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedProof'")
       # TODO: break this down by proofing round?
-      @inprog_proofs = EbyDef.find(:all, :conditions => "status = 'NeedProof' and assignedto = #{@user.id}")
+      @inprog_proofs = EbyDef.where(status: 'NeedProof', assignedto: @user.id)
     end
     if @user.role_fixer == true
       cond_string = "? "
       ['does_arabic', 'does_greek', 'does_russian', 'does_extra'].each { |which|
         cond_string += 'or '+which.sub('does_','')+"='todo' " if(@user.read_attribute(which) == true)
       }
-      @avail_fixups = EbyDef.count(:conditions => ["assignedto IS NULL AND status = 'NeedFixup' and ( #{cond_string} )", 0])
-      @inprog_fixups = EbyDef.find(:all, :conditions => "status = 'NeedFixup' and assignedto = #{@user.id}")
+      @avail_fixups = EbyDef.where(["assignedto IS NULL AND status = 'NeedFixup' and ( #{cond_string} )", 0]).count
+      @inprog_fixups = EbyDef.where(status: 'NeedFixup', assignedto: @user.id)
     end
     if @user.role_publisher == true
-      @avail_publish = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedPublish'")
-      @avail_problem = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'Problem'")
+      @avail_publish = EbyDef.where(assignedto: nil, status: 'NeedPublish').count
+      @avail_problem = EbyDef.where(assignedto: nil, status: 'Problem').count
     end
   end
   def prefs
@@ -81,7 +81,7 @@ class UserController < ApplicationController
     if check_role('publisher')
       begin
         u = EbyUser.find(params[:id])
-        u.update_attributes(params['eby_user'])
+        u.assign_attributes(params['eby_user'])
         u.password = EbyUser.hashfunc(params['new_password']) unless params['new_password'].empty?
         u.save!
 

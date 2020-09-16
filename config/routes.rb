@@ -14,11 +14,11 @@ Ebydict::Application.routes.draw do
   get "definition/publish"
 
   get "definition/reproof"
-  match 'definition/unassign/:id' => 'definition#unassign'
+  match 'definition/unassign/:id' => 'definition#unassign', via: [:get]
 
-  match 'definition/view/:id' => 'definition#view'
-  match 'definition/render_tei/:id' => 'definition#render_tei'
-  match 'definition/split_footnotes/:id' => 'definition#split_footnotes'
+  match 'definition/view/:id' => 'definition#view', via: [:get]
+  match 'definition/render_tei/:id' => 'definition#render_tei', via: [:get]
+  match 'definition/split_footnotes/:id' => 'definition#split_footnotes', via: [:get]
 
   get "problem/list"
 
@@ -38,22 +38,22 @@ Ebydict::Application.routes.draw do
   get 'user/list'
   get 'user/active_emails'
   get 'user/show'
-  match 'user/show/:id' => 'user#show'
+  match 'user/show/:id' => 'user#show', via: [:get]
   get 'admin/adduser'
   post 'admin/doadduser'
   get 'user/edit' => 'user#edit'
   put 'user/edit' => 'user#update'
   get 'admin/changes'
   get 'scan/partition'
-  match 'scan/dopartition/:id' => 'scan#dopartition'
-  match 'scan/docolpart/:id' => 'scan#docolpart'
-  match 'scan/dopartdef/:id' => 'scan#dopartdef'
-  match 'type/edit/:id' => 'type#edit'
-  match 'type/proof/:id' => 'type#proof'
-  match 'type/processtype/:id' => 'type#processtype'
-  match 'type/set_marker/:id' => 'type#set_marker'
+  match 'scan/dopartition/:id' => 'scan#dopartition', via: [:get, :post]
+  match 'scan/docolpart/:id' => 'scan#docolpart', via: [:get, :post]
+  match 'scan/dopartdef/:id' => 'scan#dopartdef', via: [:get, :post]
+  match 'type/edit/:id' => 'type#edit', via: [:get, :post]
+  match 'type/proof/:id' => 'type#proof', via: [:get, :post]
+  match 'type/processtype/:id' => 'type#processtype', via: [:get, :post]
+  match 'type/set_marker/:id' => 'type#set_marker', via: [:get, :post]
   get 'problem/list'
-  match 'problem/tackle/:id' => 'problem#tackle'
+  match 'problem/tackle/:id' => 'problem#tackle', via: [:get, :post]
   get 'scan/part_col'
   get 'scan/part_def'
   get 'type/get_def'
@@ -91,6 +91,6 @@ get 'auth/failure', to: redirect('/')
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
+  # Note: This route will make all actions in every controller accessible via: GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 end
