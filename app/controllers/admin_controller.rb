@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  before_action :login_required
   # methods
   def changes
     @page_title = I18n.t(:changes_title)

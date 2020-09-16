@@ -11,7 +11,7 @@ class EbyDefEventValidator < ActiveModel::Validator
     }
   end
 end
-class EbyDefEvent < ActiveRecord::Base
+class EbyDefEvent < ApplicationRecord
   include ActiveModel::Validations
   
   belongs_to :thedef, :class_name => 'EbyDef', :foreign_key => 'thedef'

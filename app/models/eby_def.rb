@@ -1,9 +1,9 @@
-class EbyDef < ActiveRecord::Base
+class EbyDef < ApplicationRecord
   include EbyUtils
   include Rails.application.routes.url_helpers
 
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
-  has_many :part_images, -> {order('partnum asc')}, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
+  has_many :part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 

@@ -1,6 +1,7 @@
 class TypeController < ApplicationController
   include EbyUtils
-  before_filter :check_the_roles
+  before_action :login_required
+  before_action :check_the_roles
 
   def index
     list

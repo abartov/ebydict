@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  before_action :login_required
 
   def index
     show_work
@@ -20,7 +21,7 @@ class UserController < ApplicationController
   end
   def show_work
     @page_title = t(:user_maintitle)
-    @user = EbyUser.find(session["user"])
+    @user = session['user']
 
     # calculate available work bits according to user's role
     if @user.role_partitioner == true

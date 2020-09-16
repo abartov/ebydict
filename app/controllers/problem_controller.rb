@@ -1,5 +1,6 @@
 class ProblemController < ApplicationController
-  before_filter :check_the_roles
+  before_action :login_required
+  before_action :check_the_roles
 
   def list
     @probs = EbyDef.where(:status => 'Problem', :assignedto => nil).page(params[:page])

@@ -1,5 +1,4 @@
 class LoginController < ApplicationController
-
   def index
     login
     render :action => 'login'

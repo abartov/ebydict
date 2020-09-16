@@ -9,7 +9,8 @@ class ScanController < ApplicationController
   PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts'
   DEV_PART_JPEGS_DIR = '/var/www/_ebydict/_ebyparts_dev'
 
-  before_filter :check_the_roles
+  before_action :login_required
+  before_action :check_the_roles
 
   def index    
     list

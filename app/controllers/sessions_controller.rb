@@ -18,7 +18,8 @@ class SessionsController < ApplicationController
     @user.login_count += 1
     @user.last_login = Time.now.to_datetime
     @user.save!
-    session[:user_id] = @user.id
+    session['user_id'] = @user.id
+    @current_user = @user
     redirect_to '/'
   end
 
@@ -26,7 +27,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    session['user_id'] = nil
+    session['user'] = nil
     redirect_to '/'
   end
 

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~>4.2'
+gem 'rails', '~>5.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
@@ -38,10 +38,11 @@ gem 'therubyracer'
 
 # To use debugger
 group :development do
+  gem 'listen'
+  gem 'bootsnap', require: false
   gem 'byebug'
   gem 'web-console', '~> 2.0'
 end
-
 gem 'app_constants'
 gem 'rmagick', '~> 4.0'
 gem 'will_paginate'

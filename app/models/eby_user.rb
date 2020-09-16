@@ -1,5 +1,5 @@
 require 'digest/sha1'
-class EbyUser < ActiveRecord::Base
+class EbyUser < ApplicationRecord
 
   has_many :eby_def_events, :foreign_key => "who"
   has_many :eby_defs, :through => :eby_def_events, :source => :thedef

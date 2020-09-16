@@ -1,4 +1,4 @@
-class EbyColumnImage < ActiveRecord::Base
+class EbyColumnImage < ApplicationRecord
 
   belongs_to :scan, :class_name => 'EbyScanImage', :foreign_key => 'eby_scan_image_id'
   #has_many :EbyDefPartImage

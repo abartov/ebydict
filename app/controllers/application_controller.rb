@@ -12,7 +12,7 @@ protect_from_forgery
   # Uncomment the :secret if you're not using the cookie session store
 #  protect_from_forgery # :secret => '41d135963f34bdf8585e0669d6f4e890'
 
-  after_filter :set_charset
+#  after_filter :set_charset
 
   #  # TODO: return to charset=utf-8 once the Excel import iconvs properly
   # @headers["Content-Type"] = "text/html; charset=WINDOWS-1255"
@@ -42,7 +42,6 @@ protect_from_forgery
     return url
   end
 
-  before_filter :login_required
   #before_filter [:set_locale, :login_required]
 
   protected
@@ -73,15 +72,15 @@ protect_from_forgery
     true # by default, everything requires a login
   end
   def current_user
-    @current_user ||= EbyUser.find(session[:user_id]) if session[:user_id]
+    @current_user ||= session[:user] if session[:user]
   end
 
-  private
+  protected
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
   def login_required
-    if secure? && session["user"].nil?
+    if secure? && session[:user].nil?
       session["return_to"] = request.original_url # save intended uri for after successful login
       #session["return_to"] = request.request_uri # save intended uri for after successful login # rails 2.1.2
       redirect_to :controller => 'login', :action => 'login'

@@ -48,6 +48,7 @@
     <li><%= link_to t(:user_deflarge_html), :controller => 'type', :action => 'get_def', :defsize => 'large' %> <%= t(:user_todo_html, :count => @avail_defs_large, :things => t(:user_defs)) %><br/>
   </ul>
   <% if not (@inprog_defs.nil? or @inprog_defs.empty?) %>
+    <% byebug %>
       <br/>
     <% @inprog_defs.each { |inp| %>
       &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_def_html, :pic => inp.defhead, :numparts => inp.part_images.size), :controller => 'type', :action => 'edit', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'type', :action => 'abandon', :id => inp %><br/>
