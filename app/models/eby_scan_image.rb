@@ -9,6 +9,9 @@ class EbyScanImage < ApplicationRecord
   validates :smalljpeg, uniqueness: true, allow_nil: true
   validates :status, inclusion: { in: %w(NeedPartition Partitioned) }
 
+  has_one_attached :cloud_origjpeg
+  has_one_attached :cloud_smalljpeg
+  
   def columns
     return self.col_images.size
   end

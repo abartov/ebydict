@@ -38,6 +38,7 @@ class ScanController < ApplicationController
           # create scanimage object
           newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => fname, :status => 'NeedPartition')
           newimg.save # save scanimage object
+          newimg.cloud_origjpeg.attach(io: File.open(fname), filename: fname[fname.rindex('/')+1..-1])
           @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
         end
       }
@@ -135,7 +136,7 @@ class ScanController < ApplicationController
         return
       end
     else # just grab an available one -- no point in letting the user pick one
-      @sc = EbyScanImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
+      @sc = EbyScanImage.where("status = 'NeedPartition' and ((assignedto is null) or (assignedto =#{session['user'].id}))").first
       if @sc.nil?
         flash[:notice] = t(:scan_nomorescans)
         redirect_to :controller => 'user'
@@ -143,17 +144,28 @@ class ScanController < ApplicationController
       end
     end
     @sc.assignee = session['user']
-    if @sc.smalljpeg.nil?
+    if @sc.cloud_smalljpeg.nil?
       # generate a scaled-down image for partitioning
-      img = ImageList.new(@sc.origjpeg)
-      small = img.scale(ZOOM_FACTOR) 
-      @sc.smalljpeg = fname_for_part(@sc.origjpeg, 'small')
-      small.write(@sc.smalljpeg)
+      response = HTTParty.get(rails_blob_url(@sc.cloud_origjpeg))
+      begin
+        temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/')
+        temp_file.write(response.body)
+        temp_file.flush
+        tmpfilename = temp_file.path
+        img = ImageList.new(tmpfilename)
+        small = img.scale(ZOOM_FACTOR)
+        @sc.cloud_smalljpeg.attach(io: StringIO.new(small), filename: 'small' + @sc.cloud_origjpeg.filename)
+        @sc.cloud_smalljpeg.analyze # we're going to need the height/width right away, so don't wait for async default job
+      ensure
+        temp_file.close
+      end
     end
     # now display the image for partitioning
-    @smallimg = url_from_file(@sc.smalljpeg) || "error!"
-    @height, @width = get_dimensions_from_img(@sc.smalljpeg)
-    @origimg = url_from_file(@sc.origjpeg) || "error!"
+    @smallimg = rails_blob_url(@sc.cloud_smalljpeg) || "error!"
+    @height = @sc.cloud_smalljpeg.height
+    @width = @sc.cloud_smalljpeg.width
+    # @height, @width = get_dimensions_from_img(@sc.smalljpeg)
+    @origimg = rails_blob_url(@sc.cloud_origjpeg) || "error!"
     @sc.save
     unless params[:prefill].nil?
       @prefilled_pagenums = params[:prefill] # prefill pagenums, if possible
@@ -275,67 +287,78 @@ class ScanController < ApplicationController
         @sc.save
         flash[:notice] = "Returned this image to the pool"
         redirect_to :controller => 'user'
-      elsif params[:pagenos].nil? or params[:pagenos].empty?
-        @smallimg = url_from_file(@sc.smalljpeg) || "error!"
-        @origimg = url_from_file(@sc.origjpeg) || "error!"
-        @height, @width = get_dimensions_from_img(@sc.smalljpeg)
-        flash[:error] = t(:scan_no_pagenums)
-        render :action => 'partition'
       else
-        # handle submitted partitioning
-        params[:pagenos].match(/([0-9]*)-?([0-9]*)/)
-        @sc.secondpagenum = $2 # nil is ok
-        @sc.firstpagenum = $1
-        
-        @msg = ''
-        origimg = ImageList.new(@sc.origjpeg)
-        seps = parse_seps(params[:seps])
-        if seps.nil?
-          flash[:error] = t(:scan_no_cols)
-          @smallimg = url_from_file(@sc.smalljpeg) || "error!"
-          @origimg = url_from_file(@sc.origjpeg) || "error!"
-          @height, @width = get_dimensions_from_img(@sc.smalljpeg)
+        @smallimg = rails_blob_url(@sc.cloud_smalljpeg) || "error!"
+        @height = @sc.cloud_smalljpeg.height
+        @width = @sc.cloud_smalljpeg.width
+        # @height, @width = get_dimensions_from_img(@sc.smalljpeg)
+        @origimg = rails_blob_url(@sc.cloud_origjpeg) || "error!"
+        if params[:pagenos].nil? or params[:pagenos].empty?
+          flash[:error] = t(:scan_no_pagenums)
           render :action => 'partition'
         else
-          @msg += t(:scan_got_seps_html, :seps => (seps.length-1).to_s) + "<br/>"
-          @seps = seps
-          cur_right = origimg.columns - 1 # first partition begins at X=width-1 
-          seps.each_index { |colno|
-            margin_x = params[:double_margin] == 'on' ? MARGINX*2 : MARGINX
-            realsep = (seps[colno] * (1 / ZOOM_FACTOR)).ceil # calculate real x coordinate according to factor
-            # cut up orig jpeg
-            colimg = origimg.crop([0,realsep - margin_x].max, 0, cur_right - realsep + 2*margin_x, origimg.rows)
-            colimgname = fname_for_part(@sc.origjpeg, 'col'+(colno+1).to_s+'_')
-            colimg.write(colimgname)
-            # create appropriate number of column-image objects initialized to the new column jpegs
-            newcol = EbyColumnImage.new(:eby_scan_image_id => @sc.id, :colnum => colno + 1, :coljpeg => colimgname,
-              :volume => @sc.volume, :pagenum => (colno < 2) ? @sc.firstpagenum : @sc.secondpagenum, :status => 'NeedPartition')
-#              :assignee => session['user']) # by default, assign the column partitioning to the same user
-            # save the objects
-            @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
-            newcol.save
-            # calculate next x coordinate
-            cur_right = realsep
-          }
-          # change the scanimage's status to partitioned, noting the identity of the partitioner, and setting the scanimage to unassigned
-          @sc.status = 'Partitioned'
-          @sc.partitioner = session['user']
-          @sc.assignee = nil
-          @sc.save
-          @msg += t(:scan_parted_scan_html, :fname => @sc.origjpeg, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
-          flash[:notice] = @msg.html_safe
-          if params[:save_and_next]
-            # find a new available scanimg, and redirect back to partition
-            newpagenum = @sc.secondpagenum.nil? ? @sc.firstpagenum.to_i+1 : @sc.firstpagenum.to_i+2
-            @sc = EbyScanImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
-            if @sc.nil?
-              flash[:notice] = t(:scan_nomorescans)
-              redirect_to :controller => 'user'
-            else
-              redirect_to :action => 'partition', :id => @sc.id, :prefill => "#{newpagenum}-#{newpagenum+1}"
-            end
+          # handle submitted partitioning
+          seps = parse_seps(params[:seps])
+          if seps.nil?
+            flash[:error] = t(:scan_no_cols)
+            @smallimg = url_from_file(@sc.smalljpeg) || "error!"
+            @origimg = url_from_file(@sc.origjpeg) || "error!"
+            @height, @width = get_dimensions_from_img(@sc.smalljpeg)
+            render :action => 'partition'
           else
-            redirect_to :controller => 'user'
+            params[:pagenos].match(/([0-9]*)-?([0-9]*)/)
+            @sc.secondpagenum = $2 # nil is ok
+            @sc.firstpagenum = $1
+            @msg = ''
+            response = HTTParty.get(rails_blob_url(@sc.cloud_origjpeg))
+            begin
+              temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/')
+              temp_file.write(response.body)
+              temp_file.flush
+              tmpfilename = temp_file.path
+              origimg = ImageList.new(tmpfilename)
+              @msg += t(:scan_got_seps_html, :seps => (seps.length-1).to_s) + "<br/>"
+              @seps = seps
+              cur_right = origimg.columns - 1 # first partition begins at X=width-1 
+              seps.each_index do |colno|
+                margin_x = params[:double_margin] == 'on' ? MARGINX*2 : MARGINX
+                realsep = (seps[colno] * (1 / ZOOM_FACTOR)).ceil # calculate real x coordinate according to factor
+                # cut up orig jpeg
+                colimg = origimg.crop([0,realsep - margin_x].max, 0, cur_right - realsep + 2*margin_x, origimg.rows)
+                # create appropriate number of column-image objects initialized to the new column jpegs
+                newcol = EbyColumnImage.new(:eby_scan_image_id => @sc.id, :colnum => colno + 1,
+                  :volume => @sc.volume, :pagenum => (colno < 2) ? @sc.firstpagenum : @sc.secondpagenum, :status => 'NeedPartition')
+                # save the objects
+                @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
+                newcol.save
+                newcol.cloud_coljpeg.attach(io: StringIO.new(colimg), filename: "col#{colno+1}_#{@sc.cloud_origjpeg.filename}")
+                # calculate next x coordinate
+                cur_right = realsep
+              end
+              # change the scanimage's status to partitioned, noting the identity of the partitioner, and setting the scanimage to unassigned
+              @sc.status = 'Partitioned'
+              @sc.partitioner = session['user']
+              @sc.assignee = nil
+              @sc.save
+              @msg += t(:scan_parted_scan_html, :fname => @sc.cloud_origjpeg.filename, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
+              flash[:notice] = @msg.html_safe
+            ensure
+              temp_file.close
+            end
+
+            if params[:save_and_next]
+              # find a new available scanimg, and redirect back to partition
+              newpagenum = @sc.secondpagenum.nil? ? @sc.firstpagenum.to_i+1 : @sc.firstpagenum.to_i+2
+              @sc = EbyScanImage.where("status = 'NeedPartition' and ((assignedto is null) or (assignedto = #{session['user'].id}))").first
+              if @sc.nil?
+                flash[:notice] = t(:scan_nomorescans)
+                redirect_to :controller => 'user'
+              else
+                redirect_to :action => 'partition', :id => @sc.id, :prefill => "#{newpagenum}-#{newpagenum+1}"
+              end
+            else
+              redirect_to :controller => 'user'
+            end
           end
         end
       end

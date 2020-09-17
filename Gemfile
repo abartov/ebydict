@@ -19,6 +19,7 @@ gem 'hebrew'
 gem 'thin'
 gem 'haml'
 gem 'htmlentities'
+gem 'httparty'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'jquery-rails'
@@ -45,9 +46,11 @@ group :development do
 end
 gem 'app_constants'
 gem 'rmagick', '~> 4.0'
+gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'
 gem 'tinymce-rails'
 gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
 #gem 'rpeg-multimarkdown' # older Markdown gem
 gem 'test-unit'
+gem 'aws-sdk-s3', require: false

@@ -6,8 +6,11 @@ class EbyColumnImage < ApplicationRecord
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
   belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by'
   belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id'
-  belongs_to :coldefimg, :class_name => 'EbyColumnImage', :foreign_key => 'coldefimg_id' # TODO: this looks bogus; verify and remove
- 
+  has_one_attached :cloud_coljpeg
+  has_one_attached :cloud_smalljpeg
+  has_one_attached :cloud_coldefjpeg
+  has_one_attached :cloud_colfootjpeg
+  
   validates :coljpeg, uniqueness: true, presence: true
   validates :coldefjpeg, :colfootjpeg, :smalljpeg, uniqueness: true, allow_nil: true
   validates :pagenum, :colnum, presence: true, numericality: true
