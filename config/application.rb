@@ -54,6 +54,7 @@ module Ebydict
     config.assets.version = '1.0'
     # load stuff from lib
     config.autoload_paths += %W(#{config.root}/lib)
+    config.load_defaults 5.0
 
   end
 end

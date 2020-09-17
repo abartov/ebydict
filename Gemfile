@@ -19,7 +19,6 @@ gem 'hebrew'
 gem 'thin'
 gem 'haml'
 gem 'htmlentities'
-gem 'httparty'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'jquery-rails'
@@ -54,3 +53,5 @@ gem 'rmultimarkdown'
 #gem 'rpeg-multimarkdown' # older Markdown gem
 gem 'test-unit'
 gem 'aws-sdk-s3', require: false
+gem 'faraday'
+gem 'http'

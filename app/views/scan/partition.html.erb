@@ -72,7 +72,7 @@ $(document).ready(function() {
 
 </head>
 
-<body> <b><%= t(:scan_partitioning) %>: <%= @origimg %></b>
+<body> <b><%= t(:scan_partitioning) %>: <%= @origimg[@origimg.rindex('/')+1..-1] %></b>
 <%= form_tag '/scan/dopartition/'+@sc.id.to_s %> 
   <span style="color:green"><%= t(:scan_enter_page_numbers) %>:</span><input name="pagenos" size="10" value="<%= @prefilled_pagenums %>"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="<%= @origimg %>" target="_new"><%= t(:scan_show_original)%></a><br/>

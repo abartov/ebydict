@@ -1,4 +1,4 @@
-require 'RMagick'
+require 'rmagick'
 include Magick
 include EbyUtils
 class ScanController < ApplicationController
@@ -39,6 +39,7 @@ class ScanController < ApplicationController
           newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => fname, :status => 'NeedPartition')
           newimg.save # save scanimage object
           newimg.cloud_origjpeg.attach(io: File.open(fname), filename: fname[fname.rindex('/')+1..-1])
+          newimg.cloud_origjpeg.save
           @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
         end
       }
@@ -144,28 +145,38 @@ class ScanController < ApplicationController
       end
     end
     @sc.assignee = session['user']
-    if @sc.cloud_smalljpeg.nil?
+    unless @sc.cloud_smalljpeg.attached?
       # generate a scaled-down image for partitioning
-      response = HTTParty.get(rails_blob_url(@sc.cloud_origjpeg))
+      #response = Faraday.get(rails_blob_url(@sc.cloud_origjpeg, disposition: 'attachment'))
+      logger.info 'getting blob...'
+      body = HTTP.follow.get(@sc.cloud_origjpeg.service_url).body
+      logger.info "got blob!"
       begin
-        temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/')
-        temp_file.write(response.body)
+        temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/', binmode: true)
+        temp_file.write(body)
         temp_file.flush
+        logger.info "wrote blob!"
         tmpfilename = temp_file.path
         img = ImageList.new(tmpfilename)
         small = img.scale(ZOOM_FACTOR)
-        @sc.cloud_smalljpeg.attach(io: StringIO.new(small), filename: 'small' + @sc.cloud_origjpeg.filename)
+        logger.info "scaled blob!"
+        @sc.cloud_smalljpeg.attach(io: StringIO.new(small.to_blob), filename: 'small' + @sc.cloud_origjpeg.filename.to_s)
+        logger.info "attached small blob!"
+        @sc.cloud_smalljpeg.save
         @sc.cloud_smalljpeg.analyze # we're going to need the height/width right away, so don't wait for async default job
       ensure
         temp_file.close
       end
     end
     # now display the image for partitioning
-    @smallimg = rails_blob_url(@sc.cloud_smalljpeg) || "error!"
-    @height = @sc.cloud_smalljpeg.height
-    @width = @sc.cloud_smalljpeg.width
+    @smallimg = url_for(@sc.cloud_smalljpeg) || "error!"
+    unless @sc.cloud_smalljpeg.analyzed?
+      @sc.cloud_smalljpeg.analyze
+    end
+    @height = @sc.cloud_smalljpeg.metadata[:height]
+    @width = @sc.cloud_smalljpeg.metadata[:width]
     # @height, @width = get_dimensions_from_img(@sc.smalljpeg)
-    @origimg = rails_blob_url(@sc.cloud_origjpeg) || "error!"
+    @origimg = url_for(@sc.cloud_origjpeg) || "error!"
     @sc.save
     unless params[:prefill].nil?
       @prefilled_pagenums = params[:prefill] # prefill pagenums, if possible
@@ -288,11 +299,11 @@ class ScanController < ApplicationController
         flash[:notice] = "Returned this image to the pool"
         redirect_to :controller => 'user'
       else
-        @smallimg = rails_blob_url(@sc.cloud_smalljpeg) || "error!"
-        @height = @sc.cloud_smalljpeg.height
-        @width = @sc.cloud_smalljpeg.width
+        @smallimg = url_for(@sc.cloud_smalljpeg) || "error!"
+        @height = @sc.cloud_smalljpeg.metadata[:height]
+        @width = @sc.cloud_smalljpeg.metadata[:width]
         # @height, @width = get_dimensions_from_img(@sc.smalljpeg)
-        @origimg = rails_blob_url(@sc.cloud_origjpeg) || "error!"
+        @origimg = url_for(@sc.cloud_origjpeg) || "error!"
         if params[:pagenos].nil? or params[:pagenos].empty?
           flash[:error] = t(:scan_no_pagenums)
           render :action => 'partition'
@@ -301,19 +312,21 @@ class ScanController < ApplicationController
           seps = parse_seps(params[:seps])
           if seps.nil?
             flash[:error] = t(:scan_no_cols)
-            @smallimg = url_from_file(@sc.smalljpeg) || "error!"
-            @origimg = url_from_file(@sc.origjpeg) || "error!"
-            @height, @width = get_dimensions_from_img(@sc.smalljpeg)
             render :action => 'partition'
           else
             params[:pagenos].match(/([0-9]*)-?([0-9]*)/)
             @sc.secondpagenum = $2 # nil is ok
             @sc.firstpagenum = $1
             @msg = ''
-            response = HTTParty.get(rails_blob_url(@sc.cloud_origjpeg))
+            #faraday = Faraday.new(url: rails_blob_url(@sc.cloud_origjpeg, disposition: 'attachment')) do |faraday|
+            #  faraday.use FaradayMiddleware::FollowRedirects
+            #  faraday.adapter Faraday.default_adapter
+            #end
+            body = HTTP.follow.get(@sc.cloud_origjpeg.service_url).body
+            #response = faraday.get
             begin
-              temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/')
-              temp_file.write(response.body)
+              temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/', binmode: true)
+              temp_file.write(body)
               temp_file.flush
               tmpfilename = temp_file.path
               origimg = ImageList.new(tmpfilename)
@@ -331,7 +344,8 @@ class ScanController < ApplicationController
                 # save the objects
                 @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
                 newcol.save
-                newcol.cloud_coljpeg.attach(io: StringIO.new(colimg), filename: "col#{colno+1}_#{@sc.cloud_origjpeg.filename}")
+                newcol.cloud_coljpeg.attach(io: StringIO.new(colimg.to_blob), filename: "col#{colno+1}_#{@sc.cloud_origjpeg.filename.to_s}")
+                newcol.cloud_coljpeg.save
                 # calculate next x coordinate
                 cur_right = realsep
               end
@@ -340,7 +354,7 @@ class ScanController < ApplicationController
               @sc.partitioner = session['user']
               @sc.assignee = nil
               @sc.save
-              @msg += t(:scan_parted_scan_html, :fname => @sc.cloud_origjpeg.filename, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
+              @msg += t(:scan_parted_scan_html, :fname => @sc.cloud_origjpeg.filename.to_s, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
               flash[:notice] = @msg.html_safe
             ensure
               temp_file.close
