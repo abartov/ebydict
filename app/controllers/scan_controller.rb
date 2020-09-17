@@ -161,9 +161,13 @@ class ScanController < ApplicationController
         small = img.scale(ZOOM_FACTOR)
         logger.info "scaled blob!"
         @sc.cloud_smalljpeg.attach(io: StringIO.new(small.to_blob), filename: 'small' + @sc.cloud_origjpeg.filename.to_s)
-        logger.info "attached small blob!"
-        @sc.cloud_smalljpeg.save
-        @sc.cloud_smalljpeg.analyze # we're going to need the height/width right away, so don't wait for async default job
+        if(@sc.cloud_smalljpeg.attached?)
+          logger.info "attached small blob!"
+          @sc.cloud_smalljpeg.save
+          @sc.cloud_smalljpeg.analyze # we're going to need the height/width right away, so don't wait for async default job
+        else
+          logger.info "failed to attach blob!"
+        end
       ensure
         temp_file.close
       end
@@ -342,9 +346,11 @@ class ScanController < ApplicationController
                 newcol = EbyColumnImage.new(:eby_scan_image_id => @sc.id, :colnum => colno + 1,
                   :volume => @sc.volume, :pagenum => (colno < 2) ? @sc.firstpagenum : @sc.secondpagenum, :status => 'NeedPartition')
                 # save the objects
+                colimgname = @sc.cloud_origjpeg.filename.to_s
                 @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
+                byebug
                 newcol.save
-                newcol.cloud_coljpeg.attach(io: StringIO.new(colimg.to_blob), filename: "col#{colno+1}_#{@sc.cloud_origjpeg.filename.to_s}")
+                newcol.cloud_coljpeg.attach(io: StringIO.new(colimg.to_blob), filename: "col#{colno+1}_#{colimgname}")
                 newcol.cloud_coljpeg.save
                 # calculate next x coordinate
                 cur_right = realsep

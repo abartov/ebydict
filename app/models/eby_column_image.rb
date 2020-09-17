@@ -3,16 +3,16 @@ class EbyColumnImage < ApplicationRecord
   belongs_to :scan, :class_name => 'EbyScanImage', :foreign_key => 'eby_scan_image_id'
   #has_many :EbyDefPartImage
   has_many :def_part_images, :class_name => 'EbyDefPartImage', :foreign_key => 'coldefimg_id'
-  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
-  belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by'
-  belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id'
+  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
+  belongs_to :partitioner, :class_name => 'EbyUser', :foreign_key => 'partitioned_by', optional: true
+  belongs_to :defpartitioner, :class_name => 'EbyUser', :foreign_key => 'defpartitioner_id', optional: true
   has_one_attached :cloud_coljpeg
   has_one_attached :cloud_smalljpeg
   has_one_attached :cloud_coldefjpeg
   has_one_attached :cloud_colfootjpeg
   
-  validates :coljpeg, uniqueness: true, presence: true
-  validates :coldefjpeg, :colfootjpeg, :smalljpeg, uniqueness: true, allow_nil: true
+  validates :cloud_coljpeg, presence: true
+#  validates :coldefjpeg, :colfootjpeg, :smalljpeg, allow_nil: true
   validates :pagenum, :colnum, presence: true, numericality: true
   validates :status, presence: true, inclusion: { in: %w(NeedPartition NeedDefPartition Partitioned GotOrphans) }
   validates :scan, presence: true # mandatory association
