@@ -37,9 +37,9 @@ class ScanController < ApplicationController
         else
           # create scanimage object
           newimg = EbyScanImage.new(:volume => params[:volume], :origjpeg => fname, :status => 'NeedPartition')
-          newimg.save # save scanimage object
+          newimg.save! # save scanimage object
           newimg.cloud_origjpeg.attach(io: File.open(fname), filename: fname[fname.rindex('/')+1..-1])
-          newimg.cloud_origjpeg.save
+          newimg.cloud_origjpeg.save!
           @dio += t(:scan_import_created_html, :newid => newimg.id.to_s, :fname => fname)
         end
       }
@@ -51,7 +51,7 @@ class ScanController < ApplicationController
     if (not @sc.assignee.nil?) && @sc.assignee == session['user']
       flash[:notice] = t(:scan_abandoned)
       @sc.assignee = nil
-      @sc.save
+      @sc.save!
     else
       flash[:error] = t(:scan_notfound)
     end
@@ -62,7 +62,7 @@ class ScanController < ApplicationController
     if (not @col.assignee.nil?) && @col.assignee == session['user']
       flash[:notice] = t(:scan_abandoned)
       @col.assignee = nil
-      @col.save
+      @col.save!
     else
       flash[:error] = t(:scan_notfound)
     end
@@ -84,7 +84,7 @@ class ScanController < ApplicationController
         return
       end
     else # just grab an available one -- no point in letting the user pick one
-      @coldef = EbyColumnImage.find_by_status('NeedDefPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
+      @coldef = EbyColumnImage.where("status = 'NeedDefPartition' and ((assignedto is null) or (assignedto ='#{session['user'].id}'))").first
       if @coldef.nil?
         flash[:notice] = t(:scan_nomorecols)
         redirect_to :controller => 'user'
@@ -94,7 +94,7 @@ class ScanController < ApplicationController
     @coldef.assignee = session['user']
     @img = url_from_file(@coldef.coldefjpeg)
     @height, @width = get_dimensions_from_img(@coldef.coldefjpeg)
-    @coldef.save
+    @coldef.save!
   end
   def part_col
     @page_title = "EbyDict: Partitioner" # TODO: localize
@@ -106,7 +106,7 @@ class ScanController < ApplicationController
         return
       end
     else # just grab an available one -- no point in letting the user pick one
-      @col = EbyColumnImage.find_by_status('NeedPartition', :first, :conditions  => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
+      @col = EbyColumnImage.where("status = 'NeedPartition' and ((assignedto is null) or (assignedto ='#{session['user'].id}'))").first
       if @col.nil?
         flash[:notice] = t(:scan_nomorecols)
         redirect_to :controller => 'user'
@@ -123,7 +123,7 @@ class ScanController < ApplicationController
     end
     @colsmallimg = url_from_file(@col.smalljpeg)
     @height, @width = get_dimensions_from_img(@col.smalljpeg)
-    @col.save
+    @col.save!
   end
 
   def partition
@@ -163,25 +163,53 @@ class ScanController < ApplicationController
         @sc.cloud_smalljpeg.attach(io: StringIO.new(small.to_blob), filename: 'small' + @sc.cloud_origjpeg.filename.to_s)
         if(@sc.cloud_smalljpeg.attached?)
           logger.info "attached small blob!"
-          @sc.cloud_smalljpeg.save
-          @sc.cloud_smalljpeg.analyze # we're going to need the height/width right away, so don't wait for async default job
+          @sc.cloud_smalljpeg.save!
+          @sc.save!
+          logger.info "saved blob!"
+          logger.info "after save, attached? is #{@sc.cloud_smalljpeg.attached?}"
+          # workaround bizarre ActiveStorage behavior where @sc.cloud_smalljpeg.attached? becomes *false* after this
+          sleep 8
+          @sc = EbyScanImage.find(@sc.id)
+          @sc.cloud_smalljpeg.analyze unless @sc.cloud_smalljpeg.analyzed?
         else
           logger.info "failed to attach blob!"
         end
+      rescue
+        logger.error "exception caught while creating cloud_smalljpeg! #{$!}"
       ensure
         temp_file.close
       end
     end
     # now display the image for partitioning
-    @smallimg = url_for(@sc.cloud_smalljpeg) || "error!"
-    unless @sc.cloud_smalljpeg.analyzed?
-      @sc.cloud_smalljpeg.analyze
+    i = 1
+    logger.info "cloud_smalljpeg attached? #{@sc.cloud_smalljpeg.attached?}"
+    begin
+      analyzed = @sc.cloud_smalljpeg.analyzed?
+    rescue
+      nil
     end
+    unless analyzed
+      sleep 3 # we're going to need the height/width right away, so wait for the async job
+      until i > 10 do
+        begin
+          analyzed = @sc.cloud_smalljpeg.analyzed?
+        rescue
+          nil
+        end
+        unless analyzed
+          @sc.cloud_smalljpeg.analyze
+          sleep 3 # we're going to need the height/width right away, so wait for the async job
+          logger.info "waiting for smalljpeg analysis..."
+        end
+        i += 1
+      end
+    end
+    @smallimg = url_for(@sc.cloud_smalljpeg) || "error!"
     @height = @sc.cloud_smalljpeg.metadata[:height]
     @width = @sc.cloud_smalljpeg.metadata[:width]
     # @height, @width = get_dimensions_from_img(@sc.smalljpeg)
     @origimg = url_for(@sc.cloud_origjpeg) || "error!"
-    @sc.save
+    @sc.save!
     unless params[:prefill].nil?
       @prefilled_pagenums = params[:prefill] # prefill pagenums, if possible
     end
@@ -191,7 +219,7 @@ class ScanController < ApplicationController
     begin
       if params[:abandon]
         @col.assignee = nil
-        @col.save
+        @col.save!
         flash[:notice] = t(:scan_abandoned)
         redirect_to :controller => 'user'
       else
@@ -212,12 +240,12 @@ class ScanController < ApplicationController
         @col.status = 'NeedDefPartition'
         @col.partitioner = session['user']
         @col.assignee = nil
-        @col.save
+        @col.save!
         @msg += t(:scan_partedcol_html)
         flash[:notice] = @msg.html_safe
         if params[:save_and_next]
           # find a new available scanimg, and redirect back to partition
-          @col = EbyColumnImage.find_by_status('NeedPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
+          @col = EbyColumnImage.where("status = 'NeedPartition' and ((assignedto is null) or (assignedto ='#{session['user'].id}'))").first
           if @col.nil? # nothing available
             flash[:notice] = t(:scan_nomorecols)
             redirect_to :controller => 'user'
@@ -235,7 +263,7 @@ class ScanController < ApplicationController
     begin
       if params[:abandon]
         @col.assignee = nil
-        @col.save
+        @col.save!
         flash[:notice] = t(:scan_abandoned)
         redirect_to :controller => 'user'
       else
@@ -273,13 +301,13 @@ class ScanController < ApplicationController
         end 
         @col.defpartitioner = session['user']
         @col.assignee = nil
-        @col.save
+        @col.save!
         collect_orphan_partdefs_for_col(@col, last_def) unless last_def.nil? # resolve partial defs continuing a def from THIS col!
 
         flash[:notice] = "Partitioned!" # TODO: improve message
         if params[:save_and_next]
           # find a new available colimg, and redirect back to partition
-          @col = EbyColumnImage.find_by_status('NeedDefPartition', :first, :conditions => "(assignedto is null) or (assignedto ='#{session['user'].id}')")
+          @col = EbyColumnImage.where("status = 'NeedDefPartition' and ((assignedto is null) or (assignedto ='#{session['user'].id}'))").first
           if @col.nil?
             flash[:notice] = t(:scan_nomorecols)
             redirect_to :controller => 'user'
@@ -299,7 +327,7 @@ class ScanController < ApplicationController
     begin
       if params[:abandon]
         @sc.assignee = nil
-        @sc.save
+        @sc.save!
         flash[:notice] = "Returned this image to the pool"
         redirect_to :controller => 'user'
       else
@@ -348,10 +376,8 @@ class ScanController < ApplicationController
                 # save the objects
                 colimgname = @sc.cloud_origjpeg.filename.to_s
                 @msg += t(:scan_col_created, :colno => (colno+1).to_s, :fname => colimgname) + "<br/>"
-                byebug
-                newcol.save
                 newcol.cloud_coljpeg.attach(io: StringIO.new(colimg.to_blob), filename: "col#{colno+1}_#{colimgname}")
-                newcol.cloud_coljpeg.save
+                newcol.cloud_coljpeg.save!
                 # calculate next x coordinate
                 cur_right = realsep
               end
@@ -359,7 +385,7 @@ class ScanController < ApplicationController
               @sc.status = 'Partitioned'
               @sc.partitioner = session['user']
               @sc.assignee = nil
-              @sc.save
+              @sc.save!
               @msg += t(:scan_parted_scan_html, :fname => @sc.cloud_origjpeg.filename.to_s, :vol => @sc.volume.to_s, :pages => "#{@sc.firstpagenum}-#{@sc.secondpagenum}")+"<br/>"
               flash[:notice] = @msg.html_safe
             ensure
@@ -425,9 +451,9 @@ class ScanController < ApplicationController
     thedef = last_defpart.eby_def
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
-      thedef.save
+      thedef.save!
       defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
-      defev.save
+      defev.save!
     end
   end
   def add_to_prev_def(col, imgname,defno, is_complete)
@@ -436,9 +462,9 @@ class ScanController < ApplicationController
     if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order('defno desc').first).nil? or last_defpart.eby_def.nil?)) # find LAST def of column
         # oh boy... this is the HARD case: we've got to stash this defpart as an orphan for now, and resolve it later!
         defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :coldefimg_id => col.id, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
-        defpart.save
+        defpart.save!
         col.status = 'GotOrphans'
-        col.save
+        col.save!
         return nil
     else
       last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order('defno desc').first
@@ -453,14 +479,14 @@ class ScanController < ApplicationController
       # create a new defpart with appropriate def seqno
       seqno = last_defpart.partnum+1
       defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :coldefimg_id => col.id, :partnum => seqno, :defno => 0)
-      defpart.save
+      defpart.save!
       # save
       if (is_complete or is_newdef_at_nextcol(col)) 
         defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
         thedef.status = 'NeedTyping'
-        defev.save
+        defev.save!
       end
-      thedef.save
+      thedef.save!
       return thedef
     end
   end
@@ -490,13 +516,13 @@ class ScanController < ApplicationController
           orphan_part.eby_def = curdef
           lastpart = EbyDefPartImage.where(thedef: curdef.id).order('partnum desc').first # find LAST part of def
           orphan_part.partnum = lastpart.partnum+1
-          orphan_part.save # saved an orphan! :)
+          orphan_part.save! # saved an orphan! :)
           nextcol.status = 'Partitioned' # whee!
-          nextcol.save
+          nextcol.save!
           nextpart = EbyDefPartImage.where(coldefimg_id: nextcol.id, defno: 1).first # look for another def on this col, to be able to mark THIS def NeedTyping!
           if (not nextpart.nil?) or is_newdef_at_nextcol(curcol)
             curdef.status = 'NeedTyping' # Whee!
-            curdef.save
+            curdef.save!
             orphan_part = nil # exit loop
 	        elsif nextpart.nil?
             curcol = nextcol

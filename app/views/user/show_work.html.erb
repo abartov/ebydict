@@ -12,7 +12,7 @@
   <% if not (@inprog_scanimgs.nil? or @inprog_scanimgs.empty?) %>
       <br/>
     <% @inprog_scanimgs.each { |inp| %>
-      <%= t(:or) %> <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.origjpeg)), :controller => 'scan', :action => 'partition', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon', :id => inp %><br/>
+      <%= t(:or) %> <%= link_to t(:user_workon_html, :pic => inp.cloud_origjpeg.filename.to_s), :controller => 'scan', :action => 'partition', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
