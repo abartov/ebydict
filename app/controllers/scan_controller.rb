@@ -114,15 +114,30 @@ class ScanController < ApplicationController
       end
     end
     @col.assignee = session['user']
-    @colimg = url_from_file(@col.coljpeg)
-    if @col.smalljpeg.nil?
-      img =ImageList.new(@col.coljpeg)
-      small = img.scale(COL_ZOOM_FACTOR)
-      @col.smalljpeg =  fname_for_part(@col.coljpeg, 'small')
-      small.write(@col.smalljpeg)
+    #@colimg = url_from_file(@col.coljpeg)
+    @colimg = url_for(@col.cloud_coljpeg) || "error!"
+    unless @col.cloud_smalljpeg.attached? && @col.cloud_smalljpeg.analyzed?
+      body = HTTP.follow.get(@col.cloud_coljpeg.service_url).body
+      begin
+        temp_file = Tempfile.new('ebydict_col_'+@col.id.to_s, 'tmp/', binmode: true)
+        temp_file.write(body)
+        temp_file.flush
+        tmpfilename = temp_file.path
+        img = ImageList.new(tmpfilename)
+        small = img.scale(COL_ZOOM_FACTOR)
+        @col.cloud_smalljpeg.attach(io: StringIO.new(small.to_blob), filename: 'small'+@col.cloud_coljpeg.filename.to_s)
+        @col.cloud_smalljpeg.save!
+        # workaround bizarre ActiveStorage behavior
+        sleep 5
+        @col = EbyColumnImage.find(@col.id)
+        @col.cloud_smalljpeg.analyze unless @col.cloud_smalljpeg.analyzed?
+      ensure
+        temp_file.close
+      end
     end
-    @colsmallimg = url_from_file(@col.smalljpeg)
-    @height, @width = get_dimensions_from_img(@col.smalljpeg)
+    @colsmallimg = url_for(@col.cloud_smalljpeg)
+    @height = @col.cloud_smalljpeg.metadata[:height]
+    @width = @col.cloud_smalljpeg.metadata[:width]
     @col.save!
   end
 

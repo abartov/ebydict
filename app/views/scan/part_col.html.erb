@@ -68,7 +68,7 @@ $(document).ready(function() {
 </script>
 </head>
 <body><table><tr><td valign="bottom">
-<b>Partitioning column: <%= @colimg %></b>
+<b>Partitioning column: <%= @col.cloud_coljpeg.filename %></b>
 <%= form_tag '/scan/docolpart/'+@col.id.to_s %>
 <div align="left" id="part_tools"><%= submit_tag "Save Partition and Get Another Column", :name => 'save_and_next' %><br/><%= submit_tag "Save Partition", :name => 'commit' %><br/><%= submit_tag "Don't Save; Abandon this Image", :name => 'abandon' %><br/><br/> <a href="#" onclick="cancel_sep()">Cancel and Start Over</a> <p/>
 The separator between definitions and footnotes: <span id="col_seps"></span>
