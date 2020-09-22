@@ -28,6 +28,9 @@ class EbyColumnImage < ApplicationRecord
   def last_def_part
     return def_part_images.maximum(:defno)
   end
+  def get_coldefjpeg # cloud_coldefjpeg would be nil where there was no partitioning because no footnotes
+    cloud_coldefjpeg.nil? ? cloud_coljpeg : cloud_coldefjpeg
+  end
   def def_by_defno(defno)
     d = def_part_by_defno(defno)
     return nil if d.nil?

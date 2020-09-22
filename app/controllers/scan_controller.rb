@@ -92,8 +92,8 @@ class ScanController < ApplicationController
       end
     end
     @coldef.assignee = session['user']
-    @img = url_from_file(@coldef.coldefjpeg)
-    @height, @width = get_dimensions_from_img(@coldef.coldefjpeg)
+    @img = url_from_file(@coldef.get_coldefjpeg)
+    @height, @width = get_dimensions_from_img(@coldef.get_coldefjpeg)
     @coldef.save!
   end
   def part_col
@@ -239,18 +239,25 @@ class ScanController < ApplicationController
         redirect_to :controller => 'user'
       else
         @msg = ''
-        if params[:seps] == ''
-          # no partition, i.e. no footnotes!
-          @col.coldefjpeg = @col.coljpeg # same image, then
-        else
-          colimg = ImageList.new(@col.coljpeg)
-          sep = params[:seps].to_i*(1/COL_ZOOM_FACTOR)
-          coldefimg = colimg.crop(0,0, colimg.columns, sep + MARGIN)
-          colfootimg = colimg.crop(0,sep - MARGIN, colimg.columns, colimg.rows - sep - MARGIN)
-          @col.coldefjpeg = fname_for_part(@col.coljpeg, 'def_')
-          @col.colfootjpeg = fname_for_part(@col.coljpeg, 'foot_')
-          coldefimg.write(@col.coldefjpeg)
-          colfootimg.write(@col.colfootjpeg)
+        unless params[:seps] == '' # no partition = no footnotes!
+          body = HTTP.follow.get(@col.cloud_coljpeg.service_url).body
+          begin
+            temp_file = Tempfile.new('ebydict_col_'+@col.id.to_s, 'tmp/', binmode: true)
+            temp_file.write(body)
+            temp_file.flush
+            logger.info "wrote blob!"
+            tmpfilename = temp_file.path
+            colimg = ImageList.new(tmpfilename)
+            sep = params[:seps].to_i*(1/COL_ZOOM_FACTOR)
+            coldefimg = colimg.crop(0,0, colimg.columns, sep + MARGIN)
+            colfootimg = colimg.crop(0,sep - MARGIN, colimg.columns, colimg.rows - sep - MARGIN)
+            @col.cloud_coldefjpeg.attach(io: StringIO.new(coldefimg.to_blob), filename: 'def_' + @col.cloud_coljpeg.filename.to_s)
+            @col.cloud_colfootjpeg.attach(io: StringIO.new(colfootimg.to_blob), filename: 'foot_' + @col.cloud_coljpeg.filename.to_s)
+          rescue
+            logger.error "exception caught while creating cloud_coldefjpeg! #{$!}"
+          ensure
+            temp_file.close
+          end
         end
         @col.status = 'NeedDefPartition'
         @col.partitioner = session['user']
@@ -283,14 +290,14 @@ class ScanController < ApplicationController
         redirect_to :controller => 'user'
       else
         last_def = nil
-        colimg = ImageList.new(@col.coldefjpeg)
+        colimg = ImageList.new(@col.get_coldefjpeg)
         seps = parse_seps(params[:seps]) 
         if seps.nil?
           # no partitions at all (i.e. the entire coldef is one definition (or continuation of one!)
           if params[:first_cont] == 'yes'
-            last_def = add_to_prev_def(@col, @col.coldefjpeg, 0, false) # same image, since no cutting necessary!
+            last_def = add_to_prev_def(@col, @col.get_coldefjpeg, 0, false) # same image, since no cutting necessary!
           else
-            last_def = makedef(@col, @col.coldefjpeg, 0, false)
+            last_def = makedef(@col, @col.get_coldefjpeg, 0, false)
           end
         else # got separations
           cur_bottom = colimg.rows - 1
