@@ -92,9 +92,13 @@ class ScanController < ApplicationController
       end
     end
     @coldef.assignee = session['user']
-    @img = url_from_file(@coldef.get_coldefjpeg)
-    @height, @width = get_dimensions_from_img(@coldef.get_coldefjpeg)
     @coldef.save!
+    coldefjpeg = @coldef.get_coldefjpeg
+    @img = url_for(coldefjpeg)
+    @filename = coldefjpeg.filename.to_s
+    coldefjpeg.analyze unless coldefjpeg.analyzed? # necessary for height/width
+    @height = coldefjpeg.metadata[:height]
+    @width = coldefjpeg.metadata[:width]
   end
   def part_col
     @page_title = "EbyDict: Partitioner" # TODO: localize

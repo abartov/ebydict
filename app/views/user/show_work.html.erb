@@ -22,7 +22,7 @@
   <% if not (@inprog_colimgs.nil? or @inprog_colimgs.empty?) %>
       <br/>
     <% @inprog_colimgs.each { |inp| %>
-      &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.coljpeg)), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => inp.cloud_coljpeg.filename), :controller => 'scan', :action => 'part_col', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
@@ -33,7 +33,7 @@
   <% if not (@inprog_coldefimgs.nil? or @inprog_coldefimgs.empty?) %>
       <br/>
     <% @inprog_coldefimgs.each { |inp| %>
-      &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => filepart_from_path(inp.get_coldefjpeg)), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => inp.get_coldefjpeg.filename), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
     <% } %>
   </div>
   <% end %>
