@@ -83,9 +83,10 @@ class TypeController < ApplicationController
       lastpart = nil
       @thedef.part_images.each { |part|
         # make part entry
-        @parts_js += "parts[#{part.partnum - 1}] = '#{url_from_file(part.filename)}';\n"
-        colfoot = url_from_file(part.colimg.colfootjpeg)
-        if colfoot.nil?
+        @parts_js += "parts[#{part.partnum - 1}] = '#{url_for(part.get_part_image)}';\n"
+        if part.colimg.cloud_colfootjpeg.attached?
+          colfoot = url_for(part.colimg.cloud_colfootjpeg)
+        else
           colfoot = '/assets/nofoot.png'
         end
         @parts_js += "foots[#{part.partnum - 1}] = '#{colfoot}';\n"
@@ -94,10 +95,10 @@ class TypeController < ApplicationController
       }
       index = lastpart.partnum
       ncol = lastpart.colimg
-      4.times { |i|
+      6.times { |i|
         ncol = col_from_col(ncol, NEXT) or break
-        break if ncol.colfootjpeg.nil?
-        @parts_js += "foots[#{index+i}] = '#{url_from_file(ncol.colfootjpeg)}';\n"
+        break unless ncol.cloud_colfootjpeg.attached?
+        @parts_js += "foots[#{index+i}] = '#{url_for(ncol.cloud_colfootjpeg)}';\n"
         @extra_foots += 1
       }
 

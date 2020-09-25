@@ -61,100 +61,74 @@ tinyMCE.init({
         content_css : "/assets/application.css",
         setup: function(editor) { 
         // Add our custom buttons
-          editor.addButton('mafrid', {
+          editor.ui.registry.addButton('mafrid', {
+            text: '<image src=\"/assets/mafrid.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_mafrid) %>',
-            image: '/assets/mafrid.png',
-            onclick: function() {
+            onAction: function() {
               editor.focus();
               editor.selection.setContent('— '+editor.selection.getContent());
             }
           });
-          editor.addButton('makor', {
+          editor.ui.registry.addButton('makor', {
+            text: '<image src=\"/assets/source.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_source) %>',
-            image: '/assets/source.png',
-            onclick: function() { 
+            onAction: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_source_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
             }
           });
-          editor.addButton('problem', {
+          editor.ui.registry.addButton('problem', {
+            text: '<image src=\"/assets/problem.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_problem_btn) %>',
-            image: '/assets/problem.png',
-            onclick: function() { 
+            onAction: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_problem_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
             }
           });
-          editor.addButton('comment', {
+          editor.ui.registry.addButton('comment', {
+            text: '<image src=\"/assets/comment.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_comment) %>',
-            image: '/assets/comment.png',
-            onclick: function() { 
+            onAction: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_comment_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
             }
           });
-          editor.addButton('redirect', {
+          editor.ui.registry.addButton('redirect', {
+            text: '<image src=\"/assets/vide.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_redirect) %>',
-            image: '/assets/vide.png',
-            onclick: function() { 
+            onAction: function() { 
               editor.focus();
               editor.selection.setContent('<%= t(:type_redirect_markup) %>'+editor.selection.getContent()+'&#93;&#93;');
             }
           });
-          editor.addButton('talmud', {
+          editor.ui.registry.addButton('talmud', {
+            text: '<image src=\"/assets/talmud.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_talmud) %>',
-            image: '/assets/talmud.png',
-            onclick: function() { 
+            onAction: function() { 
               editor.focus();
               editor.selection.setContent('* '+editor.selection.getContent());
             }
           });
-          editor.addButton('post_xazal', {
+          editor.ui.registry.addButton('post_xazal', {
+            text: '<image src=\"/assets/post_xazal.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_post_xazal_html) %>',
-            image: '/assets/post_xazal.png',
-            onclick : function() {
+            onAction : function() {
               editor.focus();
               editor.selection.setContent('&deg;'+editor.selection.getContent());
             }
           });
-          editor.addButton('neologism', {
+          editor.ui.registry.addButton('neologism', {
+            text: '<image src=\"/assets/neologism.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_neologism) %>',
-            image: '/assets/neologism.png',
-            onclick : function() {
+            onAction : function() {
               editor.focus();
               editor.selection.setContent('&sect;'+editor.selection.getContent());
             }
           });
           editor.on('change', function(e) {
             var content = tinymce.activeEditor.getContent().replace(/<p>|<\/p>/g, '');
-            if (content == '') {
-              tinymce.activeEditor.setContent($('#' + editor.id).attr("placeholder"));
-            }  
           });
-          // set initial placeholder if empty
-          var placeholder = $('#' + editor.id).attr("placeholder");
-          if(placeholder.length) {
-            editor.on('init', function(e) {
-              var cont = editor.getContent();
-              if (cont.length == 0) {
-                editor.setContent(placeholder);
-              }
-            });
-          }
     },
-// remnants of TinyMCE 3.x code below -- remove when sure no longer needed
-/*  setup : function(ed) {
-    // Set placeholder
-    var tinymce_placeholder = $('#' + ed.id);
-    if (tinymce_placeholder.length) {
-      ed.onMouseDown.add(function (ed, e) {
-        var content = ed.getContent().replace(/<p>|<\/p>/g, '');
-        if (content == tinymce_placeholder.attr("placeholder")) {
-          ed.setContent('');
-        }
-      });
-    }
-    }*/
     }
   );
   canvas = document.getElementById("myCanvas");
@@ -276,7 +250,7 @@ tinyMCE.init({
   position:fixed;
   top:2px;
   left:0px;
-  width:480px;
+  width:500px;
   overflow:auto;
   padding-right:2px;
   border-right:4px gray solid;
@@ -285,7 +259,7 @@ tinyMCE.init({
 }
 .scans {
   /*float:right;*/
-  margin-left:480px;
+  margin-left:500px;
   top:2px;
   width:auto;
 /*  max-width: 800px; */
