@@ -21,7 +21,7 @@ class DefinitionController < ApplicationController
   def publish
     redirect_to '/' unless check_role('publisher')
     @d = EbyDef.find(params[:id])
-    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d, :who => session['user'].id, :new_status => 'Published')
+    defev = EbyDefEvent.new(:old_status => @d.status, :thedef => @d.id, :who => session['user'].id, :new_status => 'Published')
     defev.save
     @d.status = 'Published'
     @d.save

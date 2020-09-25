@@ -168,13 +168,19 @@ module EbyUtils
   end
 
   # used in partitioning (scan controller)
-  def makedef(col, jpeg, defno, is_complete)
+  def makedef(col, blob, jpeg, defno, is_complete)
     newdef = EbyDef.new(:defhead => t(:type_unknown), :reject_count => 0, :proof_round_passed => 0,  :assignedto => nil, :status => ((is_complete or is_newdef_at_nextcol(col)) ? 'NeedTyping' : 'Partial'), :volume => col.volume)
     newdef.save!
-    defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef, :who => session['user'].id)
+    defev = EbyDefEvent.new(:old_status => 'none', :new_status => newdef.status, :thedef => newdef.id, :who => session['user'].id)
     defev.save!
-    newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :filename => jpeg, :defno => defno, :partnum => 1, :thedef => newdef)
+    newdefpart = EbyDefPartImage.new(:coldefimg_id => col.id, :defno => defno, :partnum => 1, :thedef => newdef.id)
     newdefpart.save!
+    unless blob.nil?
+      newdefpart.cloud_defpartjpeg.attach(io: StringIO.new(blob.to_blob), filename: jpeg)
+      if newdefpart.cloud_defpartjpeg.attached?
+        newdefpart.cloud_defpartjpeg.save!
+      end
+    end # if no blob was given, EbyDefPartImage.get_part_image will return the attached jpeg from the column
     return newdef
   end
 end

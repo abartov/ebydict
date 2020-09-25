@@ -193,8 +193,8 @@ class ScanController < ApplicationController
         else
           logger.info "failed to attach blob!"
         end
-      rescue
-        logger.error "exception caught while creating cloud_smalljpeg! #{$!}"
+      rescue => exception
+        logger.error "exception caught while creating cloud_smalljpeg! #{$!}\n#{exception.backtrace}"
       ensure
         temp_file.close
       end
@@ -286,6 +286,7 @@ class ScanController < ApplicationController
   end
   def dopartdef
     @col = EbyColumnImage.find_by_id(params[:id])
+    success = true
     begin
       if params[:abandon]
         @col.assignee = nil
@@ -294,43 +295,59 @@ class ScanController < ApplicationController
         redirect_to :controller => 'user'
       else
         last_def = nil
-        colimg = ImageList.new(@col.get_coldefjpeg)
         seps = parse_seps(params[:seps]) 
         if seps.nil?
           # no partitions at all (i.e. the entire coldef is one definition (or continuation of one!)
           if params[:first_cont] == 'yes'
-            last_def = add_to_prev_def(@col, @col.get_coldefjpeg, 0, false) # same image, since no cutting necessary!
+            last_def = add_to_prev_def(@col, nil, @col.get_coldefjpeg, 0, false) # same image, since no cutting necessary!
           else
-            last_def = makedef(@col, @col.get_coldefjpeg, 0, false)
+            last_def = makedef(@col, nil, @col.get_coldefjpeg, 0, false)
           end
         else # got separations
-          cur_bottom = colimg.rows - 1
-          seps.each_index { |defno|
-            defpartimg = colimg.crop(0, [0,seps[defno] - MARGIN].max, colimg.columns, cur_bottom - seps[defno] + 2*MARGIN)
-            real_defno = seps.size - defno
-            defpartimgname = fname_for_part(@col.coljpeg, 'def'+(real_defno).to_s+'_')
-            defpartimg.write(defpartimgname)
-            if real_defno == 1 && params[:first_cont] == 'yes'
-              last_def = add_to_prev_def(@col, defpartimgname, real_defno - 1, (real_defno == seps.length ? false : true))
-            else
-              # an entry beginning on this column
-              last_def = makedef(@col, defpartimgname, real_defno - 1, (real_defno == seps.length ? false : true)) # if there's a sep AFTER this one, this one's definitely a complete def!
-            end
-            cur_bottom = seps[defno]
-          }
+          body = HTTP.follow.get(@col.get_coldefjpeg.service_url).body
+          begin
+            temp_file = Tempfile.new('ebydict_coldef'+@col.get_coldefjpeg.filename.to_s, 'tmp/', binmode: true)
+            temp_file.write(body)
+            temp_file.flush
+            tmpfilename = temp_file.path
+            colimg = ImageList.new(tmpfilename)
+            cur_bottom = colimg.rows - 1
+            seps.each_index { |defno|
+              defpartimg = colimg.crop(0, [0,seps[defno] - MARGIN].max, colimg.columns, cur_bottom - seps[defno] + 2*MARGIN)
+              real_defno = seps.size - defno
+
+              defpartimgname = 'def'+(real_defno).to_s+'_'+@col.cloud_coljpeg.filename.to_s
+              if real_defno == 1 && params[:first_cont] == 'yes'
+                last_def = add_to_prev_def(@col, defpartimg, defpartimgname, real_defno - 1, (real_defno == seps.length ? false : true))
+              else
+                # an entry beginning on this column
+                last_def = makedef(@col, defpartimg, defpartimgname, real_defno - 1, (real_defno == seps.length ? false : true)) # if there's a sep AFTER this one, this one's definitely a complete def!
+              end
+              cur_bottom = seps[defno]
+            }
+          rescue => exception
+            logger.error "exception caught while creating coldefparts! #{$!}\n#{exception.backtrace}"
+            success = false
+          ensure
+            temp_file.close
+          end
         end
         if params[:first_cont] == 'no' # see if previous column had a partial def waiting to know it's actually complete
           mark_prev_col_def_complete(@col)
         end
-        if @col.status == 'NeedDefPartition' # only mark as partition if status wasn't changed (e.g. to GotOrphans by add_to_prev_def)
-          @col.status = 'Partitioned'
-        end 
-        @col.defpartitioner = session['user']
-        @col.assignee = nil
-        @col.save!
+        if success
+          if @col.status == 'NeedDefPartition' # only mark as partition if status wasn't changed (e.g. to GotOrphans by add_to_prev_def)
+            @col.status = 'Partitioned'
+          end 
+          @col.defpartitioner = session['user']
+          @col.assignee = nil
+          @col.save!
+          flash[:notice] = "Partitioned!" # TODO: improve message
+        else
+          flash[:error] = $!
+        end
         collect_orphan_partdefs_for_col(@col, last_def) unless last_def.nil? # resolve partial defs continuing a def from THIS col!
 
-        flash[:notice] = "Partitioned!" # TODO: improve message
         if params[:save_and_next]
           # find a new available colimg, and redirect back to partition
           @col = EbyColumnImage.where("status = 'NeedDefPartition' and ((assignedto is null) or (assignedto ='#{session['user'].id}'))").first
@@ -478,17 +495,23 @@ class ScanController < ApplicationController
     if thedef.status == 'Partial'
       thedef.status = 'NeedTyping'
       thedef.save!
-      defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
+      defev = EbyDefEvent.new(:old_status => 'Partial', :new_status => 'NeedTyping', :thedef => thedef.id, :who => session['user'].id)
       defev.save!
     end
   end
-  def add_to_prev_def(col, imgname,defno, is_complete)
+  def add_to_prev_def(col, blob, imgname, defno, is_complete)
     # find prev column (possibly in prev scanimg!
     prevcol = col_from_col(col, PREV) #or raise Exception.new
     if prevcol.nil? or (prevcol.status != 'Partitioned' and ((last_defpart = EbyDefPartImage.where(coldefimg_id: prevcol.id).order('defno desc').first).nil? or last_defpart.eby_def.nil?)) # find LAST def of column
         # oh boy... this is the HARD case: we've got to stash this defpart as an orphan for now, and resolve it later!
-        defpart = EbyDefPartImage.new(:filename => imgname, :thedef => nil, :coldefimg_id => col.id, :partnum => 0, :defno => 0, :is_last => (is_complete ? true : nil))
+        defpart = EbyDefPartImage.new(thedef: nil, coldefimg_id: col.id, partnum: 0, defno: 0, is_last: (is_complete ? true : nil))
         defpart.save!
+        unless blob.nil?
+          defpart.cloud_defpartjpeg.attach(io: StringIO.new(blob.to_blob), filename: imgname)
+          if defpart.cloud_defpartjpeg.attached?
+            defpart.cloud_defpartjpeg.save!
+          end
+        end # if no blob was given, EbyDefPartImage.get_part_image will return the attached jpeg from the column
         col.status = 'GotOrphans'
         col.save!
         return nil
@@ -504,11 +527,17 @@ class ScanController < ApplicationController
       end
       # create a new defpart with appropriate def seqno
       seqno = last_defpart.partnum+1
-      defpart = EbyDefPartImage.new(:filename => imgname, :thedef => thedef, :coldefimg_id => col.id, :partnum => seqno, :defno => 0)
+      defpart = EbyDefPartImage.new(thedef: thedef.id, coldefimg_id: col.id, partnum: seqno, defno: 0)
       defpart.save!
+      unless blob.nil?
+        defpart.cloud_defpartjpeg.attach(io: StringIO.new(blob.to_blob), filename: imgname)
+        if defpart.cloud_defpartjpeg.attached?
+          defpart.cloud_defpartjpeg.save!
+        end
+      end # if no blob was given, EbyDefPartImage.get_part_image will return the attached jpeg from the column
       # save
-      if (is_complete or is_newdef_at_nextcol(col)) 
-        defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef, :who => session['user'].id)
+      if (is_complete or is_newdef_at_nextcol(col))
+        defev = EbyDefEvent.new(:old_status => thedef.status, :new_status => 'NeedTyping', :thedef => thedef.id, :who => session['user'].id)
         thedef.status = 'NeedTyping'
         defev.save!
       end

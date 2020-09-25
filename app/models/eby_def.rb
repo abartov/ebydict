@@ -2,7 +2,7 @@ class EbyDef < ApplicationRecord
   include EbyUtils
   include Rails.application.routes.url_helpers
 
-  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto'
+  belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
   has_many :part_images, -> { order('partnum asc') }, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
@@ -311,12 +311,14 @@ class EbyDef < ApplicationRecord
     newbuf += buf # append remaining bit 
     return newbuf
   end
+
   # the following method is dangerous!  It will insert a new EbyDef after the current EbyDef.
   # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one, 
   # during the DefPartition stage.  It is assumed this would only happen for defparts that begin AND
   # end a headword.
   # It also doesn't handle the partitioning itself for you.  Pass it a filename of the correctly cut 
   # NEW headword, that you have cut off from the group image, and placed in the same directory.
+  # TODO: change to be cloud-based. Current implementation won't work! (but isn't called from anywhere)
   def insert_after(def_part_img)
     newdef = makedef(part_defs.last.colimg, def_part_img, self.defno + 1, true) # assuming is_complete == true!
   end

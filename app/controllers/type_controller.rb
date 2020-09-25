@@ -163,7 +163,7 @@ class TypeController < ApplicationController
     elsif params[:save_and_done]
       populate(@d)
       @newstat = ''
-      defev = EbyDefEvent.new(:old_status => (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status), :thedef => @d, :who => session['user'].id)
+      defev = EbyDefEvent.new(:old_status => (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status), :thedef => @d.id, :who => session['user'].id)
       act = params[:act].to_i
       if act == AppConstants.type
         @d.status = 'NeedProof' # but override to fixup below if needed
@@ -206,7 +206,7 @@ class TypeController < ApplicationController
       flash[:notice] = t(:type_saved_with_status, :status => @newstat)
     elsif params[:problem]
       populate(@d)
-      defev = EbyDefEvent.new(:old_status => @d.status, :new_status => 'Problem', :thedef => @d, :who => session['user'].id)
+      defev = EbyDefEvent.new(:old_status => @d.status, :new_status => 'Problem', :thedef => @d.id, :who => session['user'].id)
       defev.save
       @d.status = 'Problem'
       @d.assignee = nil
