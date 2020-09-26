@@ -4,7 +4,8 @@ desc "Migrate all local scans and def parts to S3"
 task :migrate_to_cloud  => :environment do
   grandtotal = 0
   granddone = 0
-  coll = EbyScanImage.left_joins(:cloug_origjpeg_attachment).group(:id).having("COUNT(active_storage_attachments) = 0")
+  #coll = EbyScanImage.left_joins(:cloug_origjpeg_attachment).group(:id).having("COUNT(active_storage_attachments) = 0")
+  coll = EbyScanImage.left_joins(:cloud_origjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
   puts "Migrating EbyScanImages - origjpegs (#{total} left)"
   grandtotal += total
