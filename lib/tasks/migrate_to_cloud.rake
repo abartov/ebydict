@@ -34,7 +34,7 @@ task :migrate_to_cloud  => :environment do
     end
   end
   granddone += done
-=begin   
+=begin 
   puts "Migrating EbyColumnImages (#{total} left)"
   total = coll.count
   grandtotal += total
@@ -59,7 +59,7 @@ task :migrate_to_cloud  => :environment do
   done = 0
 
   granddone += done
- =end  
+=end  
 
  puts "done!"
 end
