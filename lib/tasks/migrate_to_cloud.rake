@@ -19,9 +19,9 @@ task :migrate_to_cloud  => :environment do
     end
   end
   granddone += done
-  puts "Migrating EbyScanImages - smalljpegs (#{total} left)"
   coll = EbyScanImage.left_joins(:cloud_smalljpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
+  puts "Migrating EbyScanImages - smalljpegs (#{total} left)"
   grandtotal += total
   done = 0
   coll.each do |sc|
@@ -34,9 +34,9 @@ task :migrate_to_cloud  => :environment do
     end
   end
   granddone += done
-  puts "Migrating EbyColumnImages (#{total} left)"
   coll = EbyColumnImage.left_joins(:cloud_coljpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
+  puts "Migrating EbyColumnImages (#{total} left)"
   grandtotal += total
   done = 0
   coll.each do |c|
@@ -49,9 +49,9 @@ task :migrate_to_cloud  => :environment do
     end
   end
   granddone += done
-  puts "Migrating EbyColumnImage def sections (#{total} left)"
   coll = EbyColumnImage.left_joins(:cloud_coldefjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
+  puts "Migrating EbyColumnImage def sections (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
@@ -70,9 +70,9 @@ task :migrate_to_cloud  => :environment do
   end
   puts "skipped #{skipped} coldefjpegs identical to coljpeg"
   granddone += done
-  puts "Migrating EbyColumnImage footnote sections (#{total} left)"
   coll = EbyColumnImage.left_joins(:cloud_colfootjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
+  puts "Migrating EbyColumnImage footnote sections (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
@@ -91,9 +91,9 @@ task :migrate_to_cloud  => :environment do
   end
   puts "skipped #{skipped} empty colfootjpegs"
   granddone += done
-  puts "Migrating EbyDefPartImages (#{total} left)"
   coll = EbyDefPartImage.left_joins(:cloud_defpartjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
+  puts "Migrating EbyDefPartImages (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
