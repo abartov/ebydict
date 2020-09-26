@@ -2,6 +2,7 @@ require 'eby_utils'
 include EbyUtils
 desc "Migrate all local scans and def parts to S3"
 task :migrate_to_cloud  => :environment do
+  Rails.logger = Logger.new(STDOUT)
   grandtotal = 0
   granddone = 0
   #coll = EbyScanImage.left_joins(:cloug_origjpeg_attachment).group(:id).having("COUNT(active_storage_attachments) = 0")
@@ -16,7 +17,7 @@ task :migrate_to_cloud  => :environment do
       done += 1
       print "... #{done}" if done % 20 == 0
     rescue => exception
-      logger.error "exception caught while migrating origjpeg! #{$!}\n#{exception.backtrace}"
+      Rails.logger.error "exception caught while migrating origjpeg! #{$!}\n#{exception.backtrace}"
     end
   end
   granddone += done
@@ -31,7 +32,7 @@ task :migrate_to_cloud  => :environment do
       done += 1
       print "... #{done}" if done % 20 == 0
     rescue => exception
-      logger.error "exception caught while migrating smalljpeg! #{$!}\n#{exception.backtrace}"
+      Rails.logger.error "exception caught while migrating smalljpeg! #{$!}\n#{exception.backtrace}"
     end
   end
   granddone += done
@@ -67,3 +68,6 @@ end
 
 private 
 
+def filepart_from_path(path)
+  return path[(path.rindex('/')+1)..-1]
+end
