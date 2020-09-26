@@ -36,7 +36,7 @@ task :migrate_to_cloud  => :environment do
   granddone += done
   coll = EbyColumnImage.left_joins(:cloud_coljpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
-  puts "Migrating EbyColumnImages (#{total} left)"
+  puts "\nMigrating EbyColumnImages (#{total} left)"
   grandtotal += total
   done = 0
   coll.each do |c|
@@ -51,7 +51,7 @@ task :migrate_to_cloud  => :environment do
   granddone += done
   coll = EbyColumnImage.left_joins(:cloud_coldefjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
-  puts "Migrating EbyColumnImage def sections (#{total} left)"
+  puts "\nMigrating EbyColumnImage def sections (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
@@ -72,7 +72,7 @@ task :migrate_to_cloud  => :environment do
   granddone += done
   coll = EbyColumnImage.left_joins(:cloud_colfootjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
-  puts "Migrating EbyColumnImage footnote sections (#{total} left)"
+  puts "\nMigrating EbyColumnImage footnote sections (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
@@ -93,7 +93,7 @@ task :migrate_to_cloud  => :environment do
   granddone += done
   coll = EbyDefPartImage.left_joins(:cloud_defpartjpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
-  puts "Migrating EbyDefPartImages (#{total} left)"
+  puts "\nMigrating EbyDefPartImages (#{total} left)"
   grandtotal += total
   done = 0
   skipped = 0
