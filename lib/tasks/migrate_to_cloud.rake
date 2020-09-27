@@ -21,7 +21,7 @@ task :migrate_to_cloud  => :environment do
   granddone += done
   coll = EbyScanImage.left_joins(:cloud_smalljpeg_attachment).where(active_storage_attachments: {id: nil})
   total = coll.count
-  puts "Migrating EbyScanImages - smalljpegs (#{total} left)"
+  puts "\nMigrating EbyScanImages - smalljpegs (#{total} left)"
   grandtotal += total
   done = 0
   coll.each do |sc|
@@ -42,6 +42,21 @@ task :migrate_to_cloud  => :environment do
   coll.each do |c|
     begin
       c.cloud_coljpeg.attach(io: File.open(c.coljpeg), filename: filepart_from_path(c.coljpeg))
+      done += 1
+      print "... #{done}" if done % 20 == 0
+    rescue => exception
+      Rails.logger.error "exception caught while migrating coljpeg! #{$!}\n#{exception.backtrace}"
+    end
+  end
+  granddone += done
+  coll = EbyColumnImage.left_joins(:cloud_smalljpeg_attachment).where(active_storage_attachments: {id: nil})
+  total = coll.count
+  puts "\nMigrating EbyColumnImages smalljpegs (#{total} left)"
+  grandtotal += total
+  done = 0
+  coll.each do |c|
+    begin
+      c.cloud_smalljpeg.attach(io: File.open(c.smalljpeg), filename: filepart_from_path(c.smalljpeg))
       done += 1
       print "... #{done}" if done % 20 == 0
     rescue => exception
