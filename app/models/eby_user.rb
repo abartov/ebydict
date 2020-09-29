@@ -45,6 +45,7 @@ class EbyUser < ApplicationRecord
     user.email = auth.info.email
     user.oauth_token = auth.credentials.token
     user.oauth_expires_at = Time.at(auth.credentials.expires_at) unless auth.credentials.expires_at.nil?
+    user.role_typist = true # start out as a typist
     user.save!
     return user
   end
