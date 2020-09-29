@@ -13,7 +13,7 @@ class TypeController < ApplicationController
   def set_marker
     @d = EbyDef.find(params[:id])
     if @d.marker.nil?
-      @d.marker = EbyMarker.new
+      @d.marker = EbyMarker.new(user_id: session['user'].id, thedef: @d)
     end
     @d.marker.partnum = params[:partnum]
     @d.marker.marker_y = params[:marker_y]
