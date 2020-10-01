@@ -7,11 +7,9 @@ module ApplicationHelper
   def redspan(s)
     return '<span style="color:red; font-size: 250%">'+s+'</span>'
   end
+
   def small_redspan(s)
     return '<span style="color:red; font-size: 150%">'+s+'</span>'
-  end
-  def highlight_suspicious_markdown(buf)
-    buf.gsub('**', redspan('**')).gsub('| ', redspan('| ')).gsub('##', redspan('##'))
   end
 
   def mark_markup_in_html(buf)
