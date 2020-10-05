@@ -8,7 +8,7 @@ class UserController < ApplicationController
   def list
     redirect_to :controller => 'user' unless check_role('publisher')
     @page_title = I18n.t(:admin_userlist)
-    @users = EbyUser.page(params[:page])
+    @users = EbyUser.order(:fullname).page(params[:page])
   end
   def active_emails
     redirect_to :controller => 'user' unless check_role('publisher')
