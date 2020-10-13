@@ -43,6 +43,7 @@ Ebydict::Application.routes.draw do
   post 'admin/doadduser'
   get 'user/edit' => 'user#edit'
   put 'user/edit' => 'user#update'
+  patch 'user/edit' => 'user#update'
   get 'admin/changes'
   get 'scan/partition'
   match 'scan/dopartition/:id' => 'scan#dopartition', via: [:get, :post]
