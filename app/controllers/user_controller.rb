@@ -81,7 +81,7 @@ class UserController < ApplicationController
     if check_role('publisher')
       begin
         u = EbyUser.find(params[:id])
-        u.assign_attributes(params['eby_user'])
+        u.assign_attributes(user_params)
         u.password = EbyUser.hashfunc(params['new_password']) unless params['new_password'].empty?
         u.save!
 
@@ -110,4 +110,8 @@ class UserController < ApplicationController
       @user = EbyUser.find(params[:id]) # only admins can look at other users
     end
   end
+end
+private
+def user_params
+  params.require('eby_user').permit!
 end
