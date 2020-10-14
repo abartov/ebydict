@@ -19,7 +19,7 @@ class TypeController < ApplicationController
     @d.marker.marker_y = params[:marker_y]
     @d.marker.save!
     @d.save!
-    render nothing: true
+    head :ok
   end
   def get_fixup
     unless(check_role('fixer'))
