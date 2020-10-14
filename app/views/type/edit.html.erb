@@ -276,10 +276,6 @@ tinyMCE.init({
 <div id="not_done" class="dialog" style="display:none; overflow:auto; direction:rtl; text-align:right;">
 <%= t(:type_not_done_body_html) %>
 </div>
- <!-- main editing area -->
-<!-- <table>
-<tr>
-<td>-->
 <div class="scans">
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a> | <span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
     <canvas id="myCanvas"></canvas>
@@ -289,17 +285,16 @@ tinyMCE.init({
     <hr/>
     <img id="footimg" border="1" src="/assets/loading.png"/><p/>
 </div>
-<!-- </td><td> -->
 <div class="controls">
   <!-- TinyMCE goes here -->
     <div>
-<span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
+      <span style="color:green"><%= t(:type_headword) %></span><input style="font-family:David;font-size:18pt" dir="rtl" align="right" name="defhead" size="25" value="<%= h(@thedef.defhead) %>"/><br/>
       <textarea class="mceEditor" id="deftext" name="deftext" rows="10" cols="30" placeholder="<%= t(:type_text) %>"><%= h(@thedef.deftext) %></textarea> 
       <hr/>
       <hr id="helper_hr" style="display: none"/>
       <textarea class="mceEditor" id="footnotes" name="footnotes" rows="7" cols="30" placeholder="<%= t(:type_footnotes) %>"><%= h(@thedef.footnotes) %></textarea>
       <table>
-	<tr><th><%= t(:type_arabic) %></th><th><%= t(:type_greek) %></th><th><%= t(:type_russian) %></th><th><%= t(:type_extra) %></th></tr>
+    	<tr><th><%= t(:type_arabic) %></th><th><%= t(:type_greek) %></th><th><%= t(:type_russian) %></th><th><%= t(:type_extra) %></th></tr>
         <tr>
           <%= @selects.html_safe %>
         </tr>
@@ -334,7 +329,7 @@ tinyMCE.init({
       </table>
     <% end %>
     </div>
-</div><!-- </tr></table> -->
+</div>
 <input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
 function chfoot_loading() {
