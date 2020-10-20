@@ -1,4 +1,4 @@
-class AddSessionFieldsToEbyUser < ActiveRecord::Migration
+class AddSessionFieldsToEbyUser < ActiveRecord::Migration[4.2]
   def change
     add_column :eby_users, :google_token, :string
     add_column :eby_users, :google_refresh_token, :string
