@@ -18,7 +18,6 @@ class AdminController < ApplicationController
     end
   end
   def doadduser
-    byebug
     if check_role('publisher')
       begin
         u = EbyUser.new(params.require('eby_user').permit!)
