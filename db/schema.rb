@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_19_230906) do
+ActiveRecord::Schema.define(version: 2020_10_20_234703) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 2020_10_19_230906) do
     t.integer "ordinal"
     t.integer "volume"
     t.integer "proof_round_passed_negative"
+    t.boolean "aliases_done"
+    t.index ["aliases_done"], name: "index_eby_defs_on_aliases_done"
     t.index ["assignedto"], name: "index_eby_defs_on_assignedto"
     t.index ["defhead"], name: "index_eby_defs_on_defhead"
     t.index ["id", "assignedto"], name: "index_eby_defs_on_id_and_assignedto"
