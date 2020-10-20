@@ -1,4 +1,7 @@
 Ebydict::Application.routes.draw do
+  get 'eby_aliases/review', as: 'aliases_review'
+  get 'eby_aliases/confirm', as: 'aliases_confirm'
+  get 'eby_aliases/reject', as: 'aliases_reject'
   get "sessions/new"
 
   get "sessions/create"

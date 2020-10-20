@@ -214,6 +214,8 @@ he:
   user_proofs_up_to: עד רמה
   user_fixer: משלים/ה
   user_partitioner: מפצל/ת סריקות
+  user_review_aliases: בדיקת צורות חלופיות
+  user_review_aliases_todo: הגדרות
 
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
