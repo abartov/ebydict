@@ -6,18 +6,16 @@ gem 'rails', '~>6.0'
 #gem 'rake', '=0.9.2.2'
 gem 'omniauth-google-oauth2'
 gem 'activerecord-session_store'
-gem 'sqlite3' # enable for dev, if you like
-gem 'mysql2' # , '~> 0.3.10' # Rails 3.x can't deal with 0.4.x
+gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
+
+gem 'mysql2'
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
 gem 'hebrew', '>=0.2.4' # for naive_full_nikkud
-#gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
-#gem 'mongrel_cluster'
 #gem 'dispatcher'
-#gem 'daemons', '~> 1.0.10' # for mongrel
 gem 'thin'
-gem 'haml'
+gem 'hamlit-rails'
 gem 'htmlentities'
 gem 'sass-rails'
 gem 'coffee-rails'
@@ -41,17 +39,16 @@ group :development do
   gem 'listen'
   gem 'bootsnap', require: false
   gem 'byebug'
+  gem 'sqlite3' # enable for dev, if you like
   gem 'web-console', '~> 2.0'
 end
 gem 'app_constants'
-gem 'rmagick', '~> 4.0'
+gem 'rmagick', '~> 4.0' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'
 gem 'tinymce-rails'
 gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
-#gem 'rpeg-multimarkdown' # older Markdown gem
 gem 'test-unit'
 gem 'aws-sdk-s3', require: false
-gem 'faraday'
 gem 'http'
