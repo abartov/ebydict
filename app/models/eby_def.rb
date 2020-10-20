@@ -312,6 +312,22 @@ class EbyDef < ApplicationRecord
     return newbuf
   end
 
+  def generate_aliases
+    ret = []
+    strs = [defhead]
+    if defhead =~ /^.\. /
+      unprefixed = $'
+      strs << unprefixed
+      ret << unprefixed
+    end
+    strs.each do |s|
+      stripped = s.strip_nikkud
+      ret << stripped unless stripped == s
+      full_nikkud = s.naive_full_nikkud
+      ret << full_nikkud unless full_nikkud == s
+    end
+    return ret.uniq
+  end
   # the following method is dangerous!  It will insert a new EbyDef after the current EbyDef.
   # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one, 
   # during the DefPartition stage.  It is assumed this would only happen for defparts that begin AND

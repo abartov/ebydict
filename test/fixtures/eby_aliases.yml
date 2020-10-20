@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  eby_def: one
+  alias: MyString
+
+two:
+  eby_def: two
+  alias: MyString

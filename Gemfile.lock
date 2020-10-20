@@ -118,7 +118,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     hashie (4.1.0)
-    hebrew (0.2.1)
+    hebrew (0.2.4)
     htmlentities (4.3.4)
     http (4.4.1)
       addressable (~> 2.3)
@@ -285,7 +285,7 @@ DEPENDENCIES
   coffee-rails
   faraday
   haml
-  hebrew
+  hebrew (>= 0.2.4)
   htmlentities
   http
   jquery-rails
