@@ -325,7 +325,10 @@ class EbyDef < ApplicationRecord
       stripped = s.strip_nikkud
       ret << stripped unless stripped == s
       full_nikkud = s.naive_full_nikkud
-      ret << full_nikkud unless full_nikkud == s
+      unless full_nikkud == s
+        ret << full_nikkud
+        ret << full_nikkud.strip_nikkud # the full-nikkud version (adding vav or yod) may itself then be the search term without nikkud
+      end
     end
     return ret.uniq
   end

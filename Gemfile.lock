@@ -126,7 +126,7 @@ GEM
       hamlit (>= 1.2.0)
       railties (>= 4.0.1)
     hashie (4.1.0)
-    hebrew (0.2.4)
+    hebrew (0.2.6)
     htmlentities (4.3.4)
     http (4.4.1)
       addressable (~> 2.3)
@@ -293,7 +293,7 @@ DEPENDENCIES
   clockwork
   coffee-rails
   hamlit-rails
-  hebrew (>= 0.2.4)
+  hebrew (>= 0.2.6)
   htmlentities
   http
   jquery-rails

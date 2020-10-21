@@ -12,7 +12,7 @@ gem 'mysql2'
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
-gem 'hebrew', '>=0.2.4' # for naive_full_nikkud
+gem 'hebrew', '>=0.2.6' # for naive_full_nikkud
 #gem 'dispatcher'
 gem 'thin'
 gem 'hamlit-rails'
