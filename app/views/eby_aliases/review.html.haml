@@ -8,6 +8,26 @@
 :javascript
   $(document).ready(function(){
     $('.no').click(function(){
-      $(this).closest('table').remove();
+      $(this).closest('table').fadeOut(100, function(){$(this).remove();});
+    });
+    $('.finish').click(function(){
+      tr = $(this).closest('tr');
+      if(tr.find('.innertable tr').length > 0) {
+        alert("#{t(:still_unreviewed_aliases)}  ");
+      } else {
+        $.ajax({ type: 'POST',
+          url: "/eby_aliases/finish/"+tr.attr('data-defid'),
+        });
+        tr.fadeOut(300, function(){$(this).remove();});
+      }
+    });
+    $('.yes').click(function(){
+      tr = $(this).closest('.mainrow');
+      td_alias = $(this).closest('tr').children()[0];
+      $.ajax({ type: 'POST',
+        url: "/eby_aliases/confirm/"+tr.attr('data-defid'),
+        data: {the_alias: td_alias.textContent},
+      });
+      $(this).closest('table').fadeOut(100, function(){$(this).remove();});
     });
   });

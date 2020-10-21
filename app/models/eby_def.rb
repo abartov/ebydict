@@ -5,6 +5,7 @@ class EbyDef < ApplicationRecord
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
   has_many :part_images, -> { order('partnum asc') }, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
+  has_many :aliases, class_name: 'EbyAlias'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 
   # validations

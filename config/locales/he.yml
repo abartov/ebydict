@@ -225,6 +225,7 @@ he:
   reject: פסילה
   custom_alias: צורה חליפית אחרת
   aliases_finish_processing: אין מה להוסיף
+  still_unreviewed_aliases: עדיין יש הצעות לשמירה או פסילה!
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
   mail_signup_hello: שלום, %{name}!

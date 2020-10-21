@@ -5,7 +5,7 @@
     %th= t(:suggested_aliases)
     %th= t(:custom_alias)
   - @workset.each do |thedef, aliases|
-    %tr
+    %tr.mainrow{'data-defid': thedef.id}
       %td
         .widget
           %button.medium.finish= t(:aliases_finish_processing)
