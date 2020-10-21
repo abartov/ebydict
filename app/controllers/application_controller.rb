@@ -82,7 +82,7 @@ protect_from_forgery
   def login_required
     if secure? && session[:user].nil?
       session["return_to"] = request.original_url # save intended uri for after successful login
-      #session["return_to"] = request.request_uri # save intended uri for after successful login # rails 2.1.2
+      flash[:error] = t(:no_permission)
       redirect_to :controller => 'login', :action => 'login'
       return false
     end

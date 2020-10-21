@@ -91,6 +91,9 @@
      <br/> <% end  %>
   
   </div>
+  <br />
+  <li><%= link_to t(:user_review_aliases), aliases_review_path %> <%= t(:user_todo_html, :count => @avail_aliases, :things => t(:user_review_aliases_todo)) %>
+  <br />
 <% 
   end
    if @user.role_publisher %>

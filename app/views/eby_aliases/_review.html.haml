@@ -1,0 +1,25 @@
+%table.outertable{style:'display:grid'}
+  %tr.medium
+    %th
+    %th= t(:aliases_defhead)
+    %th= t(:suggested_aliases)
+    %th= t(:custom_alias)
+  - @workset.each do |thedef, aliases|
+    %tr.mainrow{'data-defid': thedef.id}
+      %td
+        .widget
+          %button.medium.finish= t(:aliases_finish_processing)
+      %td.big= thedef.defhead
+      %td
+        - aliases.each do |al|
+          %table.innertable{style:'display:grid'}
+            %tr
+              %td.big= al
+              %td
+                .widget
+                  %button.medium.yes= t(:save)
+                  %button.medium.no= t(:reject)
+      %td
+        %span.medium= t(:custom_alias)  
+        %input.big
+        %button.medium.additional= t(:save)
