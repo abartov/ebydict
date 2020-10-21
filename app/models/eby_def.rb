@@ -5,6 +5,7 @@ class EbyDef < ApplicationRecord
   belongs_to :assignee, :class_name => 'EbyUser', :foreign_key => 'assignedto', optional: true
   has_many :part_images, -> { order('partnum asc') }, :class_name => 'EbyDefPartImage', :foreign_key => 'thedef'
   has_many :events, :class_name => 'EbyDefEvent', :foreign_key => 'thedef'
+  has_many :aliases, class_name: 'EbyAlias'
   has_one :marker, :class_name => 'EbyMarker', :foreign_key => 'def_id'
 
   # validations
@@ -312,6 +313,25 @@ class EbyDef < ApplicationRecord
     return newbuf
   end
 
+  def generate_aliases
+    ret = []
+    strs = [defhead]
+    if defhead =~ /^.\. /
+      unprefixed = $'
+      strs << unprefixed
+      ret << unprefixed
+    end
+    strs.each do |s|
+      stripped = s.strip_nikkud
+      ret << stripped unless stripped == s
+      full_nikkud = s.naive_full_nikkud
+      unless full_nikkud == s
+        ret << full_nikkud
+        ret << full_nikkud.strip_nikkud # the full-nikkud version (adding vav or yod) may itself then be the search term without nikkud
+      end
+    end
+    return ret.uniq
+  end
   # the following method is dangerous!  It will insert a new EbyDef after the current EbyDef.
   # it is to be used in the (rare) cases where several headwords were mistakenly grouped as one, 
   # during the DefPartition stage.  It is assumed this would only happen for defparts that begin AND

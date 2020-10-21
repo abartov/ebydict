@@ -1,0 +1,52 @@
+%h1= t(:user_review_aliases)
+%p= t(:aliases_stats, { defs: @alias_stats[:defs], published: @alias_stats[:published], aliases: @alias_stats[:aliases], todo: @alias_stats[:todo]})
+%h2= t(:instructions)
+%p= t(:aliases_review_instructions_html)
+
+.review_area= render partial: 'review'
+
+:javascript
+  $(document).ready(function(){
+    $('.no').click(function(){
+      $(this).closest('table').fadeOut(100, function(){$(this).remove();});
+    });
+    $('.finish').click(function(){
+      tr = $(this).closest('tr');
+      if(tr.find('.innertable tr').length > 0) {
+        alert("#{t(:still_unreviewed_aliases)}  ");
+      } else {
+        $.ajax({ type: 'POST',
+          url: "/eby_aliases/finish/"+tr.attr('data-defid'),
+        });
+        tr.fadeOut(300, function(){
+            $(this).remove();
+            if($('.outertable').find('tr').length == 1) {
+              $.ajax({
+                url: "#{aliases_review_path}"
+              });
+            }      
+          });
+      }
+    });
+    $('.yes').click(function(){
+      tr = $(this).closest('.mainrow');
+      td_alias = $(this).closest('tr').children()[0];
+      $.ajax({ type: 'POST',
+        url: "/eby_aliases/confirm/"+tr.attr('data-defid'),
+        data: {the_alias: td_alias.textContent},
+      });
+      $(this).closest('table').fadeOut(100, function(){$(this).remove();});
+    });
+    $('.additional').click(function(){
+      tr = $(this).closest('.mainrow');
+      inp = $(this).parent().find('input')[0];
+      if(inp.value != '') {
+        $.ajax({ type: 'POST',
+          url: "/eby_aliases/confirm/"+tr.attr('data-defid'),
+          data: {the_alias: inp.value},
+        });
+        $(this).parent().prepend("#{t(:alias_added)}"+' <b>'+inp.value+'</b><br />');
+        inp.value = '';
+      };
+    });
+  });

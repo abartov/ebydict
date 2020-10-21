@@ -1,0 +1,25 @@
+// Place all the styles related to the EbyAliases controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.review_area {
+  button{font-family: 'David'}
+  .outertable {
+    tr:nth-child(even) {background: #CCC}
+    tr:nth-child(odd) {background: #FFF}
+    td{padding: 15px;}
+    th{padding-bottom: 15px;}
+    input {width: 200px;}
+  }
+  .yes{ background-color: green; color: white;}
+  .additional{ background-color: green; color: white;}
+  .no{ background-color: gray; color: white;}
+  .big {font-size: 24pt; line-height: 24pt;}
+  .medium{font-size:16pt;}
+  .innertable {
+    tr:nth-child(even){background: inherit;}
+    tr:nth-child(odd){background: inherit;}
+    td{ padding: 5px;background-color: inherit;}
+    td:first-child{ width: 150px;}
+  }
+}

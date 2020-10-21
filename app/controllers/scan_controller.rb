@@ -166,7 +166,6 @@ class ScanController < ApplicationController
     @sc.assignee = session['user']
     unless @sc.cloud_smalljpeg.attached?
       # generate a scaled-down image for partitioning
-      #response = Faraday.get(rails_blob_url(@sc.cloud_origjpeg, disposition: 'attachment'))
       logger.info 'getting blob...'
       body = HTTP.follow.get(@sc.cloud_origjpeg.service_url).body
       logger.info "got blob!"
@@ -393,12 +392,7 @@ class ScanController < ApplicationController
             @sc.secondpagenum = $2 # nil is ok
             @sc.firstpagenum = $1
             @msg = ''
-            #faraday = Faraday.new(url: rails_blob_url(@sc.cloud_origjpeg, disposition: 'attachment')) do |faraday|
-            #  faraday.use FaradayMiddleware::FollowRedirects
-            #  faraday.adapter Faraday.default_adapter
-            #end
             body = HTTP.follow.get(@sc.cloud_origjpeg.service_url).body
-            #response = faraday.get
             begin
               temp_file = Tempfile.new('ebydict_'+@sc.id.to_s, 'tmp/', binmode: true)
               temp_file.write(body)
