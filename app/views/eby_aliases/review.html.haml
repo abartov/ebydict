@@ -30,4 +30,16 @@
       });
       $(this).closest('table').fadeOut(100, function(){$(this).remove();});
     });
+    $('.additional').click(function(){
+      tr = $(this).closest('.mainrow');
+      inp = $(this).parent().find('input')[0];
+      if(inp.value != '') {
+        $.ajax({ type: 'POST',
+          url: "/eby_aliases/confirm/"+tr.attr('data-defid'),
+          data: {the_alias: inp.value},
+        });
+        $(this).parent().prepend("#{t(:alias_added)}"+' <b>'+inp.value+'</b><br />');
+        inp.value = '';
+      };
+    });
   });

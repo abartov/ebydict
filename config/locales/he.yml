@@ -224,6 +224,7 @@ he:
   save: שמירה
   reject: פסילה
   custom_alias: צורה חליפית אחרת
+  alias_added: נוספה החלופה
   aliases_finish_processing: אין מה להוסיף
   still_unreviewed_aliases: עדיין יש הצעות לשמירה או פסילה!
 ## mail notifications
