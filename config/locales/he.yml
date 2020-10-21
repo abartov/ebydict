@@ -216,7 +216,15 @@ he:
   user_partitioner: מפצל/ת סריקות
   user_review_aliases: בדיקת צורות חלופיות
   user_review_aliases_todo: הגדרות
-
+  aliases_stats: ידועות %{defs} הגדרות בסך הכל. מתוכן %{published} כבר מוכנות לזיהוי צורות חלופיות. עד כה זוהו %{aliases} צורות חלופיות. נותר לבדוק צורות חלופיות מוצעות עבור %{todo} הגדרות.
+  aliases_defhead: שם הערך
+  instructions: הנחיות
+  aliases_review_instructions: עשו כך וכך
+  suggested_aliases: צורות חלופיות מוצעות
+  save: שמירה
+  reject: פסילה
+  custom_alias: צורה חליפית אחרת
+  aliases_finish_processing: אין מה להוסיף
 ## mail notifications
   mail_signup_welcome: 'ברוכים הבאים למערכת הקלדת מילון אליעזר בן-יהודה!'
   mail_signup_hello: שלום, %{name}!
