@@ -241,7 +241,7 @@ class EbyDef < ApplicationRecord
     # TODO: finish implementing   
   end 
   def mass_replace_html(buf)
-    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*([^\]]+?)\]\]/, '<span class="source">\1</span>')
+    buf.gsub!(/\[\[#{I18n.t(:type_source)}:\s*(.+?)\]\]/, '<span class="source">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_comment)}:\s*([^\]]+?)\]\]/, '<span class="comment">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_problem_btn)}:\s*([^\]]+?)\]\]/, '<span class="problem">\1</span>')
     buf.gsub!(/\[\[#{I18n.t(:type_redirect)}:\s*([^\]]+?)\]\]/, '<span class="redirect">\1</span>') # TODO: replace with actual redirecting logic?

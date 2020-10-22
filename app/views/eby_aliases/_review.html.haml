@@ -19,6 +19,8 @@
                 .widget
                   %button.medium.yes= t(:save)
                   %button.medium.no= t(:reject)
+        - if aliases.length > 1
+          %button.medium.yesall= t(:save_all_aliases)
       %td
         %span.medium= t(:custom_alias)  
         %input.big
