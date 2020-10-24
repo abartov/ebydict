@@ -9,9 +9,9 @@ namespace :dict do
     print "\nEbyDict - rendering volumes 1 to #{maxvol}!\n"
     @defs = []
     for vol in 1..maxvol do
-      # collect all the published defs _in the original order_ (therefore not through a query)
+      # collect all the defs _in the original order_ (therefore not through a query)
       print "Volume #{vol} -\n  building defs array... "
-      @defs += collect_published_defs_for_vol(vol)
+      @defs += collect_defs_for_vol(vol)
       # TODO: then render them to a static file through a view via render_to_string
       print "done!\nDone collecting defs from volume #{vol} of #{maxvol}.\n"
     end
@@ -47,7 +47,7 @@ end
 
 private 
 
-def collect_published_defs_for_vol(vol)
+def collect_defs_for_vol(vol)
   ret = []
   unless is_volume_partitioned(vol)
     puts "skipping definitions from volume #{vol} as it's not fully partitioned yet"
@@ -63,12 +63,10 @@ def collect_published_defs_for_vol(vol)
   EbyDef.where(volume: vol).order('ordinal asc').each {|d|
     if d.published?
       ret << d
-      ellipsis = false
     else
-      unless ellipsis
-        ellipsis = true
-        ret << nil # add a nil member to the array, to signify any number of intervening headwords -- this may be output as ellipsis in HTML
-      end
+      unpublished_def = d
+      unpublished_def.defhead = nil
+      ret << unpublished_def # add a nil member to the array, to signify any number of intervening headwords -- this may be output as ellipsis in HTML
     end
   }  
   return ret
