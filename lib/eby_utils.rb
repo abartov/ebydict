@@ -104,7 +104,7 @@ module EbyUtils
     raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
     d = first_def_for_vol(vol)
     counter = 1
-    until d.nil? do
+    until d.nil? or d.volume != vol do
       d.ordinal = counter
       d.save
       counter += 1
