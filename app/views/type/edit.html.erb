@@ -128,7 +128,10 @@ tinyMCE.init({
           editor.on('change', function(e) {
             var content = tinymce.activeEditor.getContent().replace(/<p>|<\/p>/g, '');
           });
-          editor.on('init', function(e) {
+          editor.on('OpenWindow', function(e) {
+            $('.tox-dialog').draggable();
+          });
+          editor.on('Load', function(e) {
             $('.tox-dialog').draggable();
           });
     },
