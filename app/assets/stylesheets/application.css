@@ -13,5 +13,5 @@
  */
 
  .tox .tox-dialog-wrap__backdrop {
-  background-color: rgba(255,255,225,0.25);
+  background-color: rgba(255,255,225,0.25) !important;
  }
