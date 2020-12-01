@@ -33,7 +33,12 @@
   <% if not (@inprog_coldefimgs.nil? or @inprog_coldefimgs.empty?) %>
       <br/>
     <% @inprog_coldefimgs.each { |inp| %>
-      &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => inp.get_coldefjpeg.filename), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <% cjpeg = inp.get_coldefjpeg %>
+      <% if cjpeg.attached? %>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= t(:or) %>  <%= link_to t(:user_workon_html, :pic => cjpeg.filename), :controller => 'scan', :action => 'part_def', :id => inp %>, <%= t(:or) %>  <%= link_to t(:user_abandon_html), :controller => 'scan', :action => 'abandon_col', :id => inp %><br/>
+      <% else %>
+        ERROR
+      <% end %>
     <% } %>
   </div>
   <% end %>
