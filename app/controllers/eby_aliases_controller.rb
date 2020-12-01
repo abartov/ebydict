@@ -42,6 +42,8 @@ class EbyAliasesController < ApplicationController
       d.aliases_done = true
       d.assignedto = nil
       d.save!
+      defev = EbyDefEvent.new(:old_status => d.status, :thedef => d.id, :who => session['user'].id, :new_status => 'Aliased')
+      defev.save
       head :ok
     else
       head :bad_request
