@@ -121,14 +121,13 @@ module EbyUtils
     return ret
   end
   def is_talmud(s)
-    
+    return false # TODO: implement    
   end
   def bible_link(s)
     parts = s.scan /\S+/
     # puts parts # DBG
     link = BIBLE_LINKS[BIBLE_BOOKS[parts[0]]]
     if link.nil? or (parts.length < 3) # either an "Ibid." situation or some other unexpected issue
-      #debugger
       File.open('missing_bible_links.txt','a') {|f| f.puts "No link found for: #{parts[0]} OR can't parse #{s}" } # TODO: remove when done calibrating
       return ''
     end
@@ -136,7 +135,7 @@ module EbyUtils
     if verse =~ /-/ # if a verse range, pick the beginning
       verse = verse[0..verse.index('-')-1]
     end
-    link += parts[1] + '_' + verse
+    link += parts[1].sub('יה','טו').sub('יו','טז') + '_' + verse
     return link
   end
   def gmara_link(s)
