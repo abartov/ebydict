@@ -5,6 +5,9 @@ gem 'rails', '~>6.0'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
 gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
+
+gem 'marcel','~>1'
 gem 'activerecord-session_store'
 gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
 

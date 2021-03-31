@@ -1,6 +1,5 @@
 To-Do
 -----
-Upgrade rails to at least 4.x (security)
 
 ==high priority==
 + add instructions page
@@ -8,7 +7,6 @@ Upgrade rails to at least 4.x (security)
 - monthly e-mail to (only active?) volunteers
 - don't show "next footnote" link when there are _definitely_ no next footnotes (i.e. the foot array is < 2)
 - handle WIDE footnotes
-- add omniauth and Google/Twitter auths
 - implement user#edit to give users (esp. after omniauth!) specific permissions
 - add call to volunteer in fulldict
 - implement referrals as links if possible.  anchor mode for fulldict, direct link otherwise.

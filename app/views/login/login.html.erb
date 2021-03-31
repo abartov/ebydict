@@ -8,7 +8,6 @@
 <%= t(:login_password) %>: <input type="password" name="password" /><br/>
 <%= submit_tag t(:login_submit) %>
 <p>
-<b><a href="/auth/google_oauth2"><%= t(:alternatively_login_with_google) %></a></b>
-
+<b><%= link_to t(:alternatively_login_with_google), '/auth/google_oauth2', method: :post %>
 </form>
 </body>
