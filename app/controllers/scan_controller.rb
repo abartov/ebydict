@@ -46,6 +46,9 @@ class ScanController < ApplicationController
       render :action => 'importdone'
     end
   end
+  def vol_dump
+    @scans = EbyScanImage.where(volume: params[:vol]).page(params[:page])
+  end
   def abandon
     @sc = EbyScanImage.find_by_id(params[:id])
     if (not @sc.assignee.nil?) && @sc.assignee == session['user']

@@ -71,7 +71,7 @@ Ebydict::Application.routes.draw do
   get 'scan/list'
   get 'scan/abandon'
   get 'scan/abandon_col'
-
+  get 'scan/vol_dump'
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)

@@ -1,0 +1,8 @@
+%h1= קישוריות לסריקות
+
+%h3= "כרך #{params[:vol]}"
+%ol
+  - @scans.each do |sc|
+    %li= link_to "#{sc.firstpagenum}-#{sc.secondpagenum}", sc.cloud_origjpeg.service_url
+
+= will_paginate @scans
