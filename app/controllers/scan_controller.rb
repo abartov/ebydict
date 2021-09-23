@@ -451,6 +451,22 @@ class ScanController < ApplicationController
     end
   end
 
+  def verify_and_fix_orientation(sc)
+    body = HTTP.follow.get(sc.cloud_origjpeg.service_url).body
+    temp_file = Tempfile.new('ebydict_col_'+sc.id.to_s, 'tmp/', binmode: true)
+    temp_file.write(body)
+    temp_file.flush
+    tmpfilename = temp_file.path
+    img = ImageList.new(tmpfilename)
+    if img.orientation != TopLeftOrientation
+      # fix it
+      newimg = img.auto_orient # Magick
+      sc.cloud_origjpeg.attach(io: newimg.to_blob, filename: sc.cloud_origjpeg.filename.to_s)
+      sc.cloud_origjpeg.save!
+      sc.save!
+    end
+  end
+  
   protected
   def get_dimensions_from_img(img)
     i = ImageList.new(img)

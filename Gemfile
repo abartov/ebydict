@@ -19,6 +19,7 @@ gem 'hebrew', '>=0.2.6' # for naive_full_nikkud
 #gem 'dispatcher'
 gem 'thin'
 gem 'hamlit-rails'
+gem 'haml'
 gem 'htmlentities'
 gem 'sass-rails'
 gem 'coffee-rails'
@@ -43,7 +44,7 @@ group :development do
   gem 'bootsnap', require: false
   gem 'byebug'
   gem 'sqlite3' # enable for dev, if you like
-  gem 'web-console', '~> 2.0'
+  gem 'web-console' #, '~> 2.0'
 end
 gem 'app_constants'
 gem 'rmagick', '~> 4.0' # TODO: migrate away from this to mini_magick
