@@ -461,7 +461,8 @@ class ScanController < ApplicationController
     if img.orientation != TopLeftOrientation
       # fix it
       newimg = img.auto_orient # Magick
-      sc.cloud_origjpeg.attach(io: newimg.to_blob, filename: sc.cloud_origjpeg.filename.to_s)
+      filename = sc.origjpeg || sc.cloud_origjpeg.filename.to_s
+      sc.cloud_origjpeg.attach(io: newimg.to_blob, filename: filename)
       sc.cloud_origjpeg.save!
       sc.save!
     end
