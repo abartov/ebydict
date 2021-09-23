@@ -458,13 +458,16 @@ class ScanController < ApplicationController
     temp_file.flush
     tmpfilename = temp_file.path
     img = ImageList.new(tmpfilename)
-    if img.orientation != TopLeftOrientation
+    if img.orientation != TopLeftOrientation && img.orientation != UndefinedOrientation
       # fix it
+      puts "DBG: #{sc.cloud_origjpeg.filename.to_s} is #{img.orientation.to_s} and not TopLeft or Undefined!"
       newimg = img.auto_orient # Magick
       filename = sc.origjpeg || sc.cloud_origjpeg.filename.to_s
       sc.cloud_origjpeg.attach(io: StringIO.new(newimg.to_blob), filename: filename)
       sc.cloud_origjpeg.save!
       sc.save!
+    else
+      puts "DBG: #{sc.cloud_origjpeg.filename.to_s} is okay!"
     end
   end
   
