@@ -462,7 +462,7 @@ class ScanController < ApplicationController
       # fix it
       newimg = img.auto_orient # Magick
       filename = sc.origjpeg || sc.cloud_origjpeg.filename.to_s
-      sc.cloud_origjpeg.attach(io: newimg.to_blob, filename: filename)
+      sc.cloud_origjpeg.attach(io: StringIO.new(newimg.to_blob), filename: filename)
       sc.cloud_origjpeg.save!
       sc.save!
     end
