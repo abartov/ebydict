@@ -18,6 +18,14 @@ class DefinitionController < ApplicationController
       redirect_to '/'
     end
   end
+  def listall
+    if check_role('publisher')
+      @alldefs = EbyDef.where.not(defhead: [nil, t(:type_unknown)]).order('defhead asc')
+    else
+      flash[:error] = t(:definition_not_publisher)
+      redirect_to '/'
+    end
+  end
   def publish
     redirect_to '/' unless check_role('publisher')
     @d = EbyDef.find(params[:id])

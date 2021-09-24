@@ -104,6 +104,7 @@
    if @user.role_publisher %>
   <br/>
   <li><%= link_to t(:user_publish), :controller => 'definition', :action => 'listpub' %> <%= t(:user_todo_html, :count => @avail_publish, :things => t(:user_topublish)) %><br/>
+  <li><%= link_to t(:user_listall_defs), :controller => 'definition', :action => 'listall' %> <br/>
   <li><%= link_to t(:user_problems), :controller => 'problem', :action => 'list' %> <%= t(:user_todo_html, :count => @avail_problem, :things => t(:user_tofix)) %><br/>
   <li><b><%= link_to t(:admin_recent_changes), :controller => 'admin', :action => 'changes' %></b><br/>
   <li><%= link_to t(:admin_userlist), :action => 'list' %><br/>

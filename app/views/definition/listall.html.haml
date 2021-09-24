@@ -1,0 +1,5 @@
+%h1= t(:definition_all_defs)
+%ol
+  - @alldefs.each do |d|
+    %li= link_to d.defhead, :controller => 'type', :action => 'edit', :id => d.id
+= link_to t(:user_back),  :controller => :user, :action => 'index'

@@ -11,7 +11,7 @@ Ebydict::Application.routes.draw do
 
   get "definition/list"
   get "definition/listpub"
-
+  get 'definition/listall'
   get "definition/review"
 
   get "definition/publish"

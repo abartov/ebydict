@@ -169,6 +169,7 @@ he:
   definition_executing: מבצע...
   definition_waiting_since: ממתינה לפרסום מאז
   definition_defs_to_publish: הגדרות ממתינות לפרסום במילון
+  definition_all_defs: כל ההגדרות בעלות הכותרת
   definition_unassign: בטל הקצאה
   definition_split_footnotes: הפרד הערות שוליים
 
@@ -216,6 +217,7 @@ he:
   user_partitioner: מפצל/ת סריקות
   user_review_aliases: בדיקת צורות חלופיות
   user_review_aliases_todo: הגדרות
+  user_listall_defs: הצג רשימת הגדרות בעלות כותרת
   aliases_stats: ידועות %{defs} הגדרות בסך הכל. מתוכן %{published} כבר מוכנות לזיהוי צורות חלופיות. עד כה זוהו %{aliases} צורות חלופיות. נותר לבדוק צורות חלופיות מוצעות עבור %{todo} הגדרות.
   aliases_defhead: שם הערך
   instructions: הנחיות

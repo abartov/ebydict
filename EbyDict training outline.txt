@@ -1,0 +1,20 @@
+EbyDict training outline
+- intro 
+  - me
+  - them
+- ebydict goal
+- approach - scan, divide, type, proof x 3, publish
+- logging in
+- the dashboard
+- picking a def
+- the help screen
+- anatomy of a def
+  - defhead - letters, symbol
+  - deftext - sources, rashi
+  - footnotes - numbers
+  - arabic footnotes
+- typing
+  - typing
+  - bold not spaced
+  
+  
