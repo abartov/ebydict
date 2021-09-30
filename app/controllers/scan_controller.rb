@@ -566,7 +566,7 @@ class ScanController < ApplicationController
     # if all scans and all columns of the volume have been partitioned, we should mark the very last def NeedTyping rather than Partial
     if is_volume_partitioned(col.scan.volume)
       # for safety, look up the very last def manually rather than assume it's this exact column
-      last_col = EbyColumnImage.order('pagenum desc, colnum desc').first
+      last_col = EbyColumnImage.where(volume: col.scan.volume).order('pagenum desc, colnum desc').first
       last_def = last_col.def_part_images.order("defno desc").first.eby_def # find last defpartimage for col and get its def
       last_def.status = "NeedTyping" 
       last_def.save! # whee!
