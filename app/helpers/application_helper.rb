@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def mark_markup_in_html(buf)
-    sources = buf.scan(/\[\[#{I18n.t(:type_source)}:\s*(.+?)\]\]/)
+    sources = buf.scan(/<span class="source">\s*(.+?)<\/span>/)
     if sources.length > 1 && sources.uniq.length == 1
       buf = redspan(t(:fix_sources_bug))+'<br/>' + buf
     end
