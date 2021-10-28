@@ -13,6 +13,10 @@ module ApplicationHelper
   end
 
   def mark_markup_in_html(buf)
+    sources = buf.scan(/\[\[#{I18n.t(:type_source)}:\s*(.+?)\]\]/)
+    if sources.length > 1 && sources.uniq.length == 1
+      buf = redspan(t(:fix_sources_bug))+'<br/>' + buf
+    end
     return buf.gsub('[[', redspan('[[')).gsub(']]', redspan(']]')).gsub('[', small_redspan('[')).gsub(']', small_redspan(']'))
   end
 
