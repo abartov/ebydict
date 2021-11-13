@@ -14,7 +14,8 @@ module ApplicationHelper
 
   def mark_markup_in_html(buf)
     sources = buf.scan(/<span class="source">\s*(.+?)<\/span>/)
-    if sources.length > 1 && sources.uniq.length == 1
+    uniqlen = sources.uniq.length
+    if sources.length > 1 && (uniqlen == 1 || sources.length - uniqlen > 2)
       buf = redspan(t(:fix_sources_bug))+'<br/>' + buf
     end
     return buf.gsub('[[', redspan('[[')).gsub(']]', redspan(']]')).gsub('[', small_redspan('[')).gsub(']', small_redspan(']'))
