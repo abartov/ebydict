@@ -12,7 +12,7 @@ class DefinitionController < ApplicationController
   def listpub
     if check_role('publisher')
       @status = params[:status] || 'NeedPublish'
-      @pubdefs = EbyDef.where(:status => @status).page(params[:page])
+      @pubdefs = EbyDef.where(:status => @status).order(:defhead).page(params[:page])
     else
       flash[:error] = t(:definition_not_publisher)
       redirect_to '/'
