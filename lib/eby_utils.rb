@@ -103,12 +103,17 @@ module EbyUtils
   def enumerate_vol(vol)
     raise VolumeNotCompletelyPartitioned.new unless is_volume_partitioned(vol)
     d = first_def_for_vol(vol)
+    last_predecessor = d
     counter = 1
     until d.nil? or d.volume != vol do
       d.ordinal = counter
       d.save
       counter += 1
+      last_predecessor = d
       d = d.successor_def
+    end
+    if last_predecessor != last_def_for_vol(vol)
+      puts "Incomplete enumeration detected: last successfully enumerated def was ID: #{last_predecessor.id}, #{last_predecessor.defhead}"
     end
   end
   def html_entities_coder
