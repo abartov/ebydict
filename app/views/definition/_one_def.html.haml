@@ -10,7 +10,7 @@
       %hr{ :width => "30%", :align => :right}
       .defnotes
         != mark_markup_in_html(footnotes)
-  .pub_actions
+  .pub_actions{style:'font-size:200%'}
     = t(:definition_waiting_since) + " " + since.to_s()
     = link_to t(:definition_edit), :controller => 'type', :action => 'edit', :id => thedef
     = link_to t(:definition_publish), {:controller => :definition, :action => :publish, :id => thedef, :remote => true}, {:class => "def_action", "data-done-msg" => t(:definition_published_html, :defhead => thedef.defhead) }
