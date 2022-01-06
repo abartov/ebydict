@@ -18,7 +18,7 @@ module ApplicationHelper
     if sources.length > 1 && (uniqlen == 1 || sources.length - uniqlen > 3)
       buf = redspan(t(:fix_sources_bug))+'<br/>' + buf
     end
-    return buf.gsub('[[', redspan('[[')).gsub(']]', redspan(']]')).gsub('[', small_redspan('[')).gsub(']', small_redspan(']'))
+    return buf.gsub('[[', redspan('[[')).gsub(']]', redspan(']]')).gsub('[', small_redspan('[')).gsub(']', small_redspan(']')).gsub('a)', redspan('a)')).gsub('b)', redspan('b)')).gsub('c)', redspan('c)'))
   end
 
   def action_label_for_status(s)
