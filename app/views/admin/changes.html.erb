@@ -5,7 +5,7 @@
 
 <% for c in @changes %> 
  <% unless c.eby_def.nil? %>
-  <tr><td><%= link_to c.eby_def.defhead, :controller => :definition, :action => :view, :id => c.eby_def %></td><td><%= link_to c.user.fullname, :controller => :user, :action => :show, :id => c.user %></td><td><%=h label_for_status(c.old_status) %></td><td><%=h label_for_status(c.new_status) %></td><td><%=h time_ago_in_words(c.created_at)  %></td></tr>
+  <tr><td><span style="font-size:200%;font-weight:bold;"><%= c.eby_def.defhead %></span> &nbsp; <%= link_to t(:definition_show), :controller => :definition, :action => :view, :id => c.eby_def %> &nbsp; <%= link_to t(:definition_edit), :controller => :type, :action => :edit, :id => c.eby_def %></td><td><%= link_to c.user.fullname, :controller => :user, :action => :show, :id => c.user %></td><td><%=h label_for_status(c.old_status) %></td><td><%=h label_for_status(c.new_status) %></td><td><%=h time_ago_in_words(c.created_at)  %></td></tr>
 <% end %>
 <% end %>
 </table>

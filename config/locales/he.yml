@@ -162,6 +162,7 @@ he:
   definition_return_to_proof: החזר להגהה נוספת
   definition_publish: פרסם!
   definition_edit: ערוך
+  definition_show: הצג
   definition_notavail: הגדרה זו אינה זמינה לעיון עדיין.
   definition_title: 'שם הערך: %{defhead}'
   definition_missing_footnote_body: 'הערת השוליים מספר %{num} חסרה, או לא מוספרה נכון!'
