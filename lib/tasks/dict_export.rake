@@ -53,8 +53,8 @@ def collect_defs_for_vol(vol)
     puts "skipping definitions from volume #{vol} as it's not fully partitioned yet"
     return ret
   end
-  # index the volume if we haven't yet
-  if last_def_for_vol(vol).ordinal.nil?
+  # index the volume if any defs are unindexed
+  if (EbyDef.where(volume: vol, ordinal: nil).count > 0)
     print "Enumerating volume ##{vol}... (one-time process) -- "
     enumerate_vol(vol)
     print "done!\n"
