@@ -54,6 +54,7 @@ def collect_defs_for_vol(vol)
     return ret
   end
   # index the volume if any defs are unindexed
+  next_ordinal = 1
   if (EbyDef.where(volume: vol, ordinal: nil).count > 0)
     print "Enumerating volume ##{vol}... (one-time process) -- "
     enumerate_vol(vol)

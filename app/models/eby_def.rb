@@ -98,7 +98,7 @@ class EbyDef < ApplicationRecord
     buf = (deftext.nil? ? '' : deftext)
     buf = mass_replace_html(buf)
     # auto-linkify sources
-    buf = linkify_sources(buf)
+    # buf = linkify_sources(buf) # now relying on Sefaria!
     buf = linkify_redirects(buf)
 
     # renumber footnote references, starting with 1
