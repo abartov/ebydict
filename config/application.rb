@@ -55,6 +55,8 @@ module Ebydict
     # load stuff from lib
     config.autoload_paths += %W(#{config.root}/lib)
     config.load_defaults 5.0
+    # rotate logs
+    config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log", shift_age = 'weekly')
 
   end
 end
