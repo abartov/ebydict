@@ -17,6 +17,8 @@ class TypeController < ApplicationController
     end
     @d.marker.partnum = params[:partnum]
     @d.marker.marker_y = params[:marker_y]
+    @d.marker.footpart = params[:footpart]
+    @d.marker.footmarker = params[:footmarker]
     @d.marker.save!
     @d.save!
     head :ok

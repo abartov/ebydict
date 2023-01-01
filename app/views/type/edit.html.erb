@@ -4,8 +4,11 @@
 // the following is a bit of generated JS prepared by the typing controller
 <%= raw @parts_js %>
 var canvas;
+var footcanvas;
 var context;
+var footcontext;
 var marker;
+var footnote_marker;
 var curpart = 0;
 var curfoot = 0;
 var reached_end = false;
@@ -22,7 +25,15 @@ function updateMarker(e) {
   marker = e.pageY - offset.top;
   drawMarker();
   // update server
-  $.ajax("<%= @marker_ajax_url %>"+"?marker_y="+Math.round(marker).toString()+"&partnum="+curpart.toString()); 
+  $.ajax("<%= @marker_ajax_url %>"+"?marker_y="+Math.round(marker).toString()+"&partnum="+curpart.toString()+"&footpart=&footmarker="); 
+}
+// another marker for the footer box
+function updateFootnoteMarker(e) {
+  var offset = $(this).offset();
+  footnote_marker = e.pageY - offset.top;
+  drawMarker();
+  // update server
+  $.ajax("<%= @marker_ajax_url %>"+"?footmarker="+Math.round(footnote_marker).toString()+"&footpart="+curfoot.toString()+"&partnum=&marker_y="); 
 }
 
 function drawMarker() {
@@ -32,6 +43,13 @@ function drawMarker() {
     context.lineTo($('#myCanvas').width(),marker);
     context.strokeStyle = '#008000';
     context.stroke();
+  }
+  if(footnote_marker != null) {
+    footcontext.beginPath();
+    footcontext.moveTo(0, footnote_marker);
+    footcontext.lineTo($('#footCanvas').width(),footnote_marker);
+    footcontext.strokeStyle = '#008000';
+    footcontext.stroke();
   }
 }
 
@@ -47,6 +65,19 @@ function updateLine(e) {
     line.draw();
     drawMarker();
 }
+function updateFootLine(e) {
+    var r = footcanvas.getBoundingClientRect(),
+        y = e.clientY - r.top;
+    
+    footcontext.drawImage(footImageObj, 0, 0, footcanvas.width, footcanvas.height);
+    footline.x1 = 0;
+    footline.y1 = y;
+    footline.x2 = footcanvas.width;
+    footline.y2 = y;
+    footline.draw();
+    drawMarker();
+}
+
 
 $(document).ready(function() {
 // TinyMCE stuff
@@ -138,23 +169,43 @@ tinyMCE.init({
     }
   );
   canvas = document.getElementById("myCanvas");
+  footcanvas = document.getElementById("footCanvas");
   context = canvas.getContext("2d");
+  footcontext = footcanvas.getContext("2d");
   imageObj = new Image();
+  footImageObj = new Image();
 
   imageObj.onload = function() {
-    resizeCanvas(imageObj);
+    resizeCanvas(imageObj, canvas);
     context.drawImage(imageObj, 0,0);  
     drawMarker();
   }
+  footImageObj.onload = function() {
+    resizeCanvas(footImageObj, footcanvas);
+    footcontext.drawImage(footImageObj, 0,0);  
+    drawMarker();
+  }
   $('#myCanvas').click(updateMarker);
+  $('#footCanvas').click(updateFootnoteMarker);
   line = new Line(context);
+  footline = new Line(footcontext);
   canvas.onmousemove = updateLine;
+  footcanvas.onmousemove = updateFootLine;
  
   <% if @thedef.marker.nil? %>
     chimg(0);
   <% else %>
-    chimg(<%= @thedef.marker.partnum %>); // partnums start at one in the DB, but at zero here in JS
-    marker = <%= @thedef.marker.marker_y %>;
+    <% if @thedef.marker.partnum.present? %>
+      chimg(<%= @thedef.marker.partnum %>); // partnums start at one in the DB, but at zero here in JS
+      marker = <%= @thedef.marker.marker_y %>;
+    <% else %>
+      chimg(0);
+    <% end %>
+    <% if @thedef.marker.footpart.present? %>
+      curpart = <%= @thedef.marker.footpart %>;
+      chfoot(<%= @thedef.marker.footpart %>);
+      footnote_marker = <%= @thedef.marker.footmarker %>;
+    <% end %>
     drawMarker();
   <% end %>    
   $(".dialog").hide();
@@ -285,10 +336,17 @@ tinyMCE.init({
     <div align="center"><a href="#" id="but_next" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos"></span> | <a href="#" id="but_prev" onclick="goprev()"><%= t(:type_prev) %></a> | <span class="instructions_button" style="text-decoration: underline; cursor:pointer; color: blue;"><b><%= t(:type_show_instructions) %></b></span></div><br/>
     <canvas id="myCanvas"></canvas>
     <!--<img id="defpartimg" border="1" src="/assets/loading.png"/> --> <p/>
-    <div align="center"><a href="#" id="foot_next" onclick="footnext()"><%= t(:type_nextfoots) %></a><a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | <span style="color: green" id="curpos2"></span> | <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> <a href="#" id="foot_prev" onclick="footprev()"><%= t(:type_prevfoots) %></a></div><br/>
+    <div align="center">
+      <a href="#" id="foot_next" style="display: none;" onclick="footnext()"><%= t(:type_nextfoots) %></a>
+      <a href="#" id="but_next2" onclick="gonext()"><%= t(:type_next) %></a> | 
+      <span style="color: green" id="curpos2"></span> | 
+      <a href="#" id="but_prev2" onclick="goprev()"><%= t(:type_prev) %></a> 
+      <a href="#" id="foot_prev" style="display: none;" onclick="footprev()"><%= t(:type_prevfoots) %></a>
+    </div><br/>
     <a id="defpartlink" href="" target="_new"><%= t(:type_clicktoenlarge) %></a>
     <hr/>
-    <img id="footimg" border="1" src="/assets/loading.png"/><p/>
+    <canvas id="footCanvas"></canvas>
+    <!-- <img id="footimg" border="1" src="/assets/loading.png"/> --> <p/>
 </div>
 <div class="controls">
   <!-- TinyMCE goes here -->
@@ -338,12 +396,11 @@ tinyMCE.init({
 <input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
 function chfoot_loading() {
-  $('#footimg').attr('src', '');
-  $('#footimg').attr('src', '/assets/loading.png');
+  footImageObj.src = '/assets/loading.png';
 }
-function resizeCanvas(img) {
-  canvas.height = img.height;
-  canvas.width = img.width;
+function resizeCanvas(img, cnv) {
+  cnv.height = img.height;
+  cnv.width = img.width;
   return true;
 }
 function chimg_loading() {
@@ -376,8 +433,7 @@ function actual_chimg(delta) {
   $('#defpartlink').attr('href', curimg);
   //$('#defpartimg').attr('src', curimg);
   imageObj.src = curimg;
-
-  $('#footimg').attr('src', curfootimg);
+  footImageObj.src = curfootimg;
   $('#foot_prev').hide();
   if(curpart == 0) {
     $('#but_prev').hide();
@@ -410,37 +466,41 @@ function chfoot(delta) {
 }
 function actual_chfoot(delta) {
   curfoot += delta;
-  if(curfoot == maxpart) {
+  if(curfoot <= maxpart) {
     $('#foot_prev').hide();
     chimg(0); // we're back where def parts are available, so delegate
   }
   else { // we are beyond the def parts
-   if(curfoot == maxpart + extra_foots) {
-     $('#foot_next').hide();
-   } else {
-     $('#foot_next').show();
-   }
-   $('#foot_prev').show();
-   $('#but_prev').hide();
-   $('#but_prev2').hide();
-   curfootimg = foots[curfoot]; 
-   $('#footimg').attr('src', curfootimg);
+    if(curfoot == maxpart + extra_foots) {
+      $('#foot_next').hide();
+    } else {
+      $('#foot_next').show();
+    }
+    $('#foot_prev').show();
+    $('#but_prev').hide();
+    $('#but_prev2').hide();
+    curfootimg = foots[curfoot]; 
+    footImageObj.src = curfootimg;
   }
 }
 
 function gonext(e) {
   marker = null;
+  footnote_marker = null;
   chimg(1);
 }
 function goprev(e) {
   marker = null;
+  footnote_marker = null;
   chimg(-1);
 }
 
 function footnext(e) {
+  footnote_marker = null;
   chfoot(1);
 }
 function footprev(e) {
+  footnote_marker = null;
   chfoot(-1);
 }
 
