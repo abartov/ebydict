@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_30_173610) do
+ActiveRecord::Schema.define(version: 2023_01_25_181505) do
 
   create_table "active_storage_attachments", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false, collation: "utf8mb4_unicode_ci"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2022_12_30_173610) do
     t.integer "defpartitioner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["eby_scan_image_id", "colnum"], name: "index_eby_column_images_on_eby_scan_image_id_and_colnum"
   end
 
   create_table "eby_def_events", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
