@@ -1,5 +1,6 @@
 To-Do
 -----
+Ruby 3.x upgrade held up by neither therubyracer nor mini_racer building under Ruby 3.0 or 3.1
 
 ==high priority==
 + add instructions page
