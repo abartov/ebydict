@@ -102,7 +102,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.2.2)
     crass (1.0.6)
     daemons (1.4.0)
     domain_name (0.5.20190701)
@@ -131,8 +131,8 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    globalid (0.4.2)
-      activesupport (>= 4.2.0)
+    globalid (1.1.0)
+      activesupport (>= 5.0)
     haml (5.2.1)
       temple (>= 0.8.0)
       tilt
@@ -156,7 +156,7 @@ GEM
     http-cookie (1.0.4)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    i18n (1.8.10)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
     jquery-rails (4.4.0)
@@ -167,7 +167,7 @@ GEM
       railties (>= 3.2.16)
     json (2.5.1)
     jwt (2.2.3)
-    libv8 (3.16.14.19)
+    libv8-node (18.16.0.0)
     listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -183,16 +183,18 @@ GEM
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.3)
-    minitest (5.14.4)
+    mini_portile2 (2.8.2)
+    mini_racer (0.8.0)
+      libv8-node (~> 18.16.0.0)
+    minitest (5.18.0)
     msgpack (1.4.2)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     mysql2 (0.5.3)
     nio4r (2.5.7)
-    nokogiri (1.11.7)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.15.2)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -217,7 +219,7 @@ GEM
       omniauth (~> 2.0)
     power_assert (2.0.0)
     public_suffix (4.0.6)
-    racc (1.5.2)
+    racc (1.6.2)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
@@ -253,7 +255,6 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    ref (2.0.0)
     rmagick (4.2.2)
     rmultimarkdown (6.4.0.4)
       bundler
@@ -279,9 +280,6 @@ GEM
     temple (0.8.2)
     test-unit (3.4.4)
       power_assert
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thin (1.8.1)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -292,7 +290,7 @@ GEM
       railties (>= 3.1.1)
     tinymce-rails-langs (5.20200505)
       tinymce-rails (~> 5.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
@@ -306,7 +304,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     will_paginate (3.3.0)
-    zeitwerk (2.4.2)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   ruby
@@ -320,6 +318,7 @@ DEPENDENCIES
   byebug
   clockwork
   coffee-rails
+  globalid (~> 1.0)
   haml
   hamlit-rails
   hebrew (>= 0.2.6)
@@ -331,6 +330,7 @@ DEPENDENCIES
   listen
   marcel (~> 1)
   mini_magick
+  mini_racer
   mysql2
   nokogiri
   omniauth-google-oauth2
@@ -341,7 +341,6 @@ DEPENDENCIES
   sass-rails
   sqlite3
   test-unit
-  therubyracer
   thin
   tinymce-rails
   tinymce-rails-langs
