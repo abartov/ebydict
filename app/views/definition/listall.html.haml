@@ -3,5 +3,5 @@
   - @alldefs.each do |d|
     %li
       = link_to d.defhead, :controller => 'type', :action => 'edit', :id => d.id
-      = " (#{label_for_status(d.status)})"
+      = " (#{label_for_status(d.status, d.proof_round_passed + 1)})"
 = link_to t(:user_back),  :controller => :user, :action => 'index'
