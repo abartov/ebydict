@@ -293,10 +293,10 @@ GEM
     thor (1.2.2)
     tilt (2.2.0)
     timeout (0.4.0)
-    tinymce-rails (6.6.0)
+    tinymce-rails (5.10.7.1)
       railties (>= 3.1.1)
-    tinymce-rails-langs (6.20230529)
-      tinymce-rails (~> 6.0)
+    tinymce-rails-langs (5.20230529)
+      tinymce-rails (~> 5.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
@@ -349,7 +349,7 @@ DEPENDENCIES
   sqlite3
   test-unit
   thin
-  tinymce-rails
+  tinymce-rails (~> 5.0)
   tinymce-rails-langs
   web-console
   will_paginate

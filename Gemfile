@@ -52,7 +52,7 @@ end
 gem 'rmagick', '~> 4.0' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'
-gem 'tinymce-rails'
+gem 'tinymce-rails', '~> 5.0' # 6.x changed the toolbar layout and I couldn't be bothered to figure out the change
 gem 'tinymce-rails-langs'
 gem 'rmultimarkdown'
 gem 'test-unit'
