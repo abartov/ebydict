@@ -28,7 +28,7 @@ class TypeController < ApplicationController
       flash[:error] = t(:type_notfixer)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.fixup, nil)
+      call_assign_def_by_size(params[:defsize], Rails.configuration.constants['fixup'], nil)
     end
   end
   def get_proof
@@ -40,7 +40,7 @@ class TypeController < ApplicationController
       flash[:error] = t(:type_round_not_allowed)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.proof, round)
+      call_assign_def_by_size(params[:defsize], Rails.configuration.constants['proof'], round)
     end
   end
   def get_def
@@ -48,7 +48,7 @@ class TypeController < ApplicationController
       flash[:error] = t(:type_nottypist)
       redirect_to :controller => 'user'
     else
-      call_assign_def_by_size(params[:defsize], AppConstants.type, nil)
+      call_assign_def_by_size(params[:defsize], Rails.configuration.constants['type'], nil)
     end
   end
   def proof
@@ -108,22 +108,22 @@ class TypeController < ApplicationController
       case @thedef.status
         when 'NeedTyping'
           @action = t(:type_typing)
-          @actno = AppConstants.type
+          @actno = Rails.configuration.constants['type']
         when 'NeedProof'
           @action = t(:type_proofing)
-          @actno = AppConstants.proof
+          @actno = Rails.configuration.constants['proof']
         when 'NeedFixup'
           @action = t(:type_fixups)
-          @actno = AppConstants.fixup
+          @actno = Rails.configuration.constants['fixup']
         when 'Problem'
           @action = t(:type_problem_action)
-          @actno = AppConstants.problem
+          @actno = Rails.configuration.constants['problem']
         when 'NeedPublish'
           @action = t(:type_proofing)
-          @actno = AppConstants.proof # a NeedPublish def would be here for reproofing
+          @actno = Rails.configuration.constants['proof'] # a NeedPublish def would be here for reproofing
         when 'Published'
           @action = t(:type_proofing)
-          @actno = AppConstants.proof
+          @actno = Rails.configuration.constants['proof']
         else
           print "DBG: unknown status!\n"
           flash[:error] = t(:type_unknown_status, :status => @thedef.status)
@@ -168,7 +168,7 @@ class TypeController < ApplicationController
       @newstat = ''
       defev = EbyDefEvent.new(:old_status => (@d.status == 'NeedProof' ? @d.status + (@d.proof_round_passed+1).to_s : @d.status), :thedef => @d.id, :who => session['user'].id)
       act = params[:act].to_i
-      if act == AppConstants.type
+      if act == Rails.configuration.constants['type']
         @d.status = 'NeedProof' # but override to fixup below if needed
         @newstat = t(:type_await_proof_round, :round => '1')
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
@@ -178,9 +178,9 @@ class TypeController < ApplicationController
           end
         }
         @d.proof_round_passed = 0
-      elsif act == AppConstants.proof
+      elsif act == Rails.configuration.constants['proof']
         increase_proof
-      elsif act == AppConstants.fixup
+      elsif act == Rails.configuration.constants['fixup']
         still_todo = false
         ['arabic', 'greek', 'russian', 'extra'].each { |which|
           if(@d.read_attribute(which) == 'todo')
@@ -194,7 +194,7 @@ class TypeController < ApplicationController
           @d.proof_round_passed = 0 # start over in any case
           @newstat = t(:type_await_proof_round, :round => '1')
         end
-      elsif act == AppConstants.problem
+      elsif act == Rails.configuration.constants['problem']
         @d.status = params[:resolve_to]
         increase_proof if params['increase_proof'] == '1'
         @newstat = @d.status_label
