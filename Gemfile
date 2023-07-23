@@ -17,7 +17,8 @@ gem 'nokogiri'
 gem 'clockwork' # scheduler
 gem 'hebrew', '>=0.2.6' # for naive_full_nikkud
 #gem 'dispatcher'
-gem 'thin'
+gem 'puma'
+#gem 'thin'
 gem 'hamlit-rails'
 gem 'haml'
 gem 'htmlentities'
@@ -34,9 +35,6 @@ gem 'globalid', '~> 1.0'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
