@@ -38,16 +38,16 @@ class UserController < ApplicationController
     if @user.role_typist == true
       @avail_defs = EbyDef.where(assignedto: nil, status: 'NeedTyping').count
       @inprog_defs = EbyDef.where(status: 'NeedTyping', assignedto: @user.id)
-      @avail_defs_small = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'small', nil)
-      @avail_defs_medium = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'medium', nil)
-      @avail_defs_large = EbyDef.count_by_action_and_size(@user, AppConstants.type, 'large', nil)
+      @avail_defs_small = EbyDef.count_by_action_and_size(@user, Rails.configuration.constants['type'], 'small', nil)
+      @avail_defs_medium = EbyDef.count_by_action_and_size(@user, Rails.configuration.constants['type'], 'medium', nil)
+      @avail_defs_large = EbyDef.count_by_action_and_size(@user, Rails.configuration.constants['type'], 'large', nil)
     end
     if @user.role_proofer == true
       @avail_proofs = {}
       ['small', 'medium', 'large'].each do |size|
         @avail_proofs[size] = ''
         (1..@user.max_proof_level).each do |round|
-          @avail_proofs[size] += "#{I18n.t(:type_round)} #{round}: #{EbyDef.count_by_action_and_size(@user, AppConstants.proof, size, round)}; "
+          @avail_proofs[size] += "#{I18n.t(:type_round)} #{round}: #{EbyDef.count_by_action_and_size(@user, Rails.configuration.constants['proof'], size, round)}; "
         end
       end
       #@avail_proofs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedProof'")

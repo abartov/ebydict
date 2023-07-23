@@ -20,16 +20,16 @@ class EbyDef < ApplicationRecord
     sizecond = ""
     wherecond = "" # what to add to the WHERE clause
     case action
-      when AppConstants.type 
+      when Rails.configuration.constants['type']
         status = "NeedTyping"
         action = "type"
         wherecond = "ORDER BY reject_count ASC"
-      when AppConstants.proof 
+      when Rails.configuration.constants['proof']
         round_part = round.nil? ? '' : " and proof_round_passed = #{(round-1).to_s}"
         status = "NeedProof"
         action = "proof"
         wherecond = (round_part == '' ? " and proof_round_passed < #{to_user.max_proof_level.to_s}" : '')+round_part+" and #{to_user.attributes['id']} not in (select who from eby_def_events where thedef = eby_defs.id and new_status LIKE 'NeedProof%') ORDER BY reject_count ASC, proof_round_passed DESC" # prefer to assign highest allowed proofing round, as there are presumably fewer proofers available to work at each successive proof level
-      when AppConstants.fixup 
+      when Rails.configuration.constants['fixup']
         status = "NeedFixup"
         action = "fix-up"
         wherecond = " and (false "
@@ -193,7 +193,7 @@ class EbyDef < ApplicationRecord
     return status == 'Published'
   end
   def permalink
-    return AppConstants.puburlbase+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
+    return Rails.configuration.constants['puburlbase']+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
   end
   def render_tei
     buf = "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp>"
