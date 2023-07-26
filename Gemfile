@@ -47,6 +47,10 @@ group :development do
   gem 'sqlite3' # enable for dev, if you like
   gem 'web-console' #, '~> 2.0'
 end
+
+group :production do
+  gem 'puma-daemon'
+end
 gem 'rmagick', '~> 4.0' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'
