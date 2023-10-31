@@ -51,7 +51,7 @@ end
 group :production do
   gem 'puma-daemon'
 end
-gem 'rmagick', '~> 4.0' # TODO: migrate away from this to mini_magick
+gem 'rmagick', '~> 5.3' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'
 gem 'tinymce-rails', '~> 5.0' # 6.x changed the toolbar layout and I couldn't be bothered to figure out the change
