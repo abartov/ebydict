@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_25_222514) do
+ActiveRecord::Schema.define(version: 2024_04_19_073729) do
 
   create_table "active_storage_attachments", charset: "latin1", force: :cascade do |t|
     t.string "name", null: false, collation: "utf8mb4_unicode_ci"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_222514) do
     t.text "footnotes", collation: "utf8mb4_unicode_ci"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "prob_desc", collation: "utf8mb4_unicode_ci"
+    t.string "prob_desc", limit: 4000
     t.integer "reject_count"
     t.integer "ordinal"
     t.integer "volume"
