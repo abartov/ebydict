@@ -12,7 +12,6 @@ namespace :dict do
       # collect all the defs _in the original order_ (therefore not through a query)
       print "Volume #{vol} -\n  building defs array... "
       @defs += collect_defs_for_vol(vol)
-      # TODO: then render them to a static file through a view via render_to_string
       print "done!\nDone collecting defs from volume #{vol} of #{maxvol}.\n"
     end
     print "done!\n  Exporting all #{@defs.count} defs... "
