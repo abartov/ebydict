@@ -53,7 +53,7 @@ class UserController < ApplicationController
       #@avail_proofs = EbyDef.count(:conditions => "assignedto IS NULL AND status = 'NeedProof'")
       # TODO: break this down by proofing round?
       @inprog_proofs = EbyDef.where(status: 'NeedProof', assignedto: @user.id)
-      @avail_aliases = EbyDef.where(aliases_done: [nil, false]).count
+      @avail_aliases = EbyDef.where(status: ['NeedPublish', 'Published'], aliases_done: [nil, false]).count
     end
     if @user.role_fixer == true
       cond_string = "? "
