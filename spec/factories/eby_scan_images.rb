@@ -10,8 +10,8 @@ FactoryBot.define do
       base_page { rand(1..500) }
     end
 
-    firstpagenum { base_page }
-    secondpagenum { base_page + 1 }
+    firstpagenum { base_page.to_s }
+    secondpagenum { (base_page + 1).to_s }
 
     # Attach test image after creation
     after(:build) do |scan|
