@@ -229,41 +229,108 @@
 - Proof workflow (2 tests)
   - Completes rounds 1-3
   - Advances to NeedPublish after final round
-- Associations (2 tests)
-- Basic attributes (4 tests)
-- Definition relationship (3 tests)
-- User relationship (3 tests)
-- Marker positioning (4 tests)
-- Part numbering (4 tests)
-- Footnote markers (4 tests)
-- Deletion behavior (2 tests)
-- Use cases (3 tests)
-  - Manual partition correction
-  - Multi-part definition markers
-  - Footnote separation
-- Timestamps (2 tests)
+
+#### 4. ScanController (Partitioning) ✅ (19 examples, 100% pass)
+- Authentication and authorization (2 tests)
+  - Requires login for all actions
+  - Allows access with partitioner role
+- GET /scan/list (3 tests)
+  - Lists available scans
+  - Does not show assigned scans
+  - Does not show completed scans
+- GET /scan/partition (3 tests)
+  - Assigns an available scan
+  - Redirects when no scans available
+  - Prevents accessing other users' scans
+- GET /scan/abandon (3 tests)
+  - Abandons assigned scan
+  - Does not abandon other users' scans
+  - Handles edge cases gracefully
+- GET /scan/abandon_col (2 tests)
+  - Abandons assigned column
+  - Does not abandon other users' columns
+- GET /scan/part_def (4 tests)
+  - Assigns an available column for def partitioning
+  - Redirects when no columns available
+  - Displays specified column
+- Partitioning workflow (2 tests)
+  - Supports abandon workflow
+  - Shows scan list
+
+#### 5. DefinitionController (Publishing) ✅ (40 examples, 100% pass)
+- Authentication and authorization (4 tests)
+  - Allows public access to view action
+  - Allows public access to render_tei action
+  - Requires publisher role for listpub
+  - Allows publisher access to listpub
+- GET /definition/list (3 tests)
+  - Lists only published definitions
+  - Does not require authentication
+  - Supports pagination
+- GET /definition/listpub (4 tests)
+  - Lists definitions by status (default: NeedPublish)
+  - Allows filtering by custom status
+  - Orders definitions by defhead
+  - Supports pagination
+- GET /definition/listall (3 tests)
+  - Lists all definitions with defhead
+  - Orders definitions alphabetically
+  - Requires publisher role
+- GET /definition/publish (5 tests)
+  - Publishes the definition
+  - Creates EbyDefEvent record
+  - Redirects to listpub
+  - Sets flash notice
+  - Requires publisher role (documents double render bug)
+- GET /definition/reproof (4 tests)
+  - Sends definition back to proofing
+  - Redirects to listpub
+  - Sets flash notice
+  - Requires publisher role (documents double render bug)
+- GET /definition/unassign/:id (3 tests)
+  - Unassigns the definition
+  - Redirects to user list
+  - Requires publisher role (documents double render bug)
+- GET /definition/view/:id (4 tests)
+  - Renders definition view
+  - Sets defhead and defbody
+  - Does not require authentication
+  - Sets page title
+- GET /definition/render_tei/:id (3 tests)
+  - Renders TEI XML
+  - Generates TEI content
+  - Does not require authentication
+- GET /definition/split_footnotes/:id (5 tests)
+  - Splits footnotes into paragraphs
+  - Preserves footnote content
+  - Removes trailing em-dashes
+  - Requires publisher role
+  - Handles not found with ActiveRecord error
+- Publishing workflow (2 tests)
+  - Supports complete publishing workflow
+  - Supports reproof workflow
 
 ## Test Statistics
 
-**Total Examples:** 446
-- ✅ Passing: 446 (100%)
+**Total Examples:** 505
+- ✅ Passing: 505 (100%)
 - ⏸️ Pending: 0 (0%)
 - ❌ Failing: 0 (0%)
 
 **Breakdown:**
 - Model Tests: 371 examples
-- Request/Controller Tests: 75 examples
+- Request/Controller Tests: 134 examples
 
-**Code Coverage:** 39.13%
+**Code Coverage:** 55.99%
 - All 8 models fully tested
-- Core controllers (Login, Sessions, Type) fully tested
-- Coverage nearly doubled with controller tests
-- Target: 80% overall (will increase further with remaining controllers)
+- 5 core controllers fully tested (Login, Sessions, Type, Scan, Definition)
+- Coverage more than doubled with controller tests
+- Target: 80% overall (will increase with Phase 5-6)
 
-**Test Performance:** 24.51 seconds
+**Test Performance:** 36.73 seconds
 - Well within the 5-minute target for full suite
-- Excellent performance with 446 examples
-- Slowest test: 2.0 seconds (proof workflow progression)
+- Excellent performance with 505 examples
+- Slowest test: 5.01 seconds (EbyDef#permalink)
 
 ## Key Features Tested
 
@@ -319,14 +386,14 @@
    - ~~`spec/models/eby_alias_spec.rb`~~
    - ~~`spec/models/eby_marker_spec.rb`~~
 
-### ~~Phase 4: Controller Tests~~ ✅ **COMPLETE (Core Controllers)**
+### ~~Phase 4: Controller Tests~~ ✅ **COMPLETE (Core Workflow)**
 - ✅ LoginController (password authentication) - 19 tests
 - ✅ SessionsController (OAuth critical path) - 22 tests
 - ✅ TypeController (main workflow) - 34 tests
-- ⏸️ ScanController (complex partitioning logic) - Not started
-- ⏸️ DefinitionController (publishing workflow) - Not started
+- ✅ ScanController (complex partitioning logic) - 19 tests
+- ✅ DefinitionController (publishing workflow) - 40 tests
 - ⏸️ ApplicationController (authentication & role checking) - Tested indirectly
-- ⏸️ AdminController, ProblemController, UserController - Not started
+- ⏸️ AdminController, ProblemController, UserController - Optional
 
 ### Phase 5: Integration Tests
 - End-to-end workflows
@@ -383,20 +450,23 @@ bundle exec rspec --order random
 - ✅ All factories created
 - ✅ Shared contexts/examples implemented
 - ✅ 8/8 models fully tested ⭐ **PHASE 3 COMPLETE**
-- ✅ 3/3 core controllers fully tested ⭐ **PHASE 4 CORE COMPLETE**
+- ✅ 5/5 core workflow controllers fully tested ⭐ **PHASE 4 COMPLETE**
   - LoginController (password auth)
   - SessionsController (OAuth)
   - TypeController (main workflow)
-- ⏸️ Additional controllers (Scan, Definition, Admin, etc.) - Optional
-- ⏸️ Integration tests not started
-- ⏸️ Coverage below 80% target (39.13%, significant progress)
+  - ScanController (partitioning)
+  - DefinitionController (publishing)
+- ⏸️ Additional controllers (Admin, Problem, User) - Optional
+- ⏸️ Integration tests not started (Phase 5)
+- ⏸️ Library tests not started (Phase 6, EbyUtils)
+- ⏸️ Coverage below 80% target (55.99%, significant progress)
 
 **Estimated Completion:**
 - Models: 100% complete (8/8) ✅
-- Core Controllers: 100% complete (3/3) ✅
+- Core Workflow Controllers: 100% complete (5/5) ✅
 - Overall Phase 3: 100% complete ✅
-- Overall Phase 4: 100% core complete ✅
-- Total Implementation: ~50% complete (Phases 1-4 core done)
+- Overall Phase 4: 100% complete ✅
+- Total Implementation: ~60% complete (Phases 1-4 complete)
 
-**Time Invested:** ~7 hours for Phases 1-4 core
-**Estimated Remaining:** ~10-15 hours for full implementation (remaining controllers + Phases 5-8)
+**Time Invested:** ~8-9 hours for Phases 1-4
+**Estimated Remaining:** ~8-12 hours for Phases 5-6 (integration tests + library tests)
