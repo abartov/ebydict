@@ -21,6 +21,9 @@
 /public/assets/*
 *.swp
 
+# Ignore IDE files
+/.idea
+
 /config/master.key
 .byebug_history
 
