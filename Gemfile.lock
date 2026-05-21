@@ -311,8 +311,7 @@ GEM
     rexml (3.4.2)
     rmagick (5.3.0)
       pkg-config (~> 1.4)
-    rmultimarkdown (6.4.0.4)
-      bundler
+    rmultimarkdown (6.7.0.2)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
