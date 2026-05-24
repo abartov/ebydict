@@ -1,4 +1,4 @@
-class AddProofRoundPassedNegativeToEbyDefs < ActiveRecord::Migration
+class AddProofRoundPassedNegativeToEbyDefs < ActiveRecord::Migration[4.2]
   def change
     add_column :eby_defs, :proof_round_passed_negative, :integer
     print 'populating proof_round_passed_negative field... '

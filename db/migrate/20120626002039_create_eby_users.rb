@@ -1,4 +1,4 @@
-class CreateEbyUsers < ActiveRecord::Migration
+class CreateEbyUsers < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_users do |t|
       t.string :login

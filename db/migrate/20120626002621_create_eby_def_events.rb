@@ -1,4 +1,4 @@
-class CreateEbyDefEvents < ActiveRecord::Migration
+class CreateEbyDefEvents < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_def_events do |t|
       t.integer :who

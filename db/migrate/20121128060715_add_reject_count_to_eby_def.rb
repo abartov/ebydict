@@ -1,4 +1,4 @@
-class AddRejectCountToEbyDef < ActiveRecord::Migration
+class AddRejectCountToEbyDef < ActiveRecord::Migration[4.2]
   def change
     add_column :eby_defs, :reject_count, :integer
     EbyDef.all.each {|d|

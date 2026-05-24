@@ -1,4 +1,4 @@
-class IncreaseDefTextSize < ActiveRecord::Migration
+class IncreaseDefTextSize < ActiveRecord::Migration[4.2]
   def up
     change_column :eby_defs, :deftext, :text, :limit => 16777210 # near mediumtext limit, more than enough for any def.
   end

@@ -1,4 +1,4 @@
-class CreateEbyColumnImages < ActiveRecord::Migration
+class CreateEbyColumnImages < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_column_images do |t|
       t.integer :eby_scan_image_id

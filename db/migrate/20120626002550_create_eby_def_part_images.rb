@@ -1,4 +1,4 @@
-class CreateEbyDefPartImages < ActiveRecord::Migration
+class CreateEbyDefPartImages < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_def_part_images do |t|
       t.integer :thedef

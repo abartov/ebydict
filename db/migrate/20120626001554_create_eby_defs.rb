@@ -1,4 +1,4 @@
-class CreateEbyDefs < ActiveRecord::Migration
+class CreateEbyDefs < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_defs do |t|
       t.string :defhead
