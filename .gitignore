@@ -15,7 +15,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/config/database.yml
 /config/constants.yml
 /config/s3.yml
 /public/assets/*

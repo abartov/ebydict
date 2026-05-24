@@ -42,6 +42,7 @@ gem 'globalid', '~> 1.0'
 
 # To use debugger
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rspec-rails', '~> 6.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 3.0'
