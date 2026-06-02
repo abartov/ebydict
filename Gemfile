@@ -31,6 +31,8 @@ gem 'jquery-ui-rails'
 gem 'mini_racer'
 gem 'rexml'
 gem 'globalid', '~> 1.0'
+gem 'bootsnap', require: false
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -50,7 +52,6 @@ end
 
 group :development do
   gem 'listen'
-  gem 'bootsnap', require: false
   gem 'byebug'
   gem 'sqlite3' # enable for dev, if you like
   gem 'web-console' #, '~> 2.0'
