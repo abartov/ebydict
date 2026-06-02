@@ -13,6 +13,7 @@ gem 'activerecord-session_store'
 gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
 
 gem 'mysql2'
+gem 'sqlite3' # used by some rake tasks (for exports?)
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
@@ -53,7 +54,6 @@ end
 group :development do
   gem 'listen'
   gem 'byebug'
-  gem 'sqlite3' # enable for dev, if you like
   gem 'web-console' #, '~> 2.0'
 end
 
