@@ -115,6 +115,45 @@ module EbyUtils
     if last_predecessor != last_def_for_vol(vol)
       puts "Incomplete enumeration detected: last successfully enumerated def was ID: #{last_predecessor.id}, #{last_predecessor.defhead}"
     end
+    # Pair each orphaned def (missed by chain traversal because it shares a
+    # (column, defno) with another def) with the enumerated sibling at that position.
+    pairs = EbyDef.where(volume: vol, ordinal: nil).filter_map do |orphan|
+      if orphan.part_images.empty?
+        puts "WARNING: def ID=#{orphan.id} (#{orphan.defhead}) has nil ordinal but no part_images; cannot determine (column, defno) position"
+        next
+      end
+      first_part = orphan.part_images.first
+      sibling = first_part.colimg.def_part_images
+                  .where(defno: first_part.defno)
+                  .where.not(thedef: orphan.id)
+                  .filter_map(&:eby_def)
+                  .find { |s| s.ordinal.present? }
+      unless sibling
+        puts "WARNING: def ID=#{orphan.id} (#{orphan.defhead}) has nil ordinal and no enumerated sibling at its position"
+        next
+      end
+      { orphan: orphan, sibling: sibling, sibling_ordinal: sibling.ordinal }
+    end
+    EbyDef.transaction do
+      # Process from highest sibling ordinal to lowest so each shift only displaces
+      # positions above the current insertion point, leaving lower insert points intact.
+      pairs.sort_by { |p| -p[:sibling_ordinal] }.each do |pair|
+        orphan, sibling, n = pair.values_at(:orphan, :sibling, :sibling_ordinal)
+        # Compare in dictionary order: consonants (strip nikkud), then full defhead, then ID
+        cmp = orphan.defhead.strip_nikkud <=> sibling.defhead.strip_nikkud
+        cmp = orphan.defhead <=> sibling.defhead if cmp == 0
+        cmp = orphan.id     <=> sibling.id       if cmp == 0
+        if cmp < 0
+          EbyDef.where(volume: vol).where('ordinal >= ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+          orphan.update!(ordinal: n)
+          puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted before sibling ID=#{sibling.id} at ordinal #{n}"
+        else
+          EbyDef.where(volume: vol).where('ordinal > ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+          orphan.update!(ordinal: n + 1)
+          puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after sibling ID=#{sibling.id} at ordinal #{n + 1}"
+        end
+      end
+    end
   end
   def html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
