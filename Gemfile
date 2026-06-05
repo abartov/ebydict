@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'logger' # Fix for Ruby 3.2+ compatibility
 gem 'rails', '~>6.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -40,12 +41,30 @@ gem 'globalid', '~> 1.0'
 # gem 'capistrano'
 
 # To use debugger
+group :development, :test do
+  gem 'rspec-rails', '~> 6.0'
+  gem 'factory_bot_rails', '~> 6.2'
+  gem 'faker', '~> 3.0'
+end
+
 group :development do
   gem 'listen'
   gem 'bootsnap', require: false
   gem 'byebug'
   gem 'sqlite3' # enable for dev, if you like
   gem 'web-console' #, '~> 2.0'
+end
+
+group :test do
+  gem 'shoulda-matchers', '~> 5.3'
+  gem 'database_cleaner-active_record', '~> 2.1'
+  gem 'simplecov', require: false
+  gem 'vcr', '~> 6.1'
+  gem 'webmock', '~> 3.18'
+  gem 'rails-controller-testing', '~> 1.0'
+  gem 'timecop', '~> 0.9'
+  gem 'capybara', '~> 3.39'
+  gem 'selenium-webdriver'
 end
 
 group :production do
