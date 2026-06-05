@@ -134,22 +134,24 @@ module EbyUtils
       end
       { orphan: orphan, sibling: sibling, sibling_ordinal: sibling.ordinal }
     end
-    # Process from highest sibling ordinal to lowest so each shift only displaces
-    # positions above the current insertion point, leaving lower insert points intact.
-    pairs.sort_by { |p| -p[:sibling_ordinal] }.each do |pair|
-      orphan, sibling, n = pair.values_at(:orphan, :sibling, :sibling_ordinal)
-      # Compare in dictionary order: consonants (strip nikkud), then full defhead, then ID
-      cmp = orphan.defhead.strip_nikkud <=> sibling.defhead.strip_nikkud
-      cmp = orphan.defhead <=> sibling.defhead if cmp == 0
-      cmp = orphan.id     <=> sibling.id       if cmp == 0
-      if cmp < 0
-        EbyDef.where(volume: vol).where('ordinal >= ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
-        orphan.update(ordinal: n)
-        puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted before sibling ID=#{sibling.id} at ordinal #{n}"
-      else
-        EbyDef.where(volume: vol).where('ordinal > ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
-        orphan.update(ordinal: n + 1)
-        puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after sibling ID=#{sibling.id} at ordinal #{n + 1}"
+    EbyDef.transaction do
+      # Process from highest sibling ordinal to lowest so each shift only displaces
+      # positions above the current insertion point, leaving lower insert points intact.
+      pairs.sort_by { |p| -p[:sibling_ordinal] }.each do |pair|
+        orphan, sibling, n = pair.values_at(:orphan, :sibling, :sibling_ordinal)
+        # Compare in dictionary order: consonants (strip nikkud), then full defhead, then ID
+        cmp = orphan.defhead.strip_nikkud <=> sibling.defhead.strip_nikkud
+        cmp = orphan.defhead <=> sibling.defhead if cmp == 0
+        cmp = orphan.id     <=> sibling.id       if cmp == 0
+        if cmp < 0
+          EbyDef.where(volume: vol).where('ordinal >= ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+          orphan.update!(ordinal: n)
+          puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted before sibling ID=#{sibling.id} at ordinal #{n}"
+        else
+          EbyDef.where(volume: vol).where('ordinal > ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+          orphan.update!(ordinal: n + 1)
+          puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after sibling ID=#{sibling.id} at ordinal #{n + 1}"
+        end
       end
     end
   end
