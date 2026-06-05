@@ -101,6 +101,32 @@ RSpec.describe 'dict:json_export rake task' do
       run_task
       expect(load_json(1).size).to eq(55)
     end
+
+    it 'outputs all defs when ALL=true' do
+      ENV['ALL'] = 'true'
+      run_task
+      expect(load_json(1).size).to eq(55)
+    end
+
+    it 'respects the limit when ALL=0' do
+      ENV['ALL'] = '0'
+      run_task
+      expect(load_json(1).size).to eq(50)
+    end
+
+    it 'respects the limit when ALL=false' do
+      ENV['ALL'] = 'false'
+      run_task
+      expect(load_json(1).size).to eq(50)
+    end
+  end
+
+  context 'null ordinals on published defs' do
+    let!(:pub_no_ordinal) { create(:eby_def, :published, volume: 1, ordinal: nil, defhead: 'שין') }
+
+    it 'aborts with a clear message' do
+      expect { run_task }.to raise_error(SystemExit)
+    end
   end
 
   context 'empty volume' do
