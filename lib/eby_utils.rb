@@ -135,7 +135,7 @@ module EbyUtils
       { orphan: orphan, sibling: sibling, sibling_ordinal: sibling.ordinal }
     end
     EbyDef.transaction do
-      # Process from highest sibling ordinal to lowest so each shift only displaces
+      # Pass 1: process from highest sibling ordinal to lowest so each shift only displaces
       # positions above the current insertion point, leaving lower insert points intact.
       pairs.sort_by { |p| -p[:sibling_ordinal] }.each do |pair|
         orphan, sibling, n = pair.values_at(:orphan, :sibling, :sibling_ordinal)
@@ -151,6 +151,67 @@ module EbyUtils
           EbyDef.where(volume: vol).where('ordinal > ?', n).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
           orphan.update!(ordinal: n + 1)
           puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after sibling ID=#{sibling.id} at ordinal #{n + 1}"
+        end
+      end
+
+      # Pass 2: handle defs skipped because a multi-column spanning def jumped over their
+      # column, or because a spanning continuation landed at defno>0 leaving earlier
+      # defnos unvisited.  Process in physical reading order so each orphan's predecessor
+      # is already placed when we get to it.
+      isolated = EbyDef.where(volume: vol, ordinal: nil)
+                       .includes(part_images: :colimg)
+                       .select { |orphan| orphan.part_images.any? }
+                       .sort_by { |orphan|
+                         p = orphan.part_images.first
+                         c = p.colimg
+                         [c.pagenum, c.colnum, p.defno, orphan.id]
+                       }
+      isolated.each do |orphan|
+        first_part = orphan.part_images.first
+        col = first_part.colimg
+        defno = first_part.defno
+
+        # Single query: nearest predecessor in the same column that has an ordinal.
+        # Re-query eby_defs via join to pick up ordinals freshly assigned in this loop.
+        pred_part = EbyDefPartImage
+                      .joins("INNER JOIN eby_defs ON eby_defs.id = eby_def_part_images.thedef AND eby_defs.ordinal IS NOT NULL")
+                      .where(coldefimg_id: col.id)
+                      .where('eby_def_part_images.defno < ?', defno)
+                      .order('eby_def_part_images.defno DESC')
+                      .first
+
+        if pred_part
+          ref_ordinal = EbyDef.find(pred_part.thedef).ordinal
+          EbyDef.where(volume: vol).where('ordinal > ?', ref_ordinal).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+          orphan.update!(ordinal: ref_ordinal + 1)
+          puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after def ID=#{pred_part.thedef} at ordinal #{orphan.ordinal}"
+        else
+          # No predecessor — single query for nearest successor with an ordinal
+          succ_part = EbyDefPartImage
+                        .joins("INNER JOIN eby_defs ON eby_defs.id = eby_def_part_images.thedef AND eby_defs.ordinal IS NOT NULL")
+                        .where(coldefimg_id: col.id)
+                        .where('eby_def_part_images.defno > ?', defno)
+                        .order('eby_def_part_images.defno ASC')
+                        .first
+          if succ_part
+            ref_def = EbyDef.find(succ_part.thedef)
+            ref_ordinal = ref_def.ordinal
+            if succ_part.partnum > 1
+              # Successor is a continuation from a previous column; that def's logical
+              # position is determined by where it started, not here.  Place the orphan
+              # (which begins in this column) after the continuation.
+              EbyDef.where(volume: vol).where('ordinal > ?', ref_ordinal).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+              orphan.update!(ordinal: ref_ordinal + 1)
+              puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted after continuation ID=#{ref_def.id} at ordinal #{orphan.ordinal}"
+            else
+              # Successor starts here; orphan belongs before it
+              EbyDef.where(volume: vol).where('ordinal >= ?', ref_ordinal).where.not(id: orphan.id).update_all('ordinal = ordinal + 1')
+              orphan.update!(ordinal: ref_ordinal)
+              puts "Note: def ID=#{orphan.id} (#{orphan.defhead}) inserted before def ID=#{ref_def.id} at ordinal #{orphan.ordinal}"
+            end
+          else
+            puts "WARNING: def ID=#{orphan.id} (#{orphan.defhead}) could not be placed - no anchor found in column #{col.id}"
+          end
         end
       end
     end
