@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "ebydict",
+  "project_id": "554c2e5c-554e-4979-9de9-00bac922d463"
+}
