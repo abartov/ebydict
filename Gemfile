@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'logger' # Fix for Ruby 3.2+ compatibility
-gem 'rails', '~>6.0'
+gem 'concurrent-ruby', '< 1.3.5' # compatibility fix for ruby 3.2
+gem 'rails', '~> 6.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
@@ -69,9 +69,6 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-group :production do
-  gem 'puma-daemon'
-end
 gem 'rmagick', '~> 5.3' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'

@@ -4,6 +4,11 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+# Ignore local .env files
+.env.development.local
+.env.test.local
+.env.local
+
 # Ignore bundler config
 /.bundle
 
@@ -15,8 +20,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/config/constants.yml
-/config/s3.yml
 /public/assets/*
 *.swp
 

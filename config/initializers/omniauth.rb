@@ -1,4 +1,8 @@
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_oauth2, Rails.configuration.constants['google_oauth_client_id'], Rails.configuration.constants['google_oauth_client_secret']
-  provider :developer if Rails.env == 'development'
+require 'deployment_helpers'
+
+unless DeploymentHelpers.assets_compilation?
+  Rails.application.config.middleware.use OmniAuth::Builder do
+    provider :google_oauth2, SiteConstants::GOOGLE_OAUTH_CLIENT_ID, SiteConstants::GOOGLE_OAUTH_CLIENT_SECRET
+    provider :developer if Rails.env == 'development'
+  end
 end

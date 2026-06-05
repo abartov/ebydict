@@ -38,7 +38,7 @@ protect_from_forgery
       return nil
     end
     filepart = fmatch.post_match
-    url = Rails.configuration.constants['scanurlbase'] + filepart
+    url = SiteConstants::SCAN_URL_BASE + filepart
     return url
   end
 

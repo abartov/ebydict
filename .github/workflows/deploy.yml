@@ -65,4 +65,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
-          script: ./update_services.sh ebydict-web
+          script: ./update_services.sh ebydict-staging web
