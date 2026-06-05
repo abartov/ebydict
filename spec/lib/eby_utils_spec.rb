@@ -301,5 +301,90 @@ RSpec.describe EbyUtils do
         expect(d3.reload.ordinal).to eq(4)
       end
     end
+
+    context 'when a spanning def jumps over an intermediate column (pattern 2)' do
+      # Models: def_span spans col_a → col_b → col_c.
+      # successor_def uses part_images.last (= col_c), so col_b's defs d_mid1/d_mid2
+      # are never visited by the chain and must be placed by Pass 2.
+      # scan2 gets secondpagenum: 2000 so last_def_for_vol resolves to scan2 (not scan).
+      let(:scan2) do
+        create(:eby_scan_image, volume: vol, firstpagenum: 2, secondpagenum: 2000, status: 'Partitioned')
+      end
+      # col_a IS col — override outer let so the outer `before { col }` creates col_a,
+      # preventing a duplicate column in scan.
+      let(:col_a) { create(:eby_column_image, scan: scan, volume: vol, colnum: 1, pagenum: 1, status: 'Partitioned') }
+      let(:col)   { col_a }
+      let(:col_b) { create(:eby_column_image, scan: scan2, volume: vol, colnum: 1, pagenum: 2, status: 'Partitioned') }
+      let(:col_c) { create(:eby_column_image, scan: scan2, volume: vol, colnum: 2, pagenum: 2, status: 'Partitioned') }
+
+      before { col_b; col_c }
+
+      it 'places defs in the skipped column at the correct ordinals' do
+        # col_a: defno=0 → d_before, defno=1 → def_span (part 1)
+        d_before = create(:eby_def, volume: vol, defhead: 'אבג')
+        create(:eby_def_part_image, eby_def: d_before, colimg: col_a, defno: 0, partnum: 1)
+
+        def_span = create(:eby_def, volume: vol, defhead: 'בגד')
+        create(:eby_def_part_image, eby_def: def_span, colimg: col_a, defno: 1, partnum: 1)  # starts in col_a
+        create(:eby_def_part_image, eby_def: def_span, colimg: col_b, defno: 0, partnum: 2)  # continues in col_b
+        create(:eby_def_part_image, eby_def: def_span, colimg: col_c, defno: 0, partnum: 3)  # ends in col_c
+
+        # col_b also has two defs skipped by the chain
+        d_mid1 = create(:eby_def, volume: vol, defhead: 'גדה')
+        create(:eby_def_part_image, eby_def: d_mid1, colimg: col_b, defno: 1, partnum: 1)
+
+        d_mid2 = create(:eby_def, volume: vol, defhead: 'דהו')
+        create(:eby_def_part_image, eby_def: d_mid2, colimg: col_b, defno: 2, partnum: 1)
+
+        # col_c: defno=1 → d_after (chain resumes here via def_span.part_images.last)
+        d_after = create(:eby_def, volume: vol, defhead: 'הוז')
+        create(:eby_def_part_image, eby_def: d_after, colimg: col_c, defno: 1, partnum: 1)
+
+        enumerate_vol(vol)
+
+        expect(d_before.reload.ordinal).to eq(1)
+        expect(def_span.reload.ordinal).to eq(2)
+        expect(d_mid1.reload.ordinal).to  eq(3)
+        expect(d_mid2.reload.ordinal).to  eq(4)
+        expect(d_after.reload.ordinal).to eq(5)
+      end
+    end
+
+    context 'when a spanning continuation lands at defno>0, skipping defno=0 (pattern 3)' do
+      # def_span starts in col_a at defno=0 and continues in col_b at defno=1.
+      # successor_def picks up from col_b defno=1+1=2, so d_early (col_b defno=0)
+      # is never visited and must be placed by Pass 2.
+      # scan2 gets secondpagenum: 2000 so last_def_for_vol resolves to scan2 (not scan).
+      let(:scan2) do
+        create(:eby_scan_image, volume: vol, firstpagenum: 2, secondpagenum: 2000, status: 'Partitioned')
+      end
+      # col_a IS col — override outer let so the outer `before { col }` creates col_a,
+      # preventing a duplicate column in scan.
+      let(:col_a) { create(:eby_column_image, scan: scan, volume: vol, colnum: 1, pagenum: 1, status: 'Partitioned') }
+      let(:col)   { col_a }
+      let(:col_b) { create(:eby_column_image, scan: scan2, volume: vol, colnum: 1, pagenum: 2, status: 'Partitioned') }
+
+      before { col_b }
+
+      it 'places the skipped defno=0 entry after the continuation' do
+        def_span = create(:eby_def, volume: vol, defhead: 'בגד')
+        create(:eby_def_part_image, eby_def: def_span, colimg: col_a, defno: 0, partnum: 1)  # starts col_a
+        create(:eby_def_part_image, eby_def: def_span, colimg: col_b, defno: 1, partnum: 2)  # continues at defno=1
+
+        # col_b defno=0: a def that begins here, physically before the continuation
+        d_early = create(:eby_def, volume: vol, defhead: 'אבג')
+        create(:eby_def_part_image, eby_def: d_early, colimg: col_b, defno: 0, partnum: 1)
+
+        # col_b defno=2: normal def, resumed by the chain after def_span
+        d_after = create(:eby_def, volume: vol, defhead: 'גדה')
+        create(:eby_def_part_image, eby_def: d_after, colimg: col_b, defno: 2, partnum: 1)
+
+        enumerate_vol(vol)
+
+        expect(def_span.reload.ordinal).to eq(1)
+        expect(d_early.reload.ordinal).to  eq(2)
+        expect(d_after.reload.ordinal).to  eq(3)
+      end
+    end
   end
 end
