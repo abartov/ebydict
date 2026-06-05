@@ -118,7 +118,10 @@ module EbyUtils
     # Pair each orphaned def (missed by chain traversal because it shares a
     # (column, defno) with another def) with the enumerated sibling at that position.
     pairs = EbyDef.where(volume: vol, ordinal: nil).filter_map do |orphan|
-      next if orphan.part_images.empty?
+      if orphan.part_images.empty?
+        puts "WARNING: def ID=#{orphan.id} (#{orphan.defhead}) has nil ordinal but no part_images; cannot determine (column, defno) position"
+        next
+      end
       first_part = orphan.part_images.first
       sibling = first_part.colimg.def_part_images
                   .where(defno: first_part.defno)
