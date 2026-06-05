@@ -25,3 +25,8 @@
 # RSpec / Test coverage
 /coverage
 /spec/examples.txt
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key

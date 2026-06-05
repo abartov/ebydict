@@ -234,7 +234,72 @@ RSpec.describe EbyUtils do
     # describe '#first_def_for_vol'
     # describe '#last_def_for_vol'
     # describe '#first_def'
-    # describe '#enumerate_vol'
     # describe '#makedef'
+  end
+
+  describe '#enumerate_vol' do
+    # Use a volume number unlikely to collide with other test data.
+    # secondpagenum=1000 ensures col_from_col finds no "next scan" when it
+    # increments col.pagenum (1) by 1, so the traversal correctly terminates.
+    let(:vol) { 999 }
+    let(:scan) do
+      create(:eby_scan_image, volume: vol, firstpagenum: 1, secondpagenum: 1000, status: 'Partitioned')
+    end
+    let(:col) do
+      create(:eby_column_image, scan: scan, volume: vol, colnum: 1, pagenum: 1, status: 'Partitioned')
+    end
+
+    before { col } # triggers lazy scan → col creation before any defs
+
+    def make_def(defhead, defno)
+      d = create(:eby_def, volume: vol, defhead: defhead)
+      create(:eby_def_part_image, eby_def: d, colimg: col, defno: defno, partnum: 1)
+      d
+    end
+
+    it 'assigns sequential ordinals to a chain of defs in one column' do
+      d1 = make_def('אבג', 0)
+      d2 = make_def('בגד', 1)
+      d3 = make_def('גדה', 2)
+
+      enumerate_vol(vol)
+
+      expect(d1.reload.ordinal).to eq(1)
+      expect(d2.reload.ordinal).to eq(2)
+      expect(d3.reload.ordinal).to eq(3)
+    end
+
+    context 'when two defs share the same (column, defno)' do
+      # def_part_by_defno uses .first, so the lower-id def becomes the canonical
+      # and the higher-id def is the orphan that enumerate_vol must place.
+
+      it 'inserts an alphabetically-later orphan immediately after its sibling' do
+        d1     = make_def('אבג', 0)
+        d2     = make_def('בגד', 1)  # canonical (lower id)
+        d_twin = make_def('גגד', 1)  # orphan; 'ג' > 'ב' → sorts after d2
+        d3     = make_def('דהו', 2)
+
+        enumerate_vol(vol)
+
+        expect(d1.reload.ordinal).to eq(1)
+        expect(d2.reload.ordinal).to eq(2)
+        expect(d_twin.reload.ordinal).to eq(3)
+        expect(d3.reload.ordinal).to eq(4)
+      end
+
+      it 'inserts an alphabetically-earlier orphan immediately before its sibling' do
+        d1     = make_def('בבג', 0)
+        d2     = make_def('בגד', 1)  # canonical (lower id)
+        d_twin = make_def('אגד', 1)  # orphan; 'א' < 'ב' → sorts before d2
+        d3     = make_def('גדה', 2)
+
+        enumerate_vol(vol)
+
+        expect(d1.reload.ordinal).to eq(1)
+        expect(d_twin.reload.ordinal).to eq(2)
+        expect(d2.reload.ordinal).to eq(3)
+        expect(d3.reload.ordinal).to eq(4)
+      end
+    end
   end
 end
