@@ -23,6 +23,8 @@ ENV RAILS_ENV=production \
 
 FROM base AS builder
 
+COPY public ./public
+
 RUN apt-get install -y default-libmysqlclient-dev
 
 RUN bundle install --deployment --without test development --jobs "$(grep -c ^processor /proc/cpuinfo)" \
