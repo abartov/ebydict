@@ -12,6 +12,11 @@ RSpec.configure do |config|
       Rake::Task['test_db:setup'].invoke
     end
 
+    # Checkpoint WAL to avoid lock contention from previous interrupted runs
+    if ActiveRecord::Base.connection.adapter_name == 'SQLite'
+      ActiveRecord::Base.connection.execute('PRAGMA wal_checkpoint(TRUNCATE)')
+    end
+
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
