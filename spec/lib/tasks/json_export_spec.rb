@@ -62,7 +62,26 @@ RSpec.describe 'dict:json_export rake task' do
     it 'includes required fields for each entry' do
       run_task
       entry = load_json(1).first
-      expect(entry.keys).to include('defhead', 'deftext', 'footnotes', 'updated_at', 'aliases')
+      expect(entry.keys).to include('id', 'ordinal', 'defhead', 'deftext', 'footnotes', 'updated_at', 'aliases', 'page_num')
+    end
+
+    it 'includes the EbyDef record id' do
+      run_task
+      entry = load_json(1).find { |e| e['defhead'] == 'אלף' }
+      expect(entry['id']).to eq(pub1a.id)
+    end
+
+    it 'includes the ordinal number' do
+      run_task
+      entries = load_json(1)
+      expect(entries.find { |e| e['defhead'] == 'אלף' }['ordinal']).to eq(1)
+      expect(entries.find { |e| e['defhead'] == 'בית' }['ordinal']).to eq(2)
+    end
+
+    it 'includes nil page_num when the def has no part images' do
+      run_task
+      entry = load_json(1).find { |e| e['defhead'] == 'אלף' }
+      expect(entry['page_num']).to be_nil
     end
 
     it 'includes footnotes' do
@@ -126,6 +145,32 @@ RSpec.describe 'dict:json_export rake task' do
 
     it 'aborts with a clear message' do
       expect { run_task }.to raise_error(SystemExit)
+    end
+  end
+
+  context 'page_num from the first part image column' do
+    let!(:scan)  { create(:eby_scan_image, volume: 1) }
+    let!(:col)   { create(:eby_column_image, scan: scan, pagenum: 42) }
+    let!(:def1)  { create(:eby_def, :published, volume: 1, ordinal: 1) }
+
+    before { create(:eby_def_part_image, eby_def: def1, colimg: col, partnum: 1, defno: 0) }
+
+    it 'sets page_num from the column of the first part image' do
+      run_task
+      entry = load_json(1).find { |e| e['id'] == def1.id }
+      expect(entry['page_num']).to eq(42)
+    end
+
+    context 'when the def spans multiple columns' do
+      let!(:col2) { create(:eby_column_image, scan: scan, pagenum: 99) }
+
+      before { create(:eby_def_part_image, eby_def: def1, colimg: col2, partnum: 2, defno: 0) }
+
+      it 'uses the column of the lowest-partnum part' do
+        run_task
+        entry = load_json(1).find { |e| e['id'] == def1.id }
+        expect(entry['page_num']).to eq(42)
+      end
     end
   end
 
