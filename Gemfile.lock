@@ -229,7 +229,7 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -260,7 +260,7 @@ GEM
     pkg-config (1.5.5)
     power_assert (2.0.3)
     public_suffix (7.0.5)
-    puma (6.4.3)
+    puma (7.2.1)
       nio4r (~> 2.0)
     puma-daemon (0.3.2)
       puma (>= 5.0)
