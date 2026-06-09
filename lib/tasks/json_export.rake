@@ -17,16 +17,20 @@ namespace :dict do
         abort "Volume #{vol} has Published defs with NULL ordinals. Run dict:export first to enumerate the volume."
       end
 
-      scope = EbyDef.includes(:aliases).where(status: 'Published', volume: vol).order(:ordinal)
+      scope = EbyDef.includes(:aliases, part_images: :colimg).where(status: 'Published', volume: vol).order(:ordinal)
       scope = scope.limit(limit) unless dump_all
 
       entries = scope.map do |d|
+        first_part = d.part_images.first
         {
+          id:         d.id,
+          ordinal:    d.ordinal,
           defhead:    d.defhead,
           deftext:    d.deftext,
           footnotes:  d.footnotes,
           updated_at: d.updated_at,
-          aliases:    d.aliases.map(&:alias)
+          aliases:    d.aliases.map(&:alias),
+          page_num:   first_part&.colimg&.pagenum
         }
       end
 
