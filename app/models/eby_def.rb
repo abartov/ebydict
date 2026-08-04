@@ -193,7 +193,7 @@ class EbyDef < ApplicationRecord
     return status == 'Published'
   end
   def permalink
-    return Rails.configuration.constants['puburlbase']+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true) 
+    return SiteConstants::PUB_URL_BASE+url_for(:controller => :definition, :action => :view, :id => id, :only_path => true)
   end
   def render_tei
     buf = "<entry><form><orth>#{pure_headword}</orth></form><gramGrp><pos>#{part_of_speech}</pos></gramGrp>"

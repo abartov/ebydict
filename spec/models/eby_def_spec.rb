@@ -424,7 +424,7 @@ RSpec.describe EbyDef, type: :model do
   describe '#permalink' do
     it 'generates correct permalink URL' do
       def_record = create(:eby_def)
-      expect(def_record.permalink).to include(Rails.configuration.constants['puburlbase'])
+      expect(def_record.permalink).to include(SiteConstants::PUB_URL_BASE)
       expect(def_record.permalink).to include('/definition/view')
       expect(def_record.permalink).to include(def_record.id.to_s)
     end

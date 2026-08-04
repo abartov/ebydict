@@ -10,11 +10,11 @@ VCR.configure do |config|
 
   # Filter sensitive data
   config.filter_sensitive_data('<GOOGLE_OAUTH_CLIENT_ID>') do
-    Rails.application.config.constants['google_oauth_client_id']
+    SiteConstants::GOOGLE_OAUTH_CLIENT_ID
   end
 
   config.filter_sensitive_data('<GOOGLE_OAUTH_CLIENT_SECRET>') do
-    Rails.application.config.constants['google_oauth_client_secret']
+    SiteConstants::GOOGLE_OAUTH_CLIENT_SECRET
   end
 
   # Allow real HTTP connections in development for recording cassettes

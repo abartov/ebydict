@@ -1,4 +1,4 @@
-class AddVolumeToEbyDef < ActiveRecord::Migration
+class AddVolumeToEbyDef < ActiveRecord::Migration[4.2]
   def change
     add_column :eby_defs, :volume, :integer
     print "adding volume number to all existing defs... "

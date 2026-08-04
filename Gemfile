@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'logger' # Fix for Ruby 3.2+ compatibility
-gem 'rails', '~>6.0'
+gem 'concurrent-ruby', '< 1.3.5' # compatibility fix for ruby 3.2
+gem 'rails', '~> 6.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 #gem 'rake', '=0.9.2.2'
@@ -13,6 +13,7 @@ gem 'activerecord-session_store'
 gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
 
 gem 'mysql2'
+gem 'sqlite3' # used by some rake tasks (for exports?)
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
@@ -31,6 +32,8 @@ gem 'jquery-ui-rails'
 gem 'mini_racer'
 gem 'rexml'
 gem 'globalid', '~> 1.0'
+gem 'bootsnap', require: false
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -42,6 +45,7 @@ gem 'globalid', '~> 1.0'
 
 # To use debugger
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rspec-rails', '~> 6.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'faker', '~> 3.0'
@@ -49,9 +53,7 @@ end
 
 group :development do
   gem 'listen'
-  gem 'bootsnap', require: false
   gem 'byebug'
-  gem 'sqlite3' # enable for dev, if you like
   gem 'web-console' #, '~> 2.0'
 end
 
@@ -67,9 +69,6 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-group :production do
-  gem 'puma-daemon'
-end
 gem 'rmagick', '~> 5.3' # TODO: migrate away from this to mini_magick
 gem 'mini_magick' # for activestorage analysis providing height/width for canvas
 gem 'will_paginate'

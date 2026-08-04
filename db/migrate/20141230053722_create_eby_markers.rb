@@ -1,4 +1,4 @@
-class CreateEbyMarkers < ActiveRecord::Migration
+class CreateEbyMarkers < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_markers do |t|
       t.integer :user_id

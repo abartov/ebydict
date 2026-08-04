@@ -58,9 +58,5 @@ module Ebydict
 
     # EbyDict's own configuration
     config.constants = config_for(:constants)
-
-    # rotate logs
-    config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log", shift_age = 'weekly')
-
   end
 end

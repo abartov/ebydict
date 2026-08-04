@@ -1,0 +1,13 @@
+volumes:
+  mysql_data:
+services:
+  mysql:
+    image: mysql:8.0.36
+    restart: unless-stopped
+    command: --max_allowed_packet=256M      # Set max_allowed_packet to 256M (or any other value)
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 13308:3306
+    volumes:
+      - mysql_data:/var/lib/mysql/:delegated

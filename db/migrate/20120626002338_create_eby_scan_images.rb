@@ -1,4 +1,4 @@
-class CreateEbyScanImages < ActiveRecord::Migration
+class CreateEbyScanImages < ActiveRecord::Migration[4.2]
   def change
     create_table :eby_scan_images do |t|
       t.string :origjpeg
