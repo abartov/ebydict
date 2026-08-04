@@ -1,9 +1,9 @@
 # see https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-a-registry-using-a-personal-access-token
-name: Build Docker image and deploy it to staging
+name: Build Docker image and deploy it to beta or production server
 
 on:
   push:
-    branches: ['dockerize', 'beta']
+    branches: ['production', 'beta']
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain,
 # and a name for the Docker image that this workflow builds.
@@ -58,11 +58,29 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  deploy-beta:
+    needs: build-and-push-image
+    if: github.ref_name == 'beta'
+    runs-on: ubuntu-latest
+    steps:
       - name: Update server with new Docker image
         uses: appleboy/ssh-action@v1.2.5
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.BETA_SERVER_HOST }}
+          username: ${{ secrets.BETA_SSH_USER }}
+          password: ${{ secrets.BETA_SSH_PASSWORD }}
           port: 22
           script: ./update_services.sh ebydict-staging web
+  deploy-production:
+    needs: build-and-push-image
+    if: github.ref_name == 'production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update server with new Docker image
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SSH_USER }}
+          password: ${{ secrets.PRODUCTION_SSH_PASSWORD }}
+          port: 22
+          script: ./update_services.sh ebydict-production web
