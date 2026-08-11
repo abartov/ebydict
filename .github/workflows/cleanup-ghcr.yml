@@ -15,5 +15,5 @@ jobs:
         with:
           package-name: 'ebydict'
           package-type: 'container'
-          ignore-versions: '^production-.+|.+-latest$'
-          min-versions-to-keep: 0
+          ignore-versions: '-latest$'
+          min-versions-to-keep: 10 # Keep 10 versions
