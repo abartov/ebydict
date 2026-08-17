@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'concurrent-ruby', '< 1.3.5' # compatibility fix for ruby 3.2
 gem 'rails', '~> 6.0'
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-#gem 'rake', '=0.9.2.2'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
@@ -12,15 +9,15 @@ gem 'marcel','~>1'
 gem 'activerecord-session_store'
 gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
 
+gem 'rufus-scheduler' # scheduler
+
 gem 'mysql2'
 gem 'sqlite3' # used by some rake tasks (for exports?)
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
 gem 'hebrew', '>=0.2.6' # for naive_full_nikkud
-#gem 'dispatcher'
 gem 'puma'
-#gem 'thin'
 gem 'hamlit-rails'
 gem 'haml'
 gem 'htmlentities'
@@ -28,7 +25,6 @@ gem 'sass-rails'
 gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-#gem 'therubyracer'
 gem 'mini_racer'
 gem 'rexml'
 gem 'globalid', '~> 1.0'
