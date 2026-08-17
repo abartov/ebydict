@@ -3,7 +3,7 @@ require 'sqlite3'
 
 include EbyUtils
 namespace :dict do
-  desc "Export published definitions into a sqlite DB at public/dict.db"
+  desc "Export published definitions into a sqlite DB at export/dict.db"
   task :export  => :environment do
     maxvol = EbyScanImage.maximum(:volume)
     print "\nEbyDict - rendering volumes 1 to #{maxvol}!\n"
@@ -15,7 +15,7 @@ namespace :dict do
       print "done!\nDone collecting defs from volume #{vol} of #{maxvol}.\n"
     end
     print "done!\n  Exporting all #{@defs.count} defs... "
-    db = SQLite3::Database.new "#{Rails.root}/public/dict.db"
+    db = SQLite3::Database.new "#{Rails.root}/export/dict.db"
     db.results_as_hash = true
     db.execute("DROP TABLE IF EXISTS entries")
     db.execute("DROP TABLE IF EXISTS aliases")
