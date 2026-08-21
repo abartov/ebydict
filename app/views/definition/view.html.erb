@@ -9,7 +9,7 @@ $(document).ready(function() {
 <div class="preview_note"><%= t(:definition_preview_from_ebydict_html) %></div>
 <div align="center">
   <table dir="ltr">
-  <tr><td><img src="/assets/awful_bg_left.png"></td>
+  <tr><td><img src="<%= image_path('awful_bg_left.png') %>"></td>
   <td align="right" dir="rtl">
   <div class="defcontainer">
     <div class="defhead"><%= raw @defhead %></div>
@@ -18,7 +18,7 @@ $(document).ready(function() {
     <div class="footnotes"><%= raw @footnotes %></div>
   </div>
   </td>
-  <td><img src="/assets/awful_bg_right.png"></td>
+  <td><img src="<%= image_path('awful_bg_right.png') %>"></td>
   </tr></table>
 </div>
 <!-- </div>-->
