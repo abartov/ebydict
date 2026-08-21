@@ -93,7 +93,7 @@ tinyMCE.init({
         setup: function(editor) { 
         // Add our custom buttons
           editor.ui.registry.addButton('mafrid', {
-            text: '<image src=\"/assets/mafrid.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('mafrid.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_mafrid) %>',
             onAction: function() {
               editor.focus();
@@ -101,7 +101,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('makor', {
-            text: '<image src=\"/assets/source.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('source.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_source) %>',
             onAction: function() { 
               editor.focus();
@@ -109,7 +109,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('problem', {
-            text: '<image src=\"/assets/problem.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('problem.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_problem_btn) %>',
             onAction: function() { 
               editor.focus();
@@ -117,7 +117,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('comment', {
-            text: '<image src=\"/assets/comment.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('comment.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_comment) %>',
             onAction: function() { 
               editor.focus();
@@ -125,7 +125,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('redirect', {
-            text: '<image src=\"/assets/vide.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('vide.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_redirect) %>',
             onAction: function() { 
               editor.focus();
@@ -133,7 +133,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('talmud', {
-            text: '<image src=\"/assets/talmud.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('talmud.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_talmud) %>',
             onAction: function() { 
               editor.focus();
@@ -141,7 +141,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('post_xazal', {
-            text: '<image src=\"/assets/post_xazal.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('post_xazal.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_post_xazal_html) %>',
             onAction : function() {
               editor.focus();
@@ -149,7 +149,7 @@ tinyMCE.init({
             }
           });
           editor.ui.registry.addButton('neologism', {
-            text: '<image src=\"/assets/neologism.png\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
+            text: '<image src=\"<%= image_path('neologism.png') %>\" style=\"height: 24px;width: 24px;padding: 3px 0px 0px 0px;\"/ >',
             tooltip: '<%= t(:type_neologism) %>',
             onAction : function() {
               editor.focus();
@@ -396,7 +396,7 @@ tinyMCE.init({
 <input type="hidden" name="act" value="<%= @actno  %>"/></form>
 <script language="javascript" type="text/javascript">
 function chfoot_loading() {
-  footImageObj.src = '/assets/loading.png';
+  footImageObj.src = '<%= image_path('loading.png') %>';
 }
 function resizeCanvas(img, cnv) {
   cnv.height = img.height;
@@ -404,7 +404,7 @@ function resizeCanvas(img, cnv) {
   return true;
 }
 function chimg_loading() {
-  imageObj.src = '/assets/loading.png';
+  imageObj.src = '<%= image_path('loading.png') %>';
   chfoot_loading();
 }
 function chimg(delta) {
