@@ -1,7 +1,7 @@
 FROM ruby:3.2.11-trixie AS base
 
 RUN apt-get update -qq \
-  && apt-get install -y libmariadb3 \
+  && apt-get install -y libmariadb3 libjemalloc2 \
   && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 WORKDIR /app
@@ -19,7 +19,8 @@ COPY vendor ./vendor
 
 ENV RAILS_ENV=production \
     RACK_ENV=production \
-    RAILS_LOG_TO_STDOUT=true
+    RAILS_LOG_TO_STDOUT=true \
+    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 FROM base AS builder
 
