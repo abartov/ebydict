@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update -qq \
-    && apt-get install -y --no-install-recommends libjemalloc2 \
+    && apt-get install -y --no-install-recommends libjemalloc2 default-libmysqlclient-dev \
     && apt-get clean \
     && rm -rf /tmp/* /var/tmp/*
 
@@ -13,5 +13,4 @@ ENV LD_PRELOAD=libjemalloc.so.2
 
 # Install gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle config set --local without 'production' && bundle install -j $(nproc) \
-    && npm install yarn --global
+RUN bundle config set --local without 'production' && bundle install -j $(nproc)
