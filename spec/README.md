@@ -18,7 +18,6 @@ The test suite has been set up with the following gems:
 **Test Only:**
 - `shoulda-matchers` (~> 5.3) - Simplified model/controller testing
 - `database_cleaner-active_record` (~> 2.1) - Database state management
-- `simplecov` - Code coverage reporting (target: 80%)
 - `vcr` (~> 6.1) - HTTP interaction recording for OAuth
 - `webmock` (~> 3.18) - HTTP request stubbing
 - `rails-controller-testing` (~> 1.0) - Controller test helpers
@@ -111,7 +110,7 @@ spec/
 │       └── requires_role.rb         # Role-based access control tests
 ├── vcr_cassettes/               # Recorded HTTP interactions
 ├── rails_helper.rb              # Rails-specific RSpec config
-└── spec_helper.rb               # General RSpec config + SimpleCov
+└── spec_helper.rb               # General RSpec config
 ```
 
 ## Test Factories

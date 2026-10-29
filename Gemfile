@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'concurrent-ruby', '< 1.3.5' # compatibility fix for ruby 3.2
+# Those two gems were part of ruby, but was removed in 3.4.0. Perhaps we can remove them after upgrading rails version
+gem 'mutex_m'
+gem 'csv'
+
 gem 'rails', '~> 6.0'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
@@ -28,7 +31,7 @@ gem 'jquery-ui-rails'
 gem 'mini_racer'
 gem 'rexml'
 gem 'globalid', '~> 1.0'
-gem 'bootsnap', require: false
+gem 'bootsnap'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -54,9 +57,9 @@ group :development do
 end
 
 group :test do
+  gem 'drb' # This gem was excluded from ruby 3.4. Perhaps can be removed after Rails version upgrade.
   gem 'shoulda-matchers', '~> 5.3'
   gem 'database_cleaner-active_record', '~> 2.1'
-  gem 'simplecov', require: false
   gem 'vcr', '~> 6.1'
   gem 'webmock', '~> 3.18'
   gem 'rails-controller-testing', '~> 1.0'
