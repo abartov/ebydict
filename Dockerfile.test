@@ -1,0 +1,17 @@
+FROM ruby:3.4.12-trixie
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update -qq \
+    && apt-get install -y --no-install-recommends libjemalloc2 \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/tmp/*
+
+# Use jemalloc as the memory allocator, which is more efficient than glibc's default allocator for Ruby workloads.
+ENV LD_PRELOAD=libjemalloc.so.2
+
+# Install gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle config set --local without 'production' && bundle install -j $(nproc) \
+    && npm install yarn --global
