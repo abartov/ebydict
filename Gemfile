@@ -60,7 +60,6 @@ group :test do
   gem 'drb' # This gem was excluded from ruby 3.4. Perhaps can be removed after Rails version upgrade.
   gem 'shoulda-matchers', '~> 5.3'
   gem 'database_cleaner-active_record', '~> 2.1'
-  gem 'simplecov', require: false
   gem 'vcr', '~> 6.1'
   gem 'webmock', '~> 3.18'
   gem 'rails-controller-testing', '~> 1.0'
