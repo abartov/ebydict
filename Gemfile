@@ -4,7 +4,10 @@ source 'https://rubygems.org'
 gem 'mutex_m'
 gem 'csv'
 
-gem 'rails', '~> 6.0'
+gem 'concurrent-ruby', '1.3.4' # can be removed after rails upgrade
+gem 'logger', '1.6.4' # can be removed after rails upgrade
+
+gem 'rails', '~> 6.1'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
@@ -33,15 +36,6 @@ gem 'mini_racer'
 gem 'rexml'
 gem 'globalid', '~> 1.0'
 gem 'bootsnap'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger
 group :development, :test do
