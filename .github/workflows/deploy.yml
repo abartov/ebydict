@@ -14,7 +14,7 @@ env:
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
@@ -65,7 +65,7 @@ jobs:
   deploy-beta:
     needs: build-and-push-image
     if: github.ref_name == 'beta'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     steps:
       - name: Update server with new Docker image
         uses: appleboy/ssh-action@v1.2.5
@@ -78,7 +78,7 @@ jobs:
   deploy-production:
     needs: build-and-push-image
     if: github.ref_name == 'production'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     steps:
       - name: Update server with new Docker image
         uses: appleboy/ssh-action@v1.2.5
