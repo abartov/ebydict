@@ -13,6 +13,7 @@ gem 'activerecord-session_store'
 gem 'activerecord_where_assoc', '~> 1.0' # for scopes about associations
 
 gem 'rufus-scheduler' # scheduler
+gem 'sentry-rails'
 
 gem 'mysql2'
 gem 'sqlite3' # used by some rake tasks (for exports?)
