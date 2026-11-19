@@ -20,7 +20,7 @@ COPY vendor ./vendor
 ENV RAILS_ENV=production \
     RACK_ENV=production \
     RAILS_LOG_TO_STDOUT=true \
-    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+    LD_PRELOAD=libjemalloc.so.2
 
 FROM base AS builder
 
