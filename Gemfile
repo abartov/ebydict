@@ -19,7 +19,7 @@ gem 'rufus-scheduler' # scheduler
 gem 'sentry-rails'
 
 gem 'mysql2'
-gem 'sqlite3' # used by some rake tasks (for exports?)
+gem 'sqlite3', '~> 1.7.3' # Rails 6.1 is incompatible with 2.x
 gem 'json', '>=1.7.7'
 gem 'nokogiri'
 gem 'clockwork' # scheduler
