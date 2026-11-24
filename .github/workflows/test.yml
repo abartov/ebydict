@@ -8,7 +8,7 @@ on:
 jobs:
   build-image:
     name: Build test docker image if needed
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     permissions:
       contents: read
       packages: write
@@ -51,7 +51,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.test
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/ebydict-test:${{ steps.calc-hash.outputs.hash }}
           cache-from: type=gha
@@ -60,7 +60,7 @@ jobs:
   test:
     name: Run Specs
     needs: build-image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04-arm
     permissions:
       contents: read
       packages: read

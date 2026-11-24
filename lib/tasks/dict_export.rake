@@ -30,12 +30,12 @@ namespace :dict do
         if rendered_footnotes =~ /\S/
           rendered_def += '<br/><hr width="30%" align="right"/><div class="defnotes">' + rendered_footnotes + '</div>'
         end
-        db.execute("INSERT INTO entries VALUES (?, ?, ?, ?)", d.id, i, d.defhead, rendered_def)
+        db.execute("INSERT INTO entries VALUES (?, ?, ?, ?)", [d.id, i, d.defhead, rendered_def])
         d.aliases.each do |al|
-          db.execute("INSERT INTO aliases VALUES (?, ?)", d.id, al.alias)
+          db.execute("INSERT INTO aliases VALUES (?, ?)", [d.id, al.alias])
         end
       else
-        db.execute("INSERT INTO entries VALUES (?, ?, ?, ?)", nil, i, nil, nil)
+        db.execute("INSERT INTO entries VALUES (?, ?, ?, ?)", [nil, i, nil, nil])
       end
       i += 1
       print "#{i}... " if i % 200 == 0
